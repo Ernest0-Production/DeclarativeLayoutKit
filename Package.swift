@@ -18,5 +18,6 @@ let package = Package(
         .target(
             name: "DeclarativeLayoutKit",
             dependencies: ["SnapKit"]),
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )
