@@ -171,6 +171,50 @@ public extension ViewConvertable {
         view.transform({ $0.layer.shadowPath = shadowPath })
         return self
     }
+    
+    // MARK: - Layout
+    
+    @discardableResult
+    func width(_ width: CGFloat, priority: UILayoutPriority = 999) -> Self {
+        view.snp.makeConstraints { $0.width.equalTo(width).priority(priority) }
+        return self
+    }
+    
+    @discardableResult
+    func minWidth(_ width: CGFloat, priority: UILayoutPriority = .init(999)) -> Self {
+        view.snp.makeConstraints { $0.width.lessThanOrEqualTo(width).priority(priority) }
+        return self
+    }
+    
+    @discardableResult
+    func maxWidth(_ width: CGFloat, priority: UILayoutPriority = .init(999)) -> Self {
+        view.snp.makeConstraints { $0.width.greaterThanOrEqualTo(width).priority(priority) }
+        return self
+    }
+    
+    @discardableResult
+    func height(_ height: CGFloat, priority: UILayoutPriority = 999) -> Self {
+        view.snp.makeConstraints { $0.height.equalTo(height).priority(priority) }
+        return self
+    }
+    
+    @discardableResult
+    func minHeight(_ height: CGFloat, priority: UILayoutPriority = 999) -> Self {
+        view.snp.makeConstraints { $0.height.lessThanOrEqualTo(height).priority(priority) }
+        return self
+    }
+    
+    @discardableResult
+    func maxHeight(_ height: CGFloat, priority: UILayoutPriority = 999) -> Self {
+        view.snp.makeConstraints { $0.height.greaterThanOrEqualTo(height).priority(priority) }
+        return self
+    }
+    
+    @discardableResult
+    func size(_ size: CGSize, priority: UILayoutPriority = .init(999)) -> Self {
+        self.height(size.height, priority: priority)
+            .width(size.width, priority: priority)
+    }
 }
 
 

@@ -136,51 +136,14 @@ public extension ViewLayoutBuilderConvertable {
     }
     
     @discardableResult
-    func centerYAnhor(_ value: CGFloat = 0, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+    func centerYAnchor(_ value: CGFloat = 0, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
         self.layout { $0.centerY.equalToFallbackingSuperview(item).inset(value).priority(priority) }
     }
     
     @discardableResult
     func centerAnchor(_ value: CGFloat = 0, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
-        self.centerYAnhor(value, to: item, priority: priority).centerXAnchor(value, to: item, priority: priority)
+        self.centerYAnchor(value, to: item, priority: priority).centerXAnchor(value, to: item, priority: priority)
     }
-    
-    @discardableResult
-    func width(_ width: CGFloat, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
-        self.layout { $0.width.equalTo(width).priority(priority) }
-    }
-    
-    @discardableResult
-    func minWidth(_ width: CGFloat, priority: UILayoutPriority = .init(999)) -> ViewLayoutBuilder {
-        self.layout { $0.width.lessThanOrEqualTo(width).priority(priority) }
-    }
-    
-    @discardableResult
-    func maxWidth(_ width: CGFloat, priority: UILayoutPriority = .init(999)) -> ViewLayoutBuilder {
-        self.layout { $0.width.greaterThanOrEqualTo(width).priority(priority) }
-    }
-    
-    @discardableResult
-    func height(_ height: CGFloat, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
-        self.layout { $0.height.equalTo(height).priority(priority) }
-    }
-    
-    @discardableResult
-    func minHeight(_ height: CGFloat, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
-        self.layout { $0.height.lessThanOrEqualTo(height).priority(priority) }
-    }
-    
-    @discardableResult
-    func maxHeight(_ height: CGFloat, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
-        self.layout { $0.height.greaterThanOrEqualTo(height).priority(priority) }
-    }
-    
-    @discardableResult
-    func size(_ size: CGSize, priority: UILayoutPriority = .init(999)) -> ViewLayoutBuilder {
-        self.height(size.height, priority: priority)
-            .width(size.width, priority: priority)
-    }
-    
 }
 
 
