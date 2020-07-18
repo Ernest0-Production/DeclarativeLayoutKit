@@ -116,8 +116,8 @@ public extension ViewConvertable {
     }
     
     @discardableResult
-    func assign(to object: inout Self?) -> Self {
-        object = self
+    func assign<Target: UIView>(to object: inout Target?) -> Self {
+        object = view as? Target
         
         return self
     }
