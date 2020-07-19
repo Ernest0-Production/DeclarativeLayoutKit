@@ -11,11 +11,15 @@ import SnapKit
 
 
 public protocol ViewConvertable {
-    var view: UIView { get }
+    func asView() -> UIView
 }
 
 extension ViewConvertable where Self: UIView {
-    public var view: UIView { self }
+    public func asView() -> UIView { self }
+}
+
+extension ViewConvertable {
+    private var view: UIView { asView() }
 }
 
 extension UIView: ViewConvertable {}

@@ -67,6 +67,9 @@ extension StackingLayoutBuilder.Margin {
     }
 }
    
+extension StackingLayoutBuilder: ViewConvertable {
+    public func asView() -> UIView { view }
+}
 
 public protocol StackingLayoutBuilderConvertable {
     func asStackItemBuilder() -> StackingLayoutBuilder
@@ -76,13 +79,11 @@ extension StackingLayoutBuilder: StackingLayoutBuilderConvertable {
     public func asStackItemBuilder() -> StackingLayoutBuilder { self }
 }
 
-
 extension UIView: StackingLayoutBuilderConvertable {
     public func asStackItemBuilder() -> StackingLayoutBuilder {
         StackingLayoutBuilder(view: self)
     }
 }
-
 
 public extension StackingLayoutBuilderConvertable {
     func beforeSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
@@ -122,7 +123,7 @@ private extension ViewConvertable {
         }
         
         let builders = builderConvertables.map({ $0.asStackItemBuilder() })
-        builders.forEach({ view.addSubview($0.view) })
+        builders.forEach({ asView().addSubview($0.view) })
         
         guard builders.count > 0 else {
             return self

@@ -12,11 +12,11 @@ import SnapKit
 public final class ViewLayoutBuilder {
     public typealias ConstraintBuild = (ConstraintMaker) -> Void
     
-    let view: UIView
+    public let view: UIView
     
     fileprivate var constraintBuilds: [ConstraintBuild]
     
-    fileprivate init(view: UIView, constraintBuilds: [ConstraintBuild]) {
+    fileprivate init(view: UIView, constraintBuilds: [ConstraintBuild] = []) {
         self.view = view
         self.constraintBuilds = constraintBuilds
     }
@@ -34,6 +34,9 @@ public final class ViewLayoutBuilder {
     }
 }
 
+extension ViewLayoutBuilder: ViewConvertable {
+    public func asView() -> UIView { view }
+}
 
 public protocol ViewLayoutBuilderConvertable {
     func asLayoutBuilder() -> ViewLayoutBuilder
@@ -45,7 +48,7 @@ extension ViewLayoutBuilder: ViewLayoutBuilderConvertable {
 
 extension UIView: ViewLayoutBuilderConvertable {
     public func asLayoutBuilder() -> ViewLayoutBuilder {
-        ViewLayoutBuilder(view: self, constraintBuilds: [])
+        ViewLayoutBuilder(view: self)
     }
 }
 
@@ -56,12 +59,7 @@ public extension ViewConvertable {
         for convertable in convertables {
             let builder = convertable.asLayoutBuilder()
             
-            if builder.constraintBuilds.isEmpty {
-                add(convertable.stretch(.zero))
-                return self
-            }
-            
-            view.addSubview(builder.view)
+            asView().addSubview(builder.view)
             builder.view.translatesAutoresizingMaskIntoConstraints = false
             builder.build()
         }
@@ -70,15 +68,15 @@ public extension ViewConvertable {
     }
 }
 
-
 public extension ViewLayoutBuilderConvertable {
+    
     @discardableResult
     func layout(_ build: @escaping ViewLayoutBuilder.ConstraintBuild) -> ViewLayoutBuilder {
         self.asLayoutBuilder().addConstraint(build)
     }
     
     @discardableResult
-    func stretch(_ insets: UIEdgeInsets, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+    func stretch(_ insets: UIEdgeInsets = 0, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
         self.layout { $0.edges.equalToFallbackingSuperview(item).inset(insets).priority(priority) }
     }
     
