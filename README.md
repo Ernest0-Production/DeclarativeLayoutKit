@@ -19,3 +19,11 @@ let package = Package(
     .target(name: "TestProject", dependencies: ["DeclarativeLayoutKit"])
   ]
 )
+
+
+TODO:
+- aspectRatio
+- stylable?
+- placeholderable?
+- loadable?
+- marginAcnhor
