@@ -13,7 +13,7 @@ import PackageDescription
 let package = Package(
   name: "TestProject",
   dependencies: [
-    .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "0.3.0")
+    .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "1.0.0")
   ],
   targets: [
     .target(name: "TestProject", dependencies: ["DeclarativeLayoutKit"])
