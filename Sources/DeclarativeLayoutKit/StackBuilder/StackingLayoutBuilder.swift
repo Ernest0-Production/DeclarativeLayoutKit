@@ -9,28 +9,11 @@ import UIKit
 import SnapKit
 
 
-@_functionBuilder
-public struct HStackBuilder {
-    public static func buildBlock(_ items: StackingLayoutBuilderConvertable...) -> UIView {
-        UIView().add(axis: .horizontal, items)
+public extension UIView {
+    func stack(_ axis: StackingLayoutBuilder.Axis, _ items: [StackingLayoutBuilderConvertable]) -> Self {
+        add(axis: axis, items)
     }
 }
-
-public func HStack(@HStackBuilder builder: () -> UIView) -> UIView {
-    builder()
-}
-
-@_functionBuilder
-public struct VStackBuilder {
-    public static func buildBlock(_ items: StackingLayoutBuilderConvertable...) -> UIView {
-        UIView().add(axis: .vertical, items)
-    }
-}
-
-public func VStack(@VStackBuilder builder: () -> UIView) -> UIView {
-    builder()
-}
-
 
 public final class StackingLayoutBuilder {
     public enum Axis {

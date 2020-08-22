@@ -7,12 +7,9 @@
 
 import UIKit
 
+extension UIEdgeInsets: Transformable {}
 
-public typealias Insets = UIEdgeInsets
-extension Insets: Transformable {}
-
-
-public extension UIEdgeInsets {
+extension UIEdgeInsets {
     static let contentInsets: UIEdgeInsets = .side(16)
     
     init(inset: CGFloat) {

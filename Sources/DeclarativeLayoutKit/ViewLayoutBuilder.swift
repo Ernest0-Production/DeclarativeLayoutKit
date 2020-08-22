@@ -69,7 +69,6 @@ public extension ViewConvertable {
 }
 
 public extension ViewLayoutBuilderConvertable {
-    
     @discardableResult
     func layout(_ build: @escaping ViewLayoutBuilder.ConstraintBuild) -> ViewLayoutBuilder {
         self.asLayoutBuilder().addConstraint(build)
@@ -81,20 +80,20 @@ public extension ViewLayoutBuilderConvertable {
     }
     
     @discardableResult
-    func anhors(_ insets: UIEdgeInsets, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+    func anchors(_ insets: UIEdgeInsets, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
         self.layout {
-                if !insets.left.isZero {
-                    $0.left.equalToFallbackingSuperview(item).inset(insets.left).priority(priority)
-                }
-                if !insets.right.isZero {
-                    $0.right.equalToFallbackingSuperview(item).inset(insets.right).priority(priority)
-                }
-                if !insets.top.isZero {
-                    $0.top.equalToFallbackingSuperview(item).inset(insets.top).priority(priority)
-                }
-                if !insets.bottom.isZero {
-                    $0.bottom.equalToFallbackingSuperview(item).inset(insets.bottom).priority(priority)
-                }
+            if !insets.left.isZero {
+                $0.left.equalToFallbackingSuperview(item).inset(insets.left).priority(priority)
+            }
+            if !insets.right.isZero {
+                $0.right.equalToFallbackingSuperview(item).inset(insets.right).priority(priority)
+            }
+            if !insets.top.isZero {
+                $0.top.equalToFallbackingSuperview(item).inset(insets.top).priority(priority)
+            }
+            if !insets.bottom.isZero {
+                $0.bottom.equalToFallbackingSuperview(item).inset(insets.bottom).priority(priority)
+            }
         }
     }
     
@@ -105,7 +104,7 @@ public extension ViewLayoutBuilderConvertable {
     
     @discardableResult
     func bottomAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
-        self.layout { $0.top.equalToFallbackingSuperview(item).inset(value).priority(priority) }
+        self.layout { $0.bottom.equalToFallbackingSuperview(item).inset(value).priority(priority) }
     }
     
     @discardableResult
@@ -114,19 +113,40 @@ public extension ViewLayoutBuilderConvertable {
     }
     
     @discardableResult
-    func rightAnhor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+    func rightAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
         self.layout { $0.right.equalToFallbackingSuperview(item).inset(value).priority(priority) }
     }
     
     @discardableResult
     func sideAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
-        self.leftAnchor(value, to: item, priority: priority).rightAnhor(value, to: item, priority: priority)
+        self.leftAnchor(value, to: item, priority: priority).rightAnchor(value, to: item, priority: priority)
     }
     
     @discardableResult
-    func verticalMargin(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+    func verticalAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
         self.topAnchor(value, to: item, priority: priority).bottomAnchor(value, to: item, priority: priority)
     }
+    
+    @discardableResult
+    func topLeftAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+        self.topAnchor(value, to: item, priority: priority).leftAnchor(value, to: item, priority: priority)
+    }
+    
+    @discardableResult
+    func topRightAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+        self.topAnchor(value, to: item, priority: priority).rightAnchor(value, to: item, priority: priority)
+    }
+    
+    @discardableResult
+    func bottomRightAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+        self.bottomAnchor(value, to: item, priority: priority).rightAnchor(value, to: item, priority: priority)
+    }
+    
+    @discardableResult
+    func bottomLeftAnchor(_ value: CGFloat, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+        self.bottomAnchor(value, to: item, priority: priority).leftAnchor(value, to: item, priority: priority)
+    }
+    
     
     @discardableResult
     func centerXAnchor(_ value: CGFloat = 0, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
@@ -141,6 +161,22 @@ public extension ViewLayoutBuilderConvertable {
     @discardableResult
     func centerAnchor(_ value: CGFloat = 0, to item: ConstraintRelatableTarget? = nil, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
         self.centerYAnchor(value, to: item, priority: priority).centerXAnchor(value, to: item, priority: priority)
+    }
+    
+    @discardableResult
+    func width(equalTo item: ConstraintRelatableTarget, _ inset: CGFloat = 0, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+        self.layout { $0.width.equalTo(item).inset(inset).priority(priority) }
+    }
+    
+    @discardableResult
+    func height(equalTo item: ConstraintRelatableTarget, _ inset: CGFloat = 0, priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+        self.layout { $0.height.equalTo(item).inset(inset).priority(priority) }
+    }
+    
+    /// height / width
+    @discardableResult
+    func aspectRatio(_ multiplier: Float) -> ViewLayoutBuilder {
+        self.layout { $0.height.equalTo(self.asLayoutBuilder().view.snp.width).multipliedBy(1/multiplier) }
     }
 }
 

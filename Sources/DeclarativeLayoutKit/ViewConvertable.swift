@@ -24,7 +24,6 @@ extension ViewConvertable {
 
 extension UIView: ViewConvertable {}
 
-
 public extension ViewConvertable {
     @discardableResult
     func backgroundColor(_ color: UIColor?) -> Self {
@@ -221,165 +220,6 @@ public extension ViewConvertable {
     }
 }
 
-
-public extension UIControl {
-    @discardableResult
-    func target(_ target: Any?, action: Selector, for controlEvents: UIControl.Event = .touchUpInside) -> Self {
-        self.addTarget(target, action: action, for: controlEvents)
-        
-        return self
-    }
-    
-    @discardableResult
-    func contentHorizontalAlignment(_ contentHorizontalAlignment: UIControl.ContentHorizontalAlignment) -> Self {
-        self.contentHorizontalAlignment = contentHorizontalAlignment
-        
-        return self
-    }
-}
-
-public extension UIStackView {
-    @discardableResult
-    func spacing(_ value: CGFloat) -> Self {
-        self.spacing = value
-        return self
-    }
-    
-    @discardableResult
-    func alignment(_ alignment: UIStackView.Alignment) -> Self {
-        self.alignment = alignment
-        return self
-    }
-    
-    @discardableResult
-    func axis(_ axis: NSLayoutConstraint.Axis) -> Self {
-        self.axis = axis
-        return self
-    }
-    
-    @discardableResult
-    func distribution(_ distribution: UIStackView.Distribution) -> Self {
-        self.distribution = distribution
-        return self
-    }
-}
-
-public extension UILabel {
-    @discardableResult
-    func numberOfLines(_ count: Int) -> Self {
-        self.numberOfLines = count
-        
-        return self
-    }
-    
-    @discardableResult
-    func text(_ text: String) -> Self {
-        self.text = text
-        
-        return self
-    }
-    
-    @discardableResult
-    func attributedText(_ text: NSAttributedString) -> Self {
-        self.attributedText = text
-        
-        return self
-    }
-    
-    @discardableResult
-    func textAlignment(_ textAlignment: NSTextAlignment) -> Self {
-        self.textAlignment = textAlignment
-        
-        return self
-    }
-}
-
-public extension UIButton {
-    @discardableResult
-    func text(_ text: String, for state: UIControl.State = .normal) -> Self {
-        self.setTitle(text, for: state)
-        
-        return self
-    }
-    
-    @discardableResult
-    func contentEdgeInsets(_ contentEdgeInsets: UIEdgeInsets) -> Self {
-        self.contentEdgeInsets = contentEdgeInsets
-        
-        return self
-    }
-    
-    @discardableResult
-    func titleEdgeInsets(_ titleEdgeInsets: UIEdgeInsets) -> Self {
-        self.titleEdgeInsets = titleEdgeInsets
-        
-        return self
-    }
-    
-    @discardableResult
-    func imageEdgeInsets(_ imageEdgeInsets: UIEdgeInsets) -> Self {
-        self.imageEdgeInsets = imageEdgeInsets
-        
-        return self
-    }
-    
-    @discardableResult
-    func imageContentMode(_ contentMode: UIView.ContentMode) -> Self {
-        self.imageView?.contentMode = contentMode
-        
-        return self
-    }
-    
-    @discardableResult
-    func image(_ image: UIImage?, for state: UIControl.State = .normal) -> Self {
-        self.setImage(image, for: state)
-        
-        return self
-    }
-}
-
-public extension UIScrollView {
-    @discardableResult
-    func contentInset(_ contentInset: Insets) -> Self {
-        self.contentInset = contentInset
-        
-        return self
-    }
-    
-    @discardableResult
-    func showsVerticalScrollIndicator(_ value: Bool) -> Self {
-        self.showsVerticalScrollIndicator = value
-        
-        return self
-    }
-    
-    @discardableResult
-     func showsHorizontalScrollIndicator(_ value: Bool) -> Self {
-         self.showsHorizontalScrollIndicator = value
-         
-         return self
-     }
-}
-
-public extension UITableView {
-    @discardableResult
-    func separatorStyle(_ separatorStyle: UITableViewCell.SeparatorStyle) -> Self {
-        self.separatorStyle = separatorStyle
-        
-        return self
-    }
-}
-
-public extension UIImageView {
-    @discardableResult
-    func image(_ image: UIImage?) -> Self {
-        self.image = image
-        
-        return self
-    }
-}
-
-
 extension UILayoutPriority: ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = Float
     
@@ -389,32 +229,15 @@ extension UILayoutPriority: ExpressibleByFloatLiteral {
 }
 
 extension UILayoutPriority: ExpressibleByIntegerLiteral {
-    public typealias IntegerLiteralType = Int
-    
     public init(integerLiteral value: Int) {
         self.init(rawValue: Float(value))
     }
 }
 
-
 public extension NSLayoutConstraint {
     @discardableResult
     func priority(_ priority: UILayoutPriority) -> NSLayoutConstraint {
         self.priority = priority
-        
         return self
-    }
-}
-
-
-extension CGSize: ExpressibleByFloatLiteral {
-    public init(floatLiteral value: Double) {
-        self.init(width: value, height: value)
-    }
-}
-
-extension CGSize: ExpressibleByIntegerLiteral {
-    public init(integerLiteral value: Int) {
-        self.init(width: value, height: value)
     }
 }
