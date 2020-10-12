@@ -1,0 +1,28 @@
+{% macro newlineIfNotLast isLast %}
+{% if not isLast %}
+
+{% endif %}
+{% endmacro %}
+
+
+{% for type in types.implementing.Chainable|class %}
+// sourcery:file:{{ type.name }}+Chain.swift
+import UIKit
+
+
+public extension {{ type.name }} {
+    {% for variable in type.allVariables|instance|openSet %}
+    {% set isContains %}{% for parentVariable in type.inherits[type.inheritedTypes[0]].allVariables|instance|openSet %}{% if parentVariable.name == variable.name %}true{% endif %}{% endfor %}{% endset %}
+    {% if not isContains == "true" %}
+    {{variable.attributes.available}}
+    @discardableResult
+    func {{ variable.name }}(_ newValue: {{ variable.typeName }}) -> Self {
+        {{ variable.name }} = newValue
+        return self
+    }
+    {% call newlineIfNotLast forloop.last %}
+    {% endif %}
+    {% endfor %}
+}
+// sourcery:end
+{% endfor %}
