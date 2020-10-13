@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+
 
 @_functionBuilder
 public struct ViewLayoutBuilderComposer {
@@ -18,17 +20,15 @@ public struct ViewLayoutBuilderComposer {
     }
 }
 
-import UIKit
-
 public protocol ViewConvertible {
     func asUIView() -> UIView
 }
 
 public extension ViewConvertible {
     func subviews(@ViewLayoutBuilderComposer _ builders: @escaping () -> [ViewLayoutBuilderConvertible]) -> Self {
-        for item in builders().map({ $0.asViewLayoutBuilder() }) {
-            asUIView().addSubview(item.view)
-            item.build()
+        for builder in builders().map({ $0.asViewLayoutBuilder() }) {
+            asUIView().addSubview(builder.view)
+            builder.build()
         }
 
         return self

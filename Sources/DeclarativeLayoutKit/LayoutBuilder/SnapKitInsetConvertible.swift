@@ -9,12 +9,12 @@ import SnapKit
 import  UIKit
 
 
-protocol SnapKitInsetConvertible: LayoutBuilderConstraintInset {
+public protocol SnapKitInsetConvertible: LayoutBuilderConstraintInset {
     func asConstraintInsertTarget() -> ConstraintInsetTarget
 }
 
 extension SnapKitInsetConvertible where Self: ConstraintInsetTarget {
-    func asConstraintInsertTarget() -> ConstraintInsetTarget { self }
+    public func asConstraintInsertTarget() -> ConstraintInsetTarget { self }
 }
 
 extension Int: SnapKitInsetConvertible {}

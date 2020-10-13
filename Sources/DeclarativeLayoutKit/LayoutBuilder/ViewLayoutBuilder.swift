@@ -136,7 +136,7 @@ public extension ViewLayoutBuilderConvertible {
     }
 
     @discardableResult
-    func hotizontalAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func horizontalAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
         leftAnchor(constraint).rightAnchor(constraint)
     }
 
