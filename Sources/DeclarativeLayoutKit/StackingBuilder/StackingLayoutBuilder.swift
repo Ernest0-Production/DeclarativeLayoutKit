@@ -18,26 +18,24 @@ public final class StackingLayoutBuilder: StackingLayoutBuilderConvertible, View
         case vertical, horizontal
     }
 
-    struct Attribute {
+    struct Margin {
         let value: CGFloat
         let priority: UILayoutPriority
     }
 
     let view: UIView
-    var height: LayoutBuilderConstraint?
-    var beforeSpace: Attribute
-    var afterSpace: Attribute
-    var sideInset: Attribute
+    var beforeSpace: Margin
+    var afterSpace: Margin
+    var sideInset: Margin
     var centerAlign: Bool
+    var didMoveToSuperview: () -> () = {}
 
     init(view: UIView,
-         height: LayoutBuilderConstraint? = nil,
-         beforeSpace: Attribute = .zero,
-         afterSpace: Attribute = .zero,
-         sideInset: Attribute = .zero,
+         beforeSpace: Margin = .zero,
+         afterSpace: Margin = .zero,
+         sideInset: Margin = .zero,
          centerAlign: Bool = false) {
         self.view = view
-        self.height = height
         self.beforeSpace = beforeSpace
         self.afterSpace = afterSpace
         self.sideInset = sideInset
@@ -57,20 +55,13 @@ extension UIView: StackingLayoutBuilderConvertible {
     }
 }
 
-extension StackingLayoutBuilder.Attribute {
-    static var zero: StackingLayoutBuilder.Attribute {
+extension StackingLayoutBuilder.Margin {
+    static var zero: StackingLayoutBuilder.Margin {
         .init(value: 0, priority: 999)
     }
 }
 
 public extension StackingLayoutBuilderConvertible {
-    func height(_ constraint: LayoutBuilderConstraint) -> StackingLayoutBuilder {
-        let builder = self.asStackingLayoutBuilder()
-        builder.height = constraint
-
-        return builder
-    }
-
     func beforeSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
         let builder = self.asStackingLayoutBuilder()
         builder.beforeSpace = .init(value: space, priority: priority)

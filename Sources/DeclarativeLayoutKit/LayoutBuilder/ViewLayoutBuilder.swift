@@ -14,8 +14,7 @@ public protocol ViewLayoutBuilderConvertible {
     func asViewLayoutBuilder() -> ViewLayoutBuilder
 }
 
-
-public final class ViewLayoutBuilder: ViewLayoutBuilderConvertible, ViewContainer {
+public final class ViewLayoutBuilder {
     public typealias DeferredConstraintMaker = (ConstraintMaker) -> Void
     public let view: UIView
     private var constraintMakers: [DeferredConstraintMaker]
@@ -36,14 +35,26 @@ public final class ViewLayoutBuilder: ViewLayoutBuilderConvertible, ViewContaine
         constraintMakers.append(build)
         return self
     }
+}
 
+extension ViewLayoutBuilder: ViewLayoutBuilderConvertible {
     public func asViewLayoutBuilder() -> ViewLayoutBuilder { self }
+}
 
+
+extension ViewLayoutBuilder: ViewContainer {
     public func addSubview(_ view: UIView) {
         view.addSubview(view)
     }
 }
 
+extension ViewLayoutBuilder: StackingLayoutBuilderConvertible {
+    public func asStackingLayoutBuilder() -> StackingLayoutBuilder {
+        let builder = StackingLayoutBuilder(view: view)
+        builder.didMoveToSuperview = { self.build() }
+        return builder
+    }
+}
 
 extension UIView: ViewLayoutBuilderConvertible {
     public func asViewLayoutBuilder() -> ViewLayoutBuilder {
@@ -151,7 +162,6 @@ extension ConstraintMakerExtendable {
         }
     }
 
-    
     func set(constraint: LayoutBuilderConstraint) {
         equalToFallbackingSuperview(
             constraint.item,

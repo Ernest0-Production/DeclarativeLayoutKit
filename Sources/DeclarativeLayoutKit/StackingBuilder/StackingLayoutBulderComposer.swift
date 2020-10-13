@@ -30,32 +30,17 @@ public func VStack(@StackingLayoutBulderComposer builder: () -> [StackingLayoutB
 
 private extension UIView {
     func add(axis: StackingLayoutBuilder.Axis = .vertical, _ builderConvertables: [StackingLayoutBuilderConvertible]) -> Self {
-        guard builderConvertables.count > 0 else {
-            return self
-        }
+        var previousBuilder: StackingLayoutBuilder?
 
-        let builders = builderConvertables.map({ $0.asStackingLayoutBuilder() })
-        builders.forEach({ self.addSubview($0.view) })
+        for (index, builderConvertable) in builderConvertables.enumerated() {
+            let builder = builderConvertable.asStackingLayoutBuilder()
+            self.addSubview(builder.view)
+            builder.didMoveToSuperview()
 
-        guard builders.count > 0 else {
-            return self
-        }
+            builder.view.snp.makeConstraints {
+                $0.side(builder: builder, axis: axis)
 
-        var currentIndex = 0
-        while builders.count - 1 < currentIndex {
-            let currentBuilder = builders[currentIndex]
-
-            currentBuilder.view.snp.makeConstraints {
-                $0.side(builder: currentBuilder, axis: axis)
-
-                switch axis {
-                case .vertical:
-                    currentBuilder.height.ifNotNil($0.height.set(constraint:))
-                case .horizontal:
-                    currentBuilder.height.ifNotNil($0.width.set(constraint:))
-                }
-
-                if currentIndex == 0 {
+                if index == 0 {
                     let startConstraint: ConstraintMakerEditable
                     switch axis {
                     case .vertical:
@@ -64,10 +49,10 @@ private extension UIView {
                         startConstraint = $0.left.equalToSuperview()
                     }
 
-                    startConstraint.inset(currentBuilder.beforeSpace.value).priority(currentBuilder.beforeSpace.priority)
+                    startConstraint.inset(builder.beforeSpace.value).priority(builder.beforeSpace.priority)
                 }
 
-                else if builders.count - 1 == currentIndex {
+                else if builderConvertables.count - 1 == index {
                     let endConstraint: ConstraintMakerEditable
                     switch axis {
                     case .vertical:
@@ -76,11 +61,10 @@ private extension UIView {
                         endConstraint = $0.right.equalToSuperview()
                     }
 
-                    endConstraint.inset(currentBuilder.afterSpace.value).priority(currentBuilder.afterSpace.priority)
+                    endConstraint.inset(builder.afterSpace.value).priority(builder.afterSpace.priority)
                 }
 
-                else {
-                    let previousBuilder = builders[currentIndex - 1]
+                else if let previousBuilder = previousBuilder {
                     let next: ConstraintMakerEditable
 
                     switch axis {
@@ -90,12 +74,12 @@ private extension UIView {
                         next = $0.left.equalTo(previousBuilder.view.snp.right)
                     }
 
-                    next.inset(-[previousBuilder.afterSpace.value, currentBuilder.beforeSpace.value].compactMap({ $0 }).reduce(0, +))
-                        .priority([previousBuilder.afterSpace.priority, currentBuilder.beforeSpace.priority].max()!)
+                    next.inset(-[previousBuilder.afterSpace.value, builder.beforeSpace.value].compactMap({ $0 }).reduce(0, +))
+                        .priority([previousBuilder.afterSpace.priority, builder.beforeSpace.priority].max()!)
                 }
-            }
 
-            currentIndex += 1
+                previousBuilder = builder
+            }
         }
 
         return self
@@ -121,3 +105,14 @@ private extension ConstraintMaker {
         }
     }
 }
+
+/*
+ HStack {
+UIView()
+ .height() -> ViewLayoutBuilder
+ .afterSpace() -> StackingLayoutBuilder: ViewLayoutBuilder.build()
+
+}
+
+
+ */

@@ -27,6 +27,7 @@ public protocol ViewContainer {
 extension UIView: ViewContainer {}
 
 public extension ViewContainer {
+    @discardableResult
     func subviews(@ViewLayoutBuilderComposer _ builders: @escaping () -> [ViewLayoutBuilderConvertible]) -> Self {
         for builder in builders().map({ $0.asViewLayoutBuilder() }) {
             addSubview(builder.view)
