@@ -10,29 +10,39 @@ import UIKit
 
 
 @_functionBuilder
-public struct ViewLayoutBuilderComposer {
-    public static func buildBlock(_ builder: ViewLayoutBuilderConvertible) -> [ViewLayoutBuilderConvertible]  {
+public struct ViewContainerBuilder {
+    public static func buildBlock(_ builder: ViewContainerSubview) -> [ViewContainerSubview]  {
         [builder]
     }
 
-    public static func buildBlock(_ builders: ViewLayoutBuilderConvertible...) -> [ViewLayoutBuilderConvertible]  {
+    public static func buildBlock(_ builders: ViewContainerSubview...) -> [ViewContainerSubview]  {
         builders
     }
 }
 
-public protocol ViewContainer {
-    func addSubview(_ view: UIView)
+public protocol ViewContainerSubview {
+    var view: UIView { get }
+
+    func didMoveToSuperView()
 }
 
-extension UIView: ViewContainer {}
+extension ViewContainerSubview where Self: UIView {
+    public var view: UIView { self }
 
-public extension ViewContainer {
+    public func didMoveToSuperView() {}
+}
+
+public protocol ViewContainer {
+    func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self
+}
+
+extension UIView: ViewContainer, ViewContainerSubview {
     @discardableResult
-    func subviews(@ViewLayoutBuilderComposer _ builders: @escaping () -> [ViewLayoutBuilderConvertible]) -> Self {
-        for builder in builders().map({ $0.asViewLayoutBuilder() }) {
-            addSubview(builder.view)
-            builder.build()
-        }
+    public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
+        subviews().forEach({
+            addSubview($0.view)
+            $0.didMoveToSuperView()
+        })
 
         return self
     }

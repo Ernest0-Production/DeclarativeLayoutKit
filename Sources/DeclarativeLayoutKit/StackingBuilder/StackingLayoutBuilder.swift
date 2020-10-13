@@ -13,7 +13,7 @@ public protocol StackingLayoutBuilderConvertible {
     func asStackingLayoutBuilder() -> StackingLayoutBuilder
 }
 
-public final class StackingLayoutBuilder: StackingLayoutBuilderConvertible, ViewContainer {
+public final class StackingLayoutBuilder {
     public enum Axis {
         case vertical, horizontal
     }
@@ -41,11 +41,16 @@ public final class StackingLayoutBuilder: StackingLayoutBuilderConvertible, View
         self.sideInset = sideInset
         self.centerAlign = centerAlign
     }
+}
 
+extension StackingLayoutBuilder: StackingLayoutBuilderConvertible {
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder { self }
+}
 
-    public func addSubview(_ view: UIView) {
-        view.addSubview(view)
+extension StackingLayoutBuilder: ViewContainer {
+    public func add(_ subviews: () -> [ViewContainerSubview]) -> Self {
+        view.add(subviews)
+        return self
     }
 }
 

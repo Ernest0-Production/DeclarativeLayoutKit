@@ -42,9 +42,14 @@ extension ViewLayoutBuilder: ViewLayoutBuilderConvertible {
 }
 
 
-extension ViewLayoutBuilder: ViewContainer {
-    public func addSubview(_ view: UIView) {
-        view.addSubview(view)
+extension ViewLayoutBuilder: ViewContainer, ViewContainerSubview {
+    public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
+        view.add(subviews)
+        return self
+    }
+
+    public func didMoveToSuperView() {
+        build()
     }
 }
 
