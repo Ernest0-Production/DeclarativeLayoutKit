@@ -13,7 +13,11 @@ Pod::Spec.new do |spec|
   spec.swift_versions = ['5.0', '5.1', '5.2', '5.3']
 
 
-  spec.source       = { :git => "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", :tag => "#{spec.version}" }
+  spec.source       = {
+    :git => "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git",
+    :branch => "master",
+    :tag => "#{spec.version}"
+   }
   spec.source_files  = "Sources/DeclarativeLayoutKit/**/*.swift"
 
   spec.dependency "SnapKit", "~> 5.0"
