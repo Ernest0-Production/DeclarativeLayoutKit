@@ -20,14 +20,16 @@ public struct ViewContainerBuilder {
     }
 }
 
+typealias View = ViewContainerSubview & ViewContainer
+
 public protocol ViewContainerSubview {
-    var view: UIView { get }
+    var ui: UIView { get }
 
     func didMoveToSuperView()
 }
 
 extension ViewContainerSubview where Self: UIView {
-    public var view: UIView { self }
+    public var ui: UIView { self }
 
     public func didMoveToSuperView() {}
 }
@@ -40,7 +42,7 @@ extension UIView: ViewContainer, ViewContainerSubview {
     @discardableResult
     public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
         subviews().forEach({
-            addSubview($0.view)
+            addSubview($0.ui)
             $0.didMoveToSuperView()
         })
 

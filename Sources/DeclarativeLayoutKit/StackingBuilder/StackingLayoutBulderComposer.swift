@@ -34,10 +34,9 @@ private extension UIView {
 
         for (index, builderConvertable) in builderConvertables.enumerated() {
             let builder = builderConvertable.asStackingLayoutBuilder()
-            self.addSubview(builder.view)
-            builder.didMoveToSuperview()
+            self.add({ builder.view })
 
-            builder.view.snp.makeConstraints {
+            builder.view.ui.snp.makeConstraints {
                 $0.side(builder: builder, axis: axis)
 
                 if index == 0 {
@@ -69,9 +68,9 @@ private extension UIView {
 
                     switch axis {
                     case .vertical:
-                        next = $0.top.equalTo(previousBuilder.view.snp.bottom)
+                        next = $0.top.equalTo(previousBuilder.view.ui.snp.bottom)
                     case .horizontal:
-                        next = $0.left.equalTo(previousBuilder.view.snp.right)
+                        next = $0.left.equalTo(previousBuilder.view.ui.snp.right)
                     }
 
                     next.inset(-[previousBuilder.afterSpace.value, builder.beforeSpace.value].compactMap({ $0 }).reduce(0, +))
@@ -105,14 +104,3 @@ private extension ConstraintMaker {
         }
     }
 }
-
-/*
- HStack {
-UIView()
- .height() -> ViewLayoutBuilder
- .afterSpace() -> StackingLayoutBuilder: ViewLayoutBuilder.build()
-
-}
-
-
- */

@@ -23,14 +23,13 @@ public final class StackingLayoutBuilder {
         let priority: UILayoutPriority
     }
 
-    let view: UIView
+    let view: View
     var beforeSpace: Margin
     var afterSpace: Margin
     var sideInset: Margin
     var centerAlign: Bool
-    var didMoveToSuperview: () -> () = {}
 
-    init(view: UIView,
+    init(view: View,
          beforeSpace: Margin = .zero,
          afterSpace: Margin = .zero,
          sideInset: Margin = .zero,
@@ -47,10 +46,16 @@ extension StackingLayoutBuilder: StackingLayoutBuilderConvertible {
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder { self }
 }
 
-extension StackingLayoutBuilder: ViewContainer {
+extension StackingLayoutBuilder: ViewContainer, ViewContainerSubview {
     public func add(_ subviews: () -> [ViewContainerSubview]) -> Self {
-        view.add(subviews)
+        _ = view.add(subviews)
         return self
+    }
+
+    public var ui: UIView { view.ui }
+
+    public func didMoveToSuperView() {
+        view.didMoveToSuperView()
     }
 }
 

@@ -16,16 +16,16 @@ public protocol ViewLayoutBuilderConvertible {
 
 public final class ViewLayoutBuilder {
     public typealias DeferredConstraintMaker = (ConstraintMaker) -> Void
-    public let view: UIView
+    public let ui: UIView
     private var constraintMakers: [DeferredConstraintMaker]
 
     fileprivate init(view: UIView, constraintMakers: [DeferredConstraintMaker] = []) {
-        self.view = view
+        self.ui = view
         self.constraintMakers = constraintMakers
     }
 
     public func build() {
-        view.snp.makeConstraints { maker in
+        ui.snp.makeConstraints { maker in
             constraintMakers.forEach({ $0(maker) })
         }
     }
@@ -44,7 +44,7 @@ extension ViewLayoutBuilder: ViewLayoutBuilderConvertible {
 
 extension ViewLayoutBuilder: ViewContainer, ViewContainerSubview {
     public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
-        view.add(subviews)
+        ui.add(subviews)
         return self
     }
 
@@ -55,9 +55,7 @@ extension ViewLayoutBuilder: ViewContainer, ViewContainerSubview {
 
 extension ViewLayoutBuilder: StackingLayoutBuilderConvertible {
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder {
-        let builder = StackingLayoutBuilder(view: view)
-        builder.didMoveToSuperview = { self.build() }
-        return builder
+        StackingLayoutBuilder(view: self)
     }
 }
 
@@ -91,7 +89,7 @@ public extension ViewLayoutBuilderConvertible {
         let builder = self.asViewLayoutBuilder()
 
         return builder.layout({ [unowned builder] in
-            $0.height.equalTo(builder.view.snp.width).multipliedBy(1 / multiplier)
+            $0.height.equalTo(builder.ui.snp.width).multipliedBy(1 / multiplier)
         })
     }
 
