@@ -11,11 +11,11 @@ import SnapKit
 
 @_functionBuilder
 public struct StackingLayoutBulderComposer {
-    static func buildBlock( _ builders: StackingLayoutBuilderConvertible...) -> [StackingLayoutBuilderConvertible] {
+    public static func buildBlock( _ builders: StackingLayoutBuilderConvertible...) -> [StackingLayoutBuilderConvertible] {
         builders
     }
 
-    static func buildBlock( _ builder: StackingLayoutBuilderConvertible) -> [StackingLayoutBuilderConvertible] {
+    public static func buildBlock( _ builder: StackingLayoutBuilderConvertible) -> [StackingLayoutBuilderConvertible] {
         [builder]
     }
 }

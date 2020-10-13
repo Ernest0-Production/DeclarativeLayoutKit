@@ -9,11 +9,11 @@ import Foundation
 
 @_functionBuilder
 public struct ViewLayoutBuilderComposer {
-    static func buildBlock(_ builder: ViewLayoutBuilderConvertible) -> [ViewLayoutBuilderConvertible]  {
+    public static func buildBlock(_ builder: ViewLayoutBuilderConvertible) -> [ViewLayoutBuilderConvertible]  {
         [builder]
     }
 
-    static func buildBlock(_ builders: ViewLayoutBuilderConvertible...) -> [ViewLayoutBuilderConvertible]  {
+    public static func buildBlock(_ builders: ViewLayoutBuilderConvertible...) -> [ViewLayoutBuilderConvertible]  {
         builders
     }
 }
