@@ -20,14 +20,16 @@ public struct ViewLayoutBuilderComposer {
     }
 }
 
-public protocol ViewConvertible {
-    func asUIView() -> UIView
+public protocol ViewContainer {
+    func addSubview(_ view: UIView)
 }
 
-public extension ViewConvertible {
+extension UIView: ViewContainer {}
+
+public extension ViewContainer {
     func subviews(@ViewLayoutBuilderComposer _ builders: @escaping () -> [ViewLayoutBuilderConvertible]) -> Self {
         for builder in builders().map({ $0.asViewLayoutBuilder() }) {
-            asUIView().addSubview(builder.view)
+            addSubview(builder.view)
             builder.build()
         }
 

@@ -9,19 +9,11 @@ import UIKit
 import SnapKit
 
 
-public protocol StackingLayoutBuilderConvertible: ViewConvertible {
+public protocol StackingLayoutBuilderConvertible {
     func asStackingLayoutBuilder() -> StackingLayoutBuilder
 }
 
-
-extension StackingLayoutBuilderConvertible {
-    public func asUIView() -> UIView {
-        asStackingLayoutBuilder().view
-    }
-}
-
-
-public final class StackingLayoutBuilder: StackingLayoutBuilderConvertible {
+public final class StackingLayoutBuilder: StackingLayoutBuilderConvertible, ViewContainer {
     public enum Axis {
         case vertical, horizontal
     }
@@ -53,6 +45,10 @@ public final class StackingLayoutBuilder: StackingLayoutBuilderConvertible {
     }
 
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder { self }
+
+    public func addSubview(_ view: UIView) {
+        view.addSubview(view)
+    }
 }
 
 extension UIView: StackingLayoutBuilderConvertible {
@@ -68,7 +64,6 @@ extension StackingLayoutBuilder.Attribute {
 }
 
 public extension StackingLayoutBuilderConvertible {
-    @discardableResult
     func height(_ constraint: LayoutBuilderConstraint) -> StackingLayoutBuilder {
         let builder = self.asStackingLayoutBuilder()
         builder.height = constraint
@@ -76,7 +71,6 @@ public extension StackingLayoutBuilderConvertible {
         return builder
     }
 
-    @discardableResult
     func beforeSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
         let builder = self.asStackingLayoutBuilder()
         builder.beforeSpace = .init(value: space, priority: priority)
@@ -84,7 +78,6 @@ public extension StackingLayoutBuilderConvertible {
         return builder
     }
 
-    @discardableResult
     func afterSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
         let builder = self.asStackingLayoutBuilder()
         builder.afterSpace = .init(value: space, priority: priority)
@@ -92,7 +85,6 @@ public extension StackingLayoutBuilderConvertible {
         return builder
     }
 
-    @discardableResult
     func sideInset(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
         let builder = self.asStackingLayoutBuilder()
         builder.sideInset = .init(value: space, priority: priority)
@@ -100,7 +92,6 @@ public extension StackingLayoutBuilderConvertible {
         return builder
     }
 
-    @discardableResult
     func centerAlign() -> StackingLayoutBuilder {
         let builder = self.asStackingLayoutBuilder()
         builder.centerAlign = true
