@@ -11,7 +11,7 @@ import SnapKit
 
 public func HStack(@ArrayBuilder<HorizontalStackingLayoutBuilderConvertible> builderConvertibles: () -> [HorizontalStackingLayoutBuilderConvertible]) -> UIView {
     UIView().stack(builders: builderConvertibles().map({ $0.asStackingLayoutBuilder() }),
-                   centerAxis: \.centerX,
+                   acrossAxis: \.centerY,
                    firstSide: \.top,
                    secondSide: \.bottom,
                    afterAnchor: \.right,
@@ -20,24 +20,17 @@ public func HStack(@ArrayBuilder<HorizontalStackingLayoutBuilderConvertible> bui
 
 public func VStack(@ArrayBuilder<VerticalStackingLayoutBuilderConvertible> builderConvertibles: () -> [VerticalStackingLayoutBuilderConvertible]) -> UIView {
     UIView().stack(builders: builderConvertibles().map({ $0.asStackingLayoutBuilder() }),
-                   centerAxis: \.centerY,
+                   acrossAxis: \.centerX,
                    firstSide: \.left,
                    secondSide: \.right,
                    afterAnchor: \.bottom,
                    beforeAnchor: \.top)
 }
 
-private extension StackingLayoutBuilder.Alignment {
-    var isEmpty: Bool {
-        [first, second].allSatisfy({ $0 == nil })
-    }
-}
 
 private extension UIView {
-    typealias AnchorKeyPath = KeyPath<ConstraintMaker, ConstraintMakerExtendable>
-
     func stack<Axis>(builders: [StackingLayoutBuilder<Axis>],
-                     centerAxis: AnchorKeyPath,
+                     acrossAxis: AnchorKeyPath,
                      firstSide: AnchorKeyPath,
                      secondSide: AnchorKeyPath,
                      afterAnchor: AnchorKeyPath,
@@ -49,16 +42,14 @@ private extension UIView {
             self.add({ builder.view })
 
             builder.view.ui.snp.makeConstraints {
-                guard builder.alignment.isEmpty else {
-                    $0[keyPath: centerAxis].equalToSuperview().priority(999)
-                    return
-                }
-
                 if let first = builder.alignment.first {
                     builder.view.ui.asAnchorLayoutBuilder().makeAnchor(firstSide, constraint: first).build()
                 }
                 if let second = builder.alignment.second {
                     builder.view.ui.asAnchorLayoutBuilder().makeAnchor(secondSide, constraint: second).build()
+                }
+                if [builder.alignment.first, builder.alignment.second].allSatisfy({ $0 == nil }) {
+                    $0[keyPath: acrossAxis].equalToSuperview().priority(999)
                 }
 
                 let next: ConstraintMakerEditable

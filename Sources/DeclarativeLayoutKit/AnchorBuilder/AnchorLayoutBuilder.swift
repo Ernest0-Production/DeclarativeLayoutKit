@@ -142,8 +142,10 @@ public extension AnchorLayoutBuilderConvertible {
 
 // MARK: Helpers
 
+typealias AnchorKeyPath = KeyPath<ConstraintMaker, ConstraintMakerExtendable>
+
 extension AnchorLayoutBuilderConvertible {
-    func makeAnchor(_ keyPath: KeyPath<ConstraintMaker, ConstraintMakerExtendable>,
+    func makeAnchor(_ keyPath: AnchorKeyPath,
                     constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         layout { $0[keyPath: keyPath].set(constraint: constraint) }
     }
