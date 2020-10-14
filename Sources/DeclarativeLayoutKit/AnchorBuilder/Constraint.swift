@@ -26,3 +26,15 @@ struct AnyLayoutBuilderConstraint: AnchorLayoutBuilderConstraint {
     let item: ConstraintRelatableTarget?
     let priority: ConstraintPriorityTarget
 }
+
+extension ConstraintItem: AnchorLayoutBuilderConstraint {
+    public var inset: AnchorLayoutBuilderConstraintInset { 0 }
+    public var item: ConstraintRelatableTarget? { self }
+    public var priority: ConstraintPriorityTarget { 999 }
+}
+
+extension ConstraintView: AnchorLayoutBuilderConstraint {
+    public var inset: AnchorLayoutBuilderConstraintInset { 0 }
+    public var item: ConstraintRelatableTarget? { self }
+    public var priority: ConstraintPriorityTarget { 999 }
+}

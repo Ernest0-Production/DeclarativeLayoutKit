@@ -50,9 +50,7 @@ extension AnchorLayoutBuilder: ViewContainer, ViewContainerSubview {
 
     public var ui: UIView { view }
 
-    public func didMoveToSuperView() {
-        build()
-    }
+    public func didMoveToSuperView() { build() }
 }
 
 extension AnchorLayoutBuilder: StackingLayoutBuilderConvertible {
