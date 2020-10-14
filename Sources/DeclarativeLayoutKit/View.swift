@@ -21,16 +21,7 @@ public protocol ViewContainerSubview {
     func didMoveToSuperView()
 }
 
-@_functionBuilder
-public struct ViewContainerBuilder {
-    public static func buildBlock(_ builder: ViewContainerSubview) -> [ViewContainerSubview]  {
-        [builder]
-    }
-
-    public static func buildBlock(_ builders: ViewContainerSubview...) -> [ViewContainerSubview]  {
-        builders
-    }
-}
+typealias ViewContainerBuilder = ArrayBuilder<ViewContainerSubview>
 
 extension UIView: ViewContainer, ViewContainerSubview {
     public convenience init(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) {

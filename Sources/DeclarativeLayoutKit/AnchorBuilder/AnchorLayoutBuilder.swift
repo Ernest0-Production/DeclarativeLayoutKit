@@ -41,7 +41,6 @@ extension AnchorLayoutBuilder: AnchorLayoutBuilderConvertible {
     public func asAnchorLayoutBuilder() -> AnchorLayoutBuilder { self }
 }
 
-
 extension AnchorLayoutBuilder: ViewContainer, ViewContainerSubview {
     public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
         view.add(subviews)
@@ -54,7 +53,11 @@ extension AnchorLayoutBuilder: ViewContainer, ViewContainerSubview {
 }
 
 extension AnchorLayoutBuilder: StackingLayoutBuilderConvertible {
-    public func asStackingLayoutBuilder() -> StackingLayoutBuilder {
+    public func asStackingLayoutBuilder() -> StackingLayoutBuilder<VerticalStackAxis> {
+        StackingLayoutBuilder(view: self)
+    }
+
+    public func asStackingLayoutBuilder() -> StackingLayoutBuilder<HorizontalStackAxis> {
         StackingLayoutBuilder(view: self)
     }
 }
@@ -71,16 +74,15 @@ public extension AnchorLayoutBuilderConvertible {
     }
 
     // MARK: Size constraints
-
     func width(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
-        makeAnchor(\.width, constraint: constraint)
+        makeSizeAnchor(\.width, constraint: constraint)
     }
 
     func height(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
-        makeAnchor(\.height, constraint: constraint)
+        makeSizeAnchor(\.height, constraint: constraint)
     }
 
-    func size(_ size: CGSize, priority: UILayoutPriority = .init(999)) -> AnchorLayoutBuilder {
+    func size(_ size: CGSize, priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
         height(size.height).width(size.width)
     }
 
@@ -136,18 +138,37 @@ public extension AnchorLayoutBuilderConvertible {
     func verticalAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         topAnchor(constraint).bottomAnchor(constraint)
     }
+}
 
-    // MARK: Helpers 
+// MARK: Helpers
 
-    private func makeAnchor(_ keyPath: KeyPath<ConstraintMaker, ConstraintMakerExtendable>,
-                            constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
+extension AnchorLayoutBuilderConvertible {
+    func makeAnchor(_ keyPath: KeyPath<ConstraintMaker, ConstraintMakerExtendable>,
+                    constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         layout { $0[keyPath: keyPath].set(constraint: constraint) }
+    }
+
+    func makeSizeAnchor(_ keyPath: KeyPath<ConstraintMaker, ConstraintMakerExtendable>,
+                        constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
+        if constraint.target is SuperviewConstraintTarget, let inset = constraint.inset {
+            var mutable = MutableAnchorLayoutBuilderConstraint(constraint)
+            mutable.target = inset
+            mutable.inset = nil
+            return makeAnchor(keyPath, constraint: mutable)
+        }
+
+        return makeAnchor(keyPath, constraint: constraint)
     }
 }
 
 private extension ConstraintMakerExtendable {
     func equalToFallbackingSuperview(_ anotherAnchor: ConstraintRelatableTarget? = nil, option: ConstraintComparisonType = .equal) -> ConstraintMakerEditable {
-        switch (anotherAnchor, option) {
+        var anchor = anotherAnchor
+        if anotherAnchor is SuperviewConstraintTarget {
+            anchor = nil
+        }
+
+        switch (anchor, option) {
         case (nil, .equal):
             return self.equalToSuperview()
         case (nil, .less):
@@ -166,10 +187,12 @@ private extension ConstraintMakerExtendable {
     }
 
     func set(constraint: AnchorLayoutBuilderConstraint) {
-        equalToFallbackingSuperview(
-            constraint.item,
-            option: constraint.inset.comparisonType)
-            .inset(constraint.inset.value)
-            .priority(constraint.priority)
+        let snapKitConstraint = equalToFallbackingSuperview(constraint.target, option: constraint.comparisonType)
+
+        if let inset = constraint.inset {
+            snapKitConstraint.inset(inset.value)
+        }
+
+        snapKitConstraint.priority(constraint.priority)
     }
 }

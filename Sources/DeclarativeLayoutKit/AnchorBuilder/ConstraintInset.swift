@@ -1,30 +1,52 @@
 //
-//  AnchorLayoutBuilderConstraintInset.swift
+//  ConstraintInset.swift
 //  
 //
 //  Created by Бабаян Эрнест on 12.10.2020.
 //
 
 import SnapKit
+import UIKit
 
 
-public enum ConstraintComparisonType {
-    case less
-    case equal
-    case greater
+struct SuperviewConstraintTarget: ConstraintRelatableTarget {}
+
+public protocol AnchorLayoutBuilderConstraintInset: AnchorLayoutBuilderConstraint, ConstraintRelatableTarget {
+    var value: CGFloat { get }
 }
 
-public protocol AnchorLayoutBuilderConstraintInset: AnchorLayoutBuilderConstraint {
-    var value: ConstraintInsetTarget { get }
-    var comparisonType: ConstraintComparisonType { get }
+extension Int: AnchorLayoutBuilderConstraintInset {
+    public var value: CGFloat { CGFloat(self) }
+}
+extension Float: AnchorLayoutBuilderConstraintInset {
+    public var value: CGFloat { CGFloat(self) }
+}
+extension Double: AnchorLayoutBuilderConstraintInset {
+    public var value: CGFloat { CGFloat(self) }
+}
+extension CGFloat: AnchorLayoutBuilderConstraintInset {
+    public var value: CGFloat { CGFloat(self) }
 }
 
-public extension AnchorLayoutBuilderConstraintInset {
-    var inset: AnchorLayoutBuilderConstraintInset { self }
-    var item: ConstraintRelatableTarget? { nil }
-    var priority: ConstraintPriorityTarget { 999 }
+extension AnchorLayoutBuilderConstraintInset {
+    public var target: ConstraintRelatableTarget { SuperviewConstraintTarget() }
+    public var inset: AnchorLayoutBuilderConstraintInset? { self }
 
-    func from(_ item: ConstraintRelatableTarget) -> AnchorLayoutBuilderConstraint {
-        AnyLayoutBuilderConstraint(inset: self, item: item, priority: priority)
+    public var orLess: AnchorLayoutBuilderConstraint {
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.comparisonType = .less
+        return mutable
+    }
+
+    public var orGreater: AnchorLayoutBuilderConstraint {
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.comparisonType = .greater
+        return mutable
+    }
+
+    public func from(_ target: ConstraintRelatableTarget) -> AnchorLayoutBuilderConstraint {
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.target = target
+        return mutable
     }
 }

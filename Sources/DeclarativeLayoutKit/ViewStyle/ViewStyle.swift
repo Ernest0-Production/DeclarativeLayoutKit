@@ -17,13 +17,11 @@ public final class ViewStyle<Target: ViewStyleCompatible> {
     }
 }
 
-
 public extension ViewStyle {
     func adding(_ second: ViewStyle<Target>) -> ViewStyle<Target> {
         [self, second].merge()
     }
 }
-
 
 public extension Sequence {
     func merge<Target: ViewStyleCompatible>() -> ViewStyle<Target> where Element == ViewStyle<Target>{

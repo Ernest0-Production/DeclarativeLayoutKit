@@ -9,15 +9,11 @@ import UIKit
 import SnapKit
 
 
-public protocol StackingLayoutBuilderConvertible {
-    func asStackingLayoutBuilder() -> StackingLayoutBuilder
-}
+public protocol StackAxis {}
+public enum VerticalStackAxis: StackAxis {}
+public enum HorizontalStackAxis: StackAxis {}
 
-public final class StackingLayoutBuilder {
-    public enum Axis {
-        case vertical, horizontal
-    }
-
+public final class StackingLayoutBuilder<Axis: StackAxis> {
     struct Margin {
         let value: CGFloat
         let priority: UILayoutPriority
@@ -26,24 +22,25 @@ public final class StackingLayoutBuilder {
     let view: View
     var beforeSpace: Margin
     var afterSpace: Margin
-    var sideInset: Margin
-    var centerAlign: Bool
+    var alignment: Alignment
 
     init(view: View,
          beforeSpace: Margin = .zero,
          afterSpace: Margin = .zero,
-         sideInset: Margin = .zero,
-         centerAlign: Bool = false) {
+         alignment: Alignment = .fill()) {
         self.view = view
         self.beforeSpace = beforeSpace
         self.afterSpace = afterSpace
-        self.sideInset = sideInset
-        self.centerAlign = centerAlign
+        self.alignment = alignment
     }
 }
 
-extension StackingLayoutBuilder: StackingLayoutBuilderConvertible {
-    public func asStackingLayoutBuilder() -> StackingLayoutBuilder { self }
+extension StackingLayoutBuilder: VerticalStackingLayoutBuilderConvertible where Axis == VerticalStackAxis {
+    public func asStackingLayoutBuilder() -> StackingLayoutBuilder<VerticalStackAxis> { self }
+}
+
+extension StackingLayoutBuilder: HorizontalStackingLayoutBuilderConvertible where Axis == HorizontalStackAxis {
+    public func asStackingLayoutBuilder() -> StackingLayoutBuilder<HorizontalStackAxis> { self }
 }
 
 extension StackingLayoutBuilder: ViewContainer, ViewContainerSubview {
@@ -59,44 +56,8 @@ extension StackingLayoutBuilder: ViewContainer, ViewContainerSubview {
     }
 }
 
-extension UIView: StackingLayoutBuilderConvertible {
-    public func asStackingLayoutBuilder() -> StackingLayoutBuilder {
-        StackingLayoutBuilder(view: self)
-    }
-}
-
 extension StackingLayoutBuilder.Margin {
     static var zero: StackingLayoutBuilder.Margin {
         .init(value: 0, priority: 999)
-    }
-}
-
-public extension StackingLayoutBuilderConvertible {
-    func beforeSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
-        let builder = self.asStackingLayoutBuilder()
-        builder.beforeSpace = .init(value: space, priority: priority)
-
-        return builder
-    }
-
-    func afterSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
-        let builder = self.asStackingLayoutBuilder()
-        builder.afterSpace = .init(value: space, priority: priority)
-
-        return builder
-    }
-
-    func sideInset(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder {
-        let builder = self.asStackingLayoutBuilder()
-        builder.sideInset = .init(value: space, priority: priority)
-
-        return builder
-    }
-
-    func centerAlign() -> StackingLayoutBuilder {
-        let builder = self.asStackingLayoutBuilder()
-        builder.centerAlign = true
-
-        return builder
     }
 }

@@ -9,32 +9,39 @@ import SnapKit
 import UIKit
 
 
+public enum ConstraintComparisonType {
+    case less
+    case equal
+    case greater
+}
+
 public protocol AnchorLayoutBuilderConstraint {
-    var inset: AnchorLayoutBuilderConstraintInset { get }
-    var item: ConstraintRelatableTarget? { get }
+    var target: ConstraintRelatableTarget { get }
+    var inset: AnchorLayoutBuilderConstraintInset? { get }
+    var comparisonType: ConstraintComparisonType { get }
     var priority: ConstraintPriorityTarget { get }
 }
 
 public extension AnchorLayoutBuilderConstraint {
+    var comparisonType: ConstraintComparisonType { .equal }
+    var priority: ConstraintPriorityTarget { 999 }
+
     func priority(_ priority: UILayoutPriority) -> AnchorLayoutBuilderConstraint {
-        AnyLayoutBuilderConstraint(inset: inset, item: item, priority: priority)
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.priority = priority
+        return mutable
     }
 }
 
-struct AnyLayoutBuilderConstraint: AnchorLayoutBuilderConstraint {
-    let inset: AnchorLayoutBuilderConstraintInset
-    let item: ConstraintRelatableTarget?
-    let priority: ConstraintPriorityTarget
+struct MutableAnchorLayoutBuilderConstraint: AnchorLayoutBuilderConstraint {
+    var target: ConstraintRelatableTarget
+    var inset: AnchorLayoutBuilderConstraintInset?
+    var comparisonType: ConstraintComparisonType
+    var priority: ConstraintPriorityTarget
 }
 
-extension ConstraintItem: AnchorLayoutBuilderConstraint {
-    public var inset: AnchorLayoutBuilderConstraintInset { 0 }
-    public var item: ConstraintRelatableTarget? { self }
-    public var priority: ConstraintPriorityTarget { 999 }
-}
-
-extension ConstraintView: AnchorLayoutBuilderConstraint {
-    public var inset: AnchorLayoutBuilderConstraintInset { 0 }
-    public var item: ConstraintRelatableTarget? { self }
-    public var priority: ConstraintPriorityTarget { 999 }
+extension MutableAnchorLayoutBuilderConstraint {
+    init(_ constraint: AnchorLayoutBuilderConstraint) {
+        self.init(target: constraint.target, inset: constraint.inset, comparisonType: constraint.comparisonType, priority: constraint.priority)
+    }
 }
