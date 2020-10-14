@@ -29,13 +29,13 @@ extension UIView: StackingLayoutBuilderConvertible {
 }
 
 public extension VerticalStackingLayoutBuilderConvertible {
-    func beforeSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<VerticalStackAxis> {
+    func topSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<VerticalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.beforeSpace = .init(value: space, priority: priority)
         return builder
     }
 
-    func afterSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<VerticalStackAxis> {
+    func bottomSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<VerticalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.afterSpace = .init(value: space, priority: priority)
         return builder
@@ -49,13 +49,13 @@ public extension VerticalStackingLayoutBuilderConvertible {
 }
 
 public extension HorizontalStackingLayoutBuilderConvertible {
-    func beforeSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
+    func rightSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.beforeSpace = .init(value: space, priority: priority)
         return builder
     }
 
-    func afterSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
+    func leftSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.afterSpace = .init(value: space, priority: priority)
         return builder

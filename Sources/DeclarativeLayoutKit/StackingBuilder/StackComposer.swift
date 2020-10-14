@@ -27,7 +27,6 @@ public func VStack(@ArrayBuilder<VerticalStackingLayoutBuilderConvertible> build
                    beforeAnchor: \.top)
 }
 
-
 private extension UIView {
     func stack<Axis>(builders: [StackingLayoutBuilder<Axis>],
                      acrossAxis: AnchorKeyPath,
@@ -35,7 +34,6 @@ private extension UIView {
                      secondSide: AnchorKeyPath,
                      afterAnchor: AnchorKeyPath,
                      beforeAnchor: AnchorKeyPath) -> UIView {
-
         var previousBuilder: StackingLayoutBuilder<Axis>?
 
         for (index, builder) in builders.enumerated() {
