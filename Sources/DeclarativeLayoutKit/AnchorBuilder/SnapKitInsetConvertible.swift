@@ -9,7 +9,7 @@ import SnapKit
 import  UIKit
 
 
-public protocol SnapKitInsetConvertible: LayoutBuilderConstraintInset {
+public protocol SnapKitInsetConvertible: AnchorLayoutBuilderConstraintInset {
     func asConstraintInsertTarget() -> ConstraintInsetTarget
 }
 
@@ -26,16 +26,16 @@ extension SnapKitInsetConvertible {
     public var value: ConstraintInsetTarget { asConstraintInsertTarget() }
     public var comparisonType: ConstraintComparisonType { .equal }
 
-    public var orLess: LayoutBuilderConstraintInset {
+    public var orLess: AnchorLayoutBuilderConstraintInset {
         AnyLayoutBuilderConstraintInset(value: value, comparisonType: .less)
     }
 
-    public var orGreater: LayoutBuilderConstraintInset {
+    public var orGreater: AnchorLayoutBuilderConstraintInset {
         AnyLayoutBuilderConstraintInset(value: value, comparisonType: .greater)
     }
 }
 
-struct AnyLayoutBuilderConstraintInset: LayoutBuilderConstraintInset {
+struct AnyLayoutBuilderConstraintInset: AnchorLayoutBuilderConstraintInset {
     let value: ConstraintInsetTarget
     let comparisonType: ConstraintComparisonType
 }

@@ -1,5 +1,5 @@
 //
-//  ViewLayoutBuilder.swift
+//  AnchorLayoutBuilder.swift
 //  
 //
 //  Created by Бабаян Эрнест on 26.09.2020.
@@ -10,22 +10,22 @@ import UIKit
 import SnapKit
 
 
-public protocol ViewLayoutBuilderConvertible {
-    func asViewLayoutBuilder() -> ViewLayoutBuilder
+public protocol AnchorLayoutBuilderConvertible {
+    func asAnchorLayoutBuilder() -> AnchorLayoutBuilder
 }
 
-public final class ViewLayoutBuilder {
+public final class AnchorLayoutBuilder {
     public typealias DeferredConstraintMaker = (ConstraintMaker) -> Void
-    public let ui: UIView
+    public let view: UIView
     private var constraintMakers: [DeferredConstraintMaker]
 
     fileprivate init(view: UIView, constraintMakers: [DeferredConstraintMaker] = []) {
-        self.ui = view
+        self.view = view
         self.constraintMakers = constraintMakers
     }
 
     public func build() {
-        ui.snp.makeConstraints { maker in
+        view.snp.makeConstraints { maker in
             constraintMakers.forEach({ $0(maker) })
         }
     }
@@ -37,59 +37,61 @@ public final class ViewLayoutBuilder {
     }
 }
 
-extension ViewLayoutBuilder: ViewLayoutBuilderConvertible {
-    public func asViewLayoutBuilder() -> ViewLayoutBuilder { self }
+extension AnchorLayoutBuilder: AnchorLayoutBuilderConvertible {
+    public func asAnchorLayoutBuilder() -> AnchorLayoutBuilder { self }
 }
 
 
-extension ViewLayoutBuilder: ViewContainer, ViewContainerSubview {
+extension AnchorLayoutBuilder: ViewContainer, ViewContainerSubview {
     public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
-        ui.add(subviews)
+        view.add(subviews)
         return self
     }
+
+    public var ui: UIView { view }
 
     public func didMoveToSuperView() {
         build()
     }
 }
 
-extension ViewLayoutBuilder: StackingLayoutBuilderConvertible {
+extension AnchorLayoutBuilder: StackingLayoutBuilderConvertible {
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder {
         StackingLayoutBuilder(view: self)
     }
 }
 
-extension UIView: ViewLayoutBuilderConvertible {
-    public func asViewLayoutBuilder() -> ViewLayoutBuilder {
-        ViewLayoutBuilder(view: self)
+extension UIView: AnchorLayoutBuilderConvertible {
+    public func asAnchorLayoutBuilder() -> AnchorLayoutBuilder {
+        AnchorLayoutBuilder(view: self)
     }
 }
 
-public extension ViewLayoutBuilderConvertible {
-    func layout(_ build: @escaping ViewLayoutBuilder.DeferredConstraintMaker) -> ViewLayoutBuilder {
-        self.asViewLayoutBuilder().addConstraint(build)
+public extension AnchorLayoutBuilderConvertible {
+    func layout(_ build: @escaping AnchorLayoutBuilder.DeferredConstraintMaker) -> AnchorLayoutBuilder {
+        self.asAnchorLayoutBuilder().addConstraint(build)
     }
 
     // MARK: Size constraints
 
-    func width(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func width(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.width, constraint: constraint)
     }
 
-    func height(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func height(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.height, constraint: constraint)
     }
 
-    func size(_ size: CGSize, priority: UILayoutPriority = .init(999)) -> ViewLayoutBuilder {
+    func size(_ size: CGSize, priority: UILayoutPriority = .init(999)) -> AnchorLayoutBuilder {
         height(size.height).width(size.width)
     }
 
     /// height / width
-    func aspectRatio(_ multiplier: Float) -> ViewLayoutBuilder {
-        let builder = self.asViewLayoutBuilder()
+    func aspectRatio(_ multiplier: Float) -> AnchorLayoutBuilder {
+        let builder = self.asAnchorLayoutBuilder()
 
         return builder.layout({ [unowned builder] in
-            $0.height.equalTo(builder.ui.snp.width).multipliedBy(1 / multiplier)
+            $0.height.equalTo(builder.view.snp.width).multipliedBy(1 / multiplier)
         })
     }
 
@@ -97,64 +99,64 @@ public extension ViewLayoutBuilderConvertible {
 
     func stretch(_ insets: UIEdgeInsets = .zero,
                  to item: ConstraintRelatableTarget? = nil,
-                 priority: UILayoutPriority = 999) -> ViewLayoutBuilder {
+                 priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
         self.layout { $0.edges.equalToFallbackingSuperview(item).inset(insets).priority(priority) }
     }
 
-    func centerXAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func centerXAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.centerX, constraint: constraint)
     }
 
-    func centerYAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func centerYAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.centerY, constraint: constraint)
     }
 
-    func centerAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func centerAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.center, constraint: constraint)
     }
 
-    func topAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func topAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.top, constraint: constraint)
     }
 
-    func bottomAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func bottomAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.bottom, constraint: constraint)
     }
 
-    func leftAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func leftAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.left, constraint: constraint)
     }
 
-    func rightAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func rightAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.right, constraint: constraint)
     }
 
-    func horizontalAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func horizontalAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         leftAnchor(constraint).rightAnchor(constraint)
     }
 
-    func verticalAnchor(_ constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+    func verticalAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         topAnchor(constraint).bottomAnchor(constraint)
     }
 
     // MARK: Helpers 
 
     private func makeAnchor(_ keyPath: KeyPath<ConstraintMaker, ConstraintMakerExtendable>,
-                            constraint: LayoutBuilderConstraint) -> ViewLayoutBuilder {
+                            constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         layout { $0[keyPath: keyPath].set(constraint: constraint) }
     }
 }
 
-extension ConstraintMakerExtendable {
-    func equalToFallbackingSuperview(_ anotherAnchor: ConstraintRelatableTarget? = nil, option: ConstraintComparisonType? = nil) -> ConstraintMakerEditable {
+private extension ConstraintMakerExtendable {
+    func equalToFallbackingSuperview(_ anotherAnchor: ConstraintRelatableTarget? = nil, option: ConstraintComparisonType = .equal) -> ConstraintMakerEditable {
         switch (anotherAnchor, option) {
-        case (nil, nil):
+        case (nil, .equal):
             return self.equalToSuperview()
         case (nil, .less):
             return self.lessThanOrEqualToSuperview()
         case (nil, .greater):
             return self.greaterThanOrEqualToSuperview()
-        case (let another, nil) where another != nil:
+        case (let another, .equal) where another != nil:
             return self.equalTo(another!)
         case (let another, .less) where another != nil:
             return self.lessThanOrEqualTo(another!)
@@ -165,7 +167,7 @@ extension ConstraintMakerExtendable {
         }
     }
 
-    func set(constraint: LayoutBuilderConstraint) {
+    func set(constraint: AnchorLayoutBuilderConstraint) {
         equalToFallbackingSuperview(
             constraint.item,
             option: constraint.inset.comparisonType)

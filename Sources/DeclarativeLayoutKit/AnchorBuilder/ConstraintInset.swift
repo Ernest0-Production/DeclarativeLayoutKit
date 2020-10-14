@@ -1,5 +1,5 @@
 //
-//  LayoutBuilderConstraintInset.swift
+//  AnchorLayoutBuilderConstraintInset.swift
 //  
 //
 //  Created by Бабаян Эрнест on 12.10.2020.
@@ -14,17 +14,17 @@ public enum ConstraintComparisonType {
     case greater
 }
 
-public protocol LayoutBuilderConstraintInset: LayoutBuilderConstraint {
+public protocol AnchorLayoutBuilderConstraintInset: AnchorLayoutBuilderConstraint {
     var value: ConstraintInsetTarget { get }
     var comparisonType: ConstraintComparisonType { get }
 }
 
-public extension LayoutBuilderConstraintInset {
-    var inset: LayoutBuilderConstraintInset { self }
+public extension AnchorLayoutBuilderConstraintInset {
+    var inset: AnchorLayoutBuilderConstraintInset { self }
     var item: ConstraintRelatableTarget? { nil }
     var priority: ConstraintPriorityTarget { 999 }
 
-    func from(_ item: ConstraintRelatableTarget) -> LayoutBuilderConstraint {
+    func from(_ item: ConstraintRelatableTarget) -> AnchorLayoutBuilderConstraint {
         AnyLayoutBuilderConstraint(inset: self, item: item, priority: priority)
     }
 }
