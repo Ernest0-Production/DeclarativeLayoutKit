@@ -81,6 +81,7 @@ let myLabel = UILabel()
     .borderWidth(1)
     .borderColor(.cyan)
 ```
+> You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type)
 
 #### 😋 And some extra syntactic sugar:
 Assignable to variable:
@@ -119,7 +120,6 @@ UIView()
 
 Currently, property chaining is supported in the following types:
 `UIView`, `UIControl`, `UILabel`, `UIImageView`, `UIScrollView`, `UITextView`, `UITableView`, `UICollectionView`, `UITextField`, `UIButton`, `UISlider`, `UISwitch`, `UIStackView`.
-> You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type)
 
 
 ## Declarative anchor builder
