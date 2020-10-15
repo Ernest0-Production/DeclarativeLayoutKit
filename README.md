@@ -72,7 +72,7 @@ let package = Package(
 # Usage
 
 ### 🚀 Property chaining
-Absolutely **all mutable properties** are represented in the function using code generation using [Stencil](https://github.com/stencilproject/Stencil).
+Absolutely **all mutable properties** are represented in the function using code generation powered by [Stencil](https://github.com/stencilproject/Stencil).
 
 
 ```swift
@@ -85,9 +85,9 @@ let myLabel = UILabel()
     .borderColor(.cyan)
 ```
 
-Currently, the code is generated for the following types:
+Currently, property chaining is supported in the following types:
 `UIView`, `UIControl`, `UILabel`, `UIImageView`, `UIScrollView`, `UITextView`, `UITableView`, `UICollectionView`, `UITextField`, `UIButton`, `UISlider`, `UISwitch`, `UIStackView`.
-> You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type:)
+> You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type)
 
 ### ☺️ Declarative anchor builder
 TODO
@@ -110,8 +110,12 @@ TODO
 ##### Add property chaining to another type:
 ```swift
 ```
-
 ## Why should i choose this framework?
+There are already quite a few frameworks for declarative layout like SwiftUI, but DeclarativeLayutKit stands out from them:
+- Small codebase
+-
+-
+-
 
 
 ### Credits
