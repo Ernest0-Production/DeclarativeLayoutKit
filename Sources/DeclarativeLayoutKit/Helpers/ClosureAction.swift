@@ -17,31 +17,38 @@ final class ClosureAction {
     }
 
     @objc
-    func invoke() {
-        closure()
-    }
+    func invoke() { closure() }
+
+    static var selector: Selector { #selector(ClosureAction.invoke) }
 }
 
 public extension UIControl {
     @discardableResult
     func addAction(for controlEvents: UIControl.Event, action: @escaping () -> ()) -> Self {
         let action = ClosureAction(attachTo: self, closure: action)
-        addTarget(action, action: #selector(ClosureAction.invoke), for: controlEvents)
+        addTarget(action, action: ClosureAction.selector, for: controlEvents)
         return self
     }
 }
 
 public extension UIButton {
     @discardableResult
-    func addAction(_ action: @escaping () -> ()) -> Self {
+    func onTap(_ action: @escaping () -> ()) -> Self {
         addAction(for: .touchUpInside, action: action)
         return self
     }
+}
 
-    @discardableResult
-    func onTap(_ action: @escaping () -> ()) -> Self {
-        removeTarget(nil, action: nil, for: .allEvents)
-        addAction(action)
+public extension UIView {
+    func onTapGesture(_ action: @escaping () -> ()) -> Self {
+        let action = ClosureAction(attachTo: self, closure: action)
+        addGestureRecognizer(UITapGestureRecognizer(target: action, action: ClosureAction.selector))
+        return self
+    }
+
+    func onLongTapGesture(_ action: @escaping () -> ()) -> Self {
+        let action = ClosureAction(attachTo: self, closure: action)
+        addGestureRecognizer(UILongPressGestureRecognizer(target: action, action: ClosureAction.selector))
         return self
     }
 }
