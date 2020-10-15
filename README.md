@@ -56,7 +56,7 @@ Create a `Package.swift` file.
 import PackageDescription
 
 let package = Package(
-  name: "TestProject",
+  name: "YourProject",
   dependencies: [
     .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "2.0.4")
   ],
@@ -81,6 +81,10 @@ let myLabel = UILabel()
     .borderWidth(1)
     .borderColor(.cyan)
 ```
+
+Currently, property chaining is supported in the following types:
+`UIView`, `UIControl`, `UILabel`, `UIImageView`, `UIScrollView`, `UITextView`, `UITableView`, `UICollectionView`, `UITextField`, `UIButton`, `UISlider`, `UISwitch`, `UIStackView`.
+
 > You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type)
 
 #### 😋 And some extra syntactic sugar:
@@ -95,7 +99,7 @@ class ViewController: UIViewController {
             UILabel()
                 .numberOfLines(0)
                 .text("Voila")
-                // sets a reference to the object that calls function(in this case, created UILabel instance) to passed variable
+                // sets a reference of object that calls function(in this case, created UILabel instance) to passed variable
                 .assign(to: &myLabel) 
                 ...
         )
@@ -112,15 +116,11 @@ UIView()
     .onTapGesture({ print("Kek") })
     .onLongTapGesture({ print("Cheburek") })
     
-**⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle**
+// ⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle
 ```
-
-`HStackView` - `UIStackView().axis(.horizontal)`\
-`VStackView` - `UIStackView().axis(.vertical)`
-
-Currently, property chaining is supported in the following types:
-`UIView`, `UIControl`, `UILabel`, `UIImageView`, `UIScrollView`, `UITextView`, `UITableView`, `UICollectionView`, `UITextField`, `UIButton`, `UISlider`, `UISwitch`, `UIStackView`.
-
+Simple UIStackView helpers:
+- `HStackView` - `UIStackView().axis(.horizontal)`\
+- `VStackView` - `UIStackView().axis(.vertical)`
 
 ## Declarative anchor builder
 You can set constrints using the same style by setting anchors. The return type is `AnchorLayoutBuilder` – a simple container that stores declared anchor's constants. To apply them, just call `build()` function.
@@ -137,7 +137,7 @@ let myLabel = UILabel()
 ```
 
 The frameworks allows two ways to install constants:
-- SnapKit DSL](http://snapkit.io/docs):
+- [SnapKit DSL](http://snapkit.io/docs):
 ```swift
 let myLabel = UILabel()
     .numberOfLines(0)
@@ -152,22 +152,22 @@ let myLabel = UILabel()
 - own DSL: `AnchorLayoutBuilderConstraint`
 
 It has the following template:\
-`<inset>.from(<SnapKit.ConstraintPriorityTarget>).priority(UILayoutPriority)`
+`inset.from(SnapKit.ConstraintPriorityTarget).priority(UILayoutPriority)`
 
-If specify only `<inset>` it will be applied to the `superview`:
+If specify only `inset` it will be applied to the `superview`:
 ```swift
 myView.horizontalAnchor(16).topAnchor(0).bottomAnchor(44)
 ```
-If you want to change сomparison type (less/greater or equal) add `.orLess` or `.orGreater` suffix after `<inset>`
+If you want to change сomparison type (less/greater or equal) add `.orLess` or `.orGreater` suffix after `inset`
 ```swift
 myView.bottomAnchor(44.orLess).rightAnchor(8.orGreater.from(secondView))
 ```
 
-> **⚠️ Default priority of `AnchorLayoutBuilderConstraint` 999.** It was decided to do so to ensure that the constraints in the case when its could not be applyid, in the future, when updaing layout, constraints are automatically re-activated
+> **⚠️ Default priority of `AnchorLayoutBuilderConstraint` is 999!** It was decided to do so to ensure that the constraints in the case when its could not be applyid, in the future, when updaing layout, constraints are automatically re-activated
 
 **Full list of anchors functions:**
 
-`width/height/left/right/top/bottomAnchor/centerX/centerYAnchor` - no comments
+`width/height/left/right/top/bottom/centerX/centerYAnchor` - no comments
 
 `sizeAnchor(CGSize)` == `widthAcnhor` + `heightAnchor`
 
@@ -179,7 +179,7 @@ myView.bottomAnchor(44.orLess).rightAnchor(8.orGreater.from(secondView))
 
 `centerAnchor` == `centerXAnchor` + `centerYAnchor`
 
-`stretchAnchors(insets: UIEdgeInsets, to target: SnapKit.ConstraintRelatableTarget?)` - stretches all the edges to target. The default `target` is `nil`, which is equivalent to `superview`.
+`edgeAnchors(insets: UIEdgeInsets, to target: SnapKit.ConstraintRelatableTarget?)` - stretches all the edges to `target`. The default `target` is `nil`, which is equivalent to `superview`.
 
 
 ### 🎁 Bonus. Declarative stack builder
