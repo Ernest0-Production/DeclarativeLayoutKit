@@ -7,18 +7,20 @@ TODO English description
 **Примечание:** используется [SnapKit](https://github.com/SnapKit/SnapKit)!
 В одной из будущих версий SnapKit будет вынесен в отдельный subspec, а ядро будет построенно непосредственно на NSLayoutConstraints.
 
-### Advantage
-- Fast view configuration using [property chains](#property-chaining)
-- Easily layout using simplest [DLS (based and mixed with SnapKit DLS)](#declarative-anchor-builder)
-- Extra feature – [stacking views layout](#declarative-view-styling) like UIStackView, but more flexible
-- Reusable and mixable [view styling](declarative-view-styles)
-- It is fully **SCALABLE**!
+|  	  | Advantages 	|
+|---	|---------------------------------------------------------------------------------	|
+| 🚀 	| Fast view configuration using [property chains](#-property-chaining)|
+|  ☺️	| Easily layout using [simplest DLS]((#️️️-declarative-anchor-builder)) based and mixed with [SnapKit DLS](https://github.com/SnapKit/SnapKit)|
+| 🎁 	| Extra feature – [stacking views layout](#-declarative-stack-builder) like UIStackView, but more flexible|
+| 🌈 	| Reusable and mixable [view styling](#-declarative-view-styling)|
+| 🧩 	| Fully [**SCALABLE**!](#-how-to-extend-functionality)|
 
-## Contents
+## Overview
 
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Why should I choose DeclarativeLayoutKit over **alternative**?](#why-should-i-choose-this-framework)
 - [Credits](#credits)
 - [License](#license)
 
@@ -30,7 +32,7 @@ TODO English description
 
 ## Installation
 
-### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
+#### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
 
 ```ruby
 # Podfile
@@ -47,7 +49,7 @@ Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
 $ pod install
 ```
 
-### [Swift Package Manager](https://github.com/apple/swift-package-manager)
+#### [Swift Package Manager](https://github.com/apple/swift-package-manager)
 
 Create a `Package.swift` file.
 
@@ -67,27 +69,62 @@ let package = Package(
 )
 ```
 
-## Usage
+# Usage
 
-### Property chaining
-TODO
-### Declarative anchor builder
-TODO
-### Declarative stack builder
-TODO
-### Declarative View Styling
-TODO
+### 🚀 Property chaining
+Absolutely **all mutable properties** are represented in the function using code generation using [Stencil](https://github.com/stencilproject/Stencil).
 
-## Credits
+
+```swift
+let myLabel = UILabel()
+    .numberOfLines(0)
+    .text("Hello buddy")
+    .backgroundColor(.blue)
+    .isHighlighted(true)
+    .borderWidth(1)
+    .borderColor(.cyan)
+```
+
+Currently, the code is generated for the following types:
+`UIView`, `UIControl`, `UILabel`, `UIImageView`, `UIScrollView`, `UITextView`, `UITableView`, `UICollectionView`, `UITextField`, `UIButton`, `UISlider`, `UISwitch`, `UIStackView`.
+> You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type:)
+
+### ☺️ Declarative anchor builder
+TODO
+```swift
+```
+### 🎁 Declarative stack builder
+TODO
+```swift
+```
+### 🌈 Declarative View Styling
+TODO
+```swift
+```
+
+### 🔥 All together
+```swift
+```
+
+## 🧩 How to extend functionality?
+##### Add property chaining to another type:
+```swift
+```
+
+## Why should i choose this framework?
+
+
+### Credits
 
 - Telegram: @Ernest0N
 - [Twitter](https://twitter.com/Ernest0N)
 
 
-## License
+### License
 
 DeclarativeLayoutKit is released under the MIT license. See LICENSE for details.
 
+---
 TODO:
 - replaceable layout system
 - placeholderable?
