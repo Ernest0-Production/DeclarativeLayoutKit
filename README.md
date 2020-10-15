@@ -158,21 +158,28 @@ If specify only `<inset>` it will be applied to the `superview`:
 ```swift
 myView.horizontalAnchor(16).topAnchor(0).bottomAnchor(44)
 ```
-If you want to change сomparison type (less/greater or equal) add `.orLess` or `.orGreater` suffx after `<inset>`
+If you want to change сomparison type (less/greater or equal) add `.orLess` or `.orGreater` suffix after `<inset>`
 ```swift
 myView.bottomAnchor(44.orLess).rightAnchor(8.orGreater.from(secondView))
 ```
 
 > **⚠️ Default priority of `AnchorLayoutBuilderConstraint` 999.** It was decided to do so to ensure that the constraints in the case when its could not be applyid, in the future, when updaing layout, constraints are automatically re-activated
 
-Full list of anchors functions:\
-`width/height/left/right/top/bottomAnchor/centerX/centerYAnchor` - no comments\
-`sizeAnchor(CGSize)` == `widthAcnhor` + `heightAnchor`\
-`aspectRatioAnchor(multiplier:)` == height / width\
-`horizontalAnchor` == `leftAnchor` + `rightAnchor`\
-`vertivalAnchor` == `topAnchor` + `bottomAnchor`\
-`centerAnchor` == `centerXAnchor` + `centerYAnchor`\
-`stretchAnchors(insets: UIEdgeInsets, to target: SnapKit.ConstraintRelatableTarget?)` - stretches all the edges to target. By default  target is `nil` which is equivalent to `superview`.
+**Full list of anchors functions:**
+
+`width/height/left/right/top/bottomAnchor/centerX/centerYAnchor` - no comments
+
+`sizeAnchor(CGSize)` == `widthAcnhor` + `heightAnchor`
+
+`aspectRatioAnchor(multiplier:)` == height / width
+
+`horizontalAnchor` == `leftAnchor` + `rightAnchor`
+
+`vertivalAnchor` == `topAnchor` + `bottomAnchor`
+
+`centerAnchor` == `centerXAnchor` + `centerYAnchor`
+
+`stretchAnchors(insets: UIEdgeInsets, to target: SnapKit.ConstraintRelatableTarget?)` - stretches all the edges to target. The default `target` is `nil`, which is equivalent to `superview`.
 
 
 ### 🎁 Bonus. Declarative stack builder
