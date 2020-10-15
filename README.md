@@ -123,7 +123,8 @@ Currently, property chaining is supported in the following types:
 `UIView`, `UIControl`, `UILabel`, `UIImageView`, `UIScrollView`, `UITextView`, `UITableView`, `UICollectionView`, `UITextField`, `UIButton`, `UISlider`, `UISwitch`, `UIStackView`.
 > You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type)
 
-### Declarative anchor builder
+
+## Declarative anchor builder
 You can set constrints using the same style by setting anchors. The return type is `AnchorLayoutBuilder` – a simple container that stores declared anchor's constants. To apply them, just call `build()` function.
 
 ```swift
@@ -194,6 +195,7 @@ TODO
 ```swift
 ```
 ## Why should i choose this framework?
+TODO
 There are already quite a few frameworks for declarative layout like SwiftUI, but DeclarativeLayutKit stands out from them:
 - Small codebase
 - Extandable
