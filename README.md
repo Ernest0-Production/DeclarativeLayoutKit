@@ -1,7 +1,5 @@
 # DeclarativeLayoutKit
 
-TODO English description
-
 A simple and small framework of tools for fast and declarative UI layout.
 
 **Note:** it is powered by [SnapKit](https://github.com/SnapKit/SnapKit)!
