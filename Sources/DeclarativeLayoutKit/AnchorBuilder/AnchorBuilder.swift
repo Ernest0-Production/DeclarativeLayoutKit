@@ -20,10 +20,13 @@ public final class AnchorLayoutBuilder {
         self.constraintMakers = constraintMakers
     }
 
-    public func build() {
+    @discardableResult
+    public func build() -> Self {
         view.snp.makeConstraints { maker in
             constraintMakers.forEach({ $0(maker) })
         }
+
+        return self
     }
 
     @discardableResult

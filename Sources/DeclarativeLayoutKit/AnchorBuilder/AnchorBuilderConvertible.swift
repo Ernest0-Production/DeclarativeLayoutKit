@@ -20,25 +20,28 @@ extension UIView: AnchorLayoutBuilderConvertible {
 }
 
 public extension AnchorLayoutBuilderConvertible {
+    /// SnapKit DSL way to setup constraints.
     func layout(_ build: @escaping AnchorLayoutBuilder.DeferredConstraintMaker) -> AnchorLayoutBuilder {
         self.asAnchorLayoutBuilder().addConstraint(build)
     }
 
     // MARK: Size constraints
-    func width(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
+
+    func widthAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeSizeAnchor(\.width, constraint: constraint)
     }
 
-    func height(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
+    func heightAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeSizeAnchor(\.height, constraint: constraint)
     }
 
-    func size(_ size: CGSize, priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
-        height(size.height).width(size.width)
+    /// heightAnchor + widthAnchor
+    func sizeAnchor(_ size: CGSize, priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
+        heightAnchor(size.height).widthAnchor(size.width)
     }
 
     /// height / width
-    func aspectRatio(_ multiplier: Float) -> AnchorLayoutBuilder {
+    func aspectRatioAnchor(_ multiplier: Float) -> AnchorLayoutBuilder {
         let builder = self.asAnchorLayoutBuilder()
 
         return builder.layout({ [unowned builder] in
@@ -48,10 +51,11 @@ public extension AnchorLayoutBuilderConvertible {
 
     // MARK: Positioning constraints
 
-    func stretch(_ insets: UIEdgeInsets = .zero,
-                 to item: ConstraintRelatableTarget? = nil,
-                 priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
-        self.layout { $0.edges.equalToFallbackingSuperview(item).inset(insets).priority(priority) }
+    /// left + right + top _ bottom anchors
+    func stretchAnchors(_ insets: UIEdgeInsets = .zero,
+                        to target: ConstraintRelatableTarget? = nil,
+                        priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
+        self.layout { $0.edges.equalToFallbackingSuperview(target).inset(insets).priority(priority) }
     }
 
     func centerXAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
@@ -62,6 +66,7 @@ public extension AnchorLayoutBuilderConvertible {
         makeAnchor(\.centerY, constraint: constraint)
     }
 
+    /// centerYAnchor + centerXAnchor
     func centerAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         makeAnchor(\.center, constraint: constraint)
     }
@@ -82,10 +87,12 @@ public extension AnchorLayoutBuilderConvertible {
         makeAnchor(\.right, constraint: constraint)
     }
 
+    /// leftAnchor + rightAnchor
     func horizontalAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         leftAnchor(constraint).rightAnchor(constraint)
     }
 
+    /// topAnchor + bottomAnchor
     func verticalAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         topAnchor(constraint).bottomAnchor(constraint)
     }

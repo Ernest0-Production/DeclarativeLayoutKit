@@ -78,14 +78,14 @@ public extension UIControl {
 
 public extension UIButton {
     @discardableResult
-    func text(_ text: String, for state: UIControl.State = .normal) -> Self {
-        self.setTitle(text, for: state)
+    func title(_ value: String, for state: UIControl.State = .normal) -> Self {
+        self.setTitle(value, for: state)
         return self
     }
 
     @discardableResult
-    func attributedText(_ text: NSAttributedString?, for state: UIControl.State = .normal) -> Self {
-        self.setAttributedTitle(text, for: state)
+    func attributedTitle(_ value: NSAttributedString?, for state: UIControl.State = .normal) -> Self {
+        self.setAttributedTitle(value, for: state)
         return self
     }
 

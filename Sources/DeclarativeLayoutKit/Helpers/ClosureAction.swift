@@ -23,6 +23,7 @@ final class ClosureAction {
 }
 
 public extension UIControl {
+    ///  **⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle**
     @discardableResult
     func addAction(for controlEvents: UIControl.Event, action: @escaping () -> ()) -> Self {
         let action = ClosureAction(attachTo: self, closure: action)
@@ -32,6 +33,7 @@ public extension UIControl {
 }
 
 public extension UIButton {
+    ///  **⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle**
     @discardableResult
     func onTap(_ action: @escaping () -> ()) -> Self {
         addAction(for: .touchUpInside, action: action)
@@ -40,12 +42,16 @@ public extension UIButton {
 }
 
 public extension UIView {
+    ///  **⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle**
+    @discardableResult
     func onTapGesture(_ action: @escaping () -> ()) -> Self {
         let action = ClosureAction(attachTo: self, closure: action)
         addGestureRecognizer(UITapGestureRecognizer(target: action, action: ClosureAction.selector))
         return self
     }
 
+    ///  **⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle**
+    @discardableResult
     func onLongTapGesture(_ action: @escaping () -> ()) -> Self {
         let action = ClosureAction(attachTo: self, closure: action)
         addGestureRecognizer(UILongPressGestureRecognizer(target: action, action: ClosureAction.selector))
