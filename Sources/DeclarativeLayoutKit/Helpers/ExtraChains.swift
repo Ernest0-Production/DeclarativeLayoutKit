@@ -2,7 +2,7 @@
 //  ExtraChains.swift
 //  
 //
-//  Created by Бабаян Эрнест on 26.09.2020.
+//  Created by Ernest0N on 26.09.2020.
 //
 
 import UIKit
@@ -70,7 +70,7 @@ public extension UIView {
 
 public extension UIControl {
     @discardableResult
-    func target(_ target: Any?, action: Selector, for controlEvents: UIControl.Event = .touchUpInside) -> Self {
+    func target(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) -> Self {
         self.addTarget(target, action: action, for: controlEvents)
         return self
     }

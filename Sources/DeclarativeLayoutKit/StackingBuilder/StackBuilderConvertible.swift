@@ -1,8 +1,8 @@
 //
-//  StackingConvertable.swift
+//  StackingConvertible.swift
 //  
 //
-//  Created by Бабаян Эрнест on 14.10.2020.
+//  Created by Ernest0N on 14.10.2020.
 //
 
 import UIKit

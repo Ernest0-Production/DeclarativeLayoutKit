@@ -2,18 +2,12 @@
 //  AnchorLayoutBuilderConstraint.swift
 //  
 //
-//  Created by Бабаян Эрнест on 12.10.2020.
+//  Created by Ernest0N on 12.10.2020.
 //
 
 import SnapKit
 import UIKit
 
-
-public enum ConstraintComparisonType {
-    case less
-    case equal
-    case greater
-}
 
 public protocol AnchorLayoutBuilderConstraint {
     var target: ConstraintRelatableTarget { get }
@@ -31,6 +25,12 @@ public extension AnchorLayoutBuilderConstraint {
         mutable.priority = priority
         return mutable
     }
+}
+
+public enum ConstraintComparisonType {
+    case less
+    case equal
+    case greater
 }
 
 struct MutableAnchorLayoutBuilderConstraint: AnchorLayoutBuilderConstraint {

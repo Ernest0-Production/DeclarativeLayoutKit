@@ -2,7 +2,7 @@
 //  Chainable.swift
 //  
 //
-//  Created by Бабаян Эрнест on 20.09.2020.
+//  Created by Ernest0N on 20.09.2020.
 //
 
 protocol Chainable {}

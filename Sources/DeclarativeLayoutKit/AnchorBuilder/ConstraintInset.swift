@@ -2,7 +2,7 @@
 //  ConstraintInset.swift
 //  
 //
-//  Created by Бабаян Эрнест on 12.10.2020.
+//  Created by Ernest0N on 12.10.2020.
 //
 
 import SnapKit
