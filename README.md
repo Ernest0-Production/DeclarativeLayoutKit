@@ -96,9 +96,8 @@ class ViewController: UIViewController {
             UILabel()
                 .numberOfLines(0)
                 .text("Voila")
-                // sets a reference to the object that calls the function(in this case, created UILabel instance) to passed variable
+                // sets a reference to the object that calls function(in this case, created UILabel instance) to passed variable
                 .assign(to: &myLabel) 
-
                 ...
         )
     }
