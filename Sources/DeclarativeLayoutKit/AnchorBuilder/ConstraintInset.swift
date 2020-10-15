@@ -9,9 +9,7 @@ import SnapKit
 import UIKit
 
 
-struct SuperviewConstraintTarget: ConstraintRelatableTarget {}
-
-public protocol AnchorLayoutBuilderConstraintInset: AnchorLayoutBuilderConstraint, ConstraintRelatableTarget {
+public protocol AnchorLayoutBuilderConstraintInset: AnchorLayoutBuilderConstraint {
     var value: CGFloat { get }
 }
 
@@ -27,6 +25,8 @@ extension Double: AnchorLayoutBuilderConstraintInset {
 extension CGFloat: AnchorLayoutBuilderConstraintInset {
     public var value: CGFloat { CGFloat(self) }
 }
+
+struct SuperviewConstraintTarget: ConstraintRelatableTarget {}
 
 extension AnchorLayoutBuilderConstraintInset {
     public var target: ConstraintRelatableTarget { SuperviewConstraintTarget() }

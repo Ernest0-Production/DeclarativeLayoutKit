@@ -154,7 +154,7 @@ extension AnchorLayoutBuilderConvertible {
                         constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         if constraint.target is SuperviewConstraintTarget, let inset = constraint.inset {
             var mutable = MutableAnchorLayoutBuilderConstraint(constraint)
-            mutable.target = inset
+            mutable.target = inset.value
             mutable.inset = nil
             return makeAnchor(keyPath, constraint: mutable)
         }
