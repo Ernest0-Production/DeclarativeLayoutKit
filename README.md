@@ -322,6 +322,9 @@ extension ViewStyle {
 }
 ```
 
+<details>
+<summary>About ViewStyle</summary>
+
 The `ViewStyle` is just a wrapper over closure. There's nothing ingenious about it 🤗
 ```swift
 public final class ViewStyle<Target: ViewStyleCompatible> {
@@ -336,6 +339,8 @@ public final class ViewStyle<Target: ViewStyleCompatible> {
     }
 }
 ```
+
+</details>
 
 ### 🔥 All together
 And **finally**, a full-fledged example of using the framework for layout of restaurant previews
