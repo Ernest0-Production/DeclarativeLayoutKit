@@ -45,3 +45,9 @@ extension MutableAnchorLayoutBuilderConstraint {
         self.init(target: constraint.target, inset: constraint.inset, comparisonType: constraint.comparisonType, priority: constraint.priority)
     }
 }
+
+public prefix func -(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilderConstraint {
+    var mutable = MutableAnchorLayoutBuilderConstraint(constraint)
+    mutable.inset = constraint.inset.flatMap({ -$0.value })
+    return mutable
+}

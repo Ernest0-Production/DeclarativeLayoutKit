@@ -7,6 +7,10 @@
 
 @_functionBuilder
 public struct ArrayBuilder<Element> {
+    public static func buildBlock( _ elements: [Element]) -> [Element] {
+        elements
+    }
+
     public static func buildBlock( _ elements: Element...) -> [Element] {
         elements
     }

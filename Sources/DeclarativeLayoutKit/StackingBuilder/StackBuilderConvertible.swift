@@ -29,18 +29,21 @@ extension UIView: StackingLayoutBuilderConvertible {
 }
 
 public extension VerticalStackingLayoutBuilderConvertible {
+    /// before space of arranged view
     func topSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<VerticalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.beforeSpace = .init(value: space, priority: priority)
         return builder
     }
 
+    /// after space of arranged view
     func bottomSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<VerticalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.afterSpace = .init(value: space, priority: priority)
         return builder
     }
 
+    // arranged view distribution in transverse axis
     func horizontalAlignment(_ layout: StackingLayoutBuilder<VerticalStackAxis>.Alignment) -> StackingLayoutBuilder<VerticalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.alignment = layout
@@ -49,18 +52,21 @@ public extension VerticalStackingLayoutBuilderConvertible {
 }
 
 public extension HorizontalStackingLayoutBuilderConvertible {
-    func rightSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
+    /// before space of arranged view
+    func leftSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.beforeSpace = .init(value: space, priority: priority)
         return builder
     }
 
-    func leftSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
+    /// after space of arranged view
+    func rightSpace(_ space: CGFloat, priority: UILayoutPriority = 999) -> StackingLayoutBuilder<HorizontalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.afterSpace = .init(value: space, priority: priority)
         return builder
     }
 
+    // arranged view distribution in transverse axis
     func verticalAlignment(_ layout: StackingLayoutBuilder<HorizontalStackAxis>.Alignment) -> StackingLayoutBuilder<HorizontalStackAxis> {
         let builder = self.asStackingLayoutBuilder()
         builder.alignment = layout

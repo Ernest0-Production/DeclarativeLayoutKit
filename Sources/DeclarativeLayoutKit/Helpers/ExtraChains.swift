@@ -66,6 +66,12 @@ public extension UIView {
         self.layer.shadowPath = shadowPath
         return self
     }
+
+    @discardableResult
+    func shadowColor(_ shadowColor: UIColor?) -> Self {
+        self.layer.shadowColor = shadowColor?.cgColor
+        return self
+    }
 }
 
 public extension UIControl {

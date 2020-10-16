@@ -58,7 +58,7 @@ import PackageDescription
 let package = Package(
   name: "YourProject",
   dependencies: [
-    .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "2.0.4")
+    .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "2.0.5")
   ],
   targets: [
     .target(name: "MyProject", dependencies: ["DeclarativeLayoutKit"])
@@ -100,7 +100,7 @@ class ViewController: UIViewController {
                 .numberOfLines(0)
                 .text("Voila")
                 // sets a reference of object that calls function(in this case, created UILabel instance) to passed variable
-                .assign(to: &myLabel) 
+                .assign(to: &myLabel)
                 ...
         )
     }
@@ -108,6 +108,9 @@ class ViewController: UIViewController {
 ```
 Closure based actions and gestures:
 ```swift
+UIControl()
+    .addAction(for: .valueChanged, { print("value changed") })
+
 UIButton()
     .title("Tap me")
     .onTap({ print("didTap") })
@@ -115,15 +118,15 @@ UIButton()
 UIView()
     .onTapGesture({ print("Kek") })
     .onLongTapGesture({ print("Cheburek") })
-    
+
 // ⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle
 ```
 Simple UIStackView helpers:
-- `HStackView` - `UIStackView().axis(.horizontal)`\
+- `HStackView` - `UIStackView().axis(.horizontal)`
 - `VStackView` - `UIStackView().axis(.vertical)`
 
 ## Declarative anchor builder
-You can set constrints using the same style by setting anchors. The return type is `AnchorLayoutBuilder` – a simple container that stores declared anchor's constants. To apply them, just call `build()` function.
+You can set constraints using the same anchor-style. The return type will be `AnchorLayoutBuilder` – a simple container that stores declared anchor's constants. To apply them, just call `build()` function.
 
 ```swift
 let myLabel = UILabel()
@@ -136,8 +139,8 @@ let myLabel = UILabel()
     .build() // -> UIView (with applyed constraints)
 ```
 
-The frameworks allows two ways to install constants:
-- [SnapKit DSL](http://snapkit.io/docs):
+The frameworks allows two ways to set constants:
+- [SnapKit DSL](http://snapkit.io/docs)
 ```swift
 let myLabel = UILabel()
     .numberOfLines(0)
@@ -149,7 +152,7 @@ let myLabel = UILabel()
     })
     .build()
 ```
-- own DSL: `AnchorLayoutBuilderConstraint`
+- own DSL powered by `AnchorLayoutBuilderConstraint`
 
 It has the following template:\
 `inset.from(SnapKit.ConstraintPriorityTarget).priority(UILayoutPriority)`
@@ -163,11 +166,11 @@ If you want to change сomparison type (less/greater or equal) add `.orLess` or 
 myView.bottomAnchor(44.orLess).rightAnchor(8.orGreater.from(secondView))
 ```
 
-> **⚠️ Default priority of `AnchorLayoutBuilderConstraint` is 999!** It was decided to do so to ensure that the constraints in the case when its could not be applyid, in the future, when updaing layout, constraints are automatically re-activated
+> **⚠️ Default priority of `AnchorLayoutBuilderConstraint` is 999!** It was decided to do so to ensure that the constraints in the case when its could not be applyed, in the future, when updating layout, constraints are automatically re-activated
 
 **Full list of anchors functions:**
 
-`width/height/left/right/top/bottom/centerX/centerYAnchor` - no comments
+`width/height/left/right/top/bottom/centerX/centerYAnchor` - completely equal to `NSLayoutConstraint` anchors
 
 `sizeAnchor(CGSize)` == `widthAcnhor` + `heightAnchor`
 
@@ -175,32 +178,182 @@ myView.bottomAnchor(44.orLess).rightAnchor(8.orGreater.from(secondView))
 
 `horizontalAnchor` == `leftAnchor` + `rightAnchor`
 
-`vertivalAnchor` == `topAnchor` + `bottomAnchor`
+`verticalAnchor` == `topAnchor` + `bottomAnchor`
 
 `centerAnchor` == `centerXAnchor` + `centerYAnchor`
 
 `edgeAnchors(insets: UIEdgeInsets, to target: SnapKit.ConstraintRelatableTarget?)` - stretches all the edges to `target`. The default `target` is `nil`, which is equivalent to `superview`.
 
+#### View/Builder Composition
+You can also add `views` builders to the `superview` builder like this:
+```swift
+weak var avatarView: UIImageView!
+...
+let profileView = UIView()
+    .backgroundColor(.gray)
+    .heightAnchor(100)
+    .add({
+        UIImageView()
+            .assign(to: &avatarView)
+            .contentMode(.scaleAspectFit)
+            .sizeAnchor(CGSize(width: 40, height: 40))
+            .leftAnchor(16)
+            .verticalAnchor(0)
 
-### 🎁 Bonus. Declarative stack builder
-TODO
-```swift
+        UILabel()
+            .numberOfLines(2)
+            .rightAnchor(0)
+            .leftAnchor(8.from(avatarView).priority(.required))
+    })
+    // current view is build first, and then it's subviews
+    .build()
 ```
-### 🌈 Declarative View Styling
-TODO
+Or using a convenient initializer
 ```swift
+
+let profileView = UIView({
+    UIImageView()
+        .assign(to: &avatarView)
+        .contentMode(.scaleAspectFit)
+        .sizeAnchor(CGSize(width: 40, height: 40))
+        .leftAnchor(16)
+        .verticalAnchor(0)
+
+    UILabel()
+        .numberOfLines(2)
+        .rightAnchor(0)
+        .leftAnchor(8.from(avatarView).priority(.required))
+})
+.backgroundColor(.gray)
+.heightAnchor(100)
+// current view is build first, and then it's subviews
+.build()
+```
+
+**Note:** if you add builders to a `UIView` (i.e. don't use `anchor-chaining` before call `add(...)`), building will occur **immediately after adding** in `superview`. In other words, the return type of the `build()` function will be `Self` (i.e. `UIView`)
+```swift
+let profileView = UIView()
+    .backgroundColor(.gray)
+    .add({
+        UIImageView()
+            .assign(to: &avatarView)
+            .contentMode(.scaleAspectFit)
+            .sizeAnchor(CGSize(width: 40, height: 40))
+            .leftAnchor(16)
+            .verticalAnchor(0)
+        UILabel()
+            .numberOfLines(2)
+            .rightAnchor(0)
+            .leftAnchor(8.from(avatarView).priority(.required))
+    }) // -> UIView (with already added subviews)
+    // and you can continue chainable-configuration (for example by specifying own anchors)
+    .heightAnchor(100) // -> AnchorLayoutBuilder
+    .build() // -> UIView
+```
+
+### 🎁 Bonus! Declarative stack builder
+Sometimes `UIStackView` features are not enough for more flexible stacking of `views` with an **individual distribution**.
+
+ The `StackingLayoutBuilder` will help you solve this problem!
+```swift
+let profileView = HStack {
+    UIImageView()
+        .assign(to: &avatarView)
+        .contentMode(.scaleAspectFit)
+        .sizeAnchor(CGSize(width: 40, height: 40))
+        .leftSpace(12) // 👀
+        .verticalAlignment(.center) // 👀
+
+    UILabel()
+        .numberOfLines(2)
+        .leftSpace(8) // 👀
+        .rightSpace(0) // 👀
+}
+.backgroundColor(.gray)
+```
+`HStack` and `VStack` is a function that collects `views` (or `AnchorLayoutBuilder`) and stack them to each other using AutoLayout Constants and return resulting `UIView`.
+
+You can specify:
+
+`left/rightSpace`(in `HStack`), `top/bottomSpace`(in `VStack`) - before and after space of arranged view.
+
+`verticalAlignment`(in `HStack`), `horizontalAlignment`(in `VStack`) - arranged view distribution in **transverse axis**.
+
+`Alignment` type can be:
+- `.center` - centered on transverse axis.
+- `.fill(sideInset: AnchorLayoutBuilderConstraint = 0)` - stretched along transverse axis.
+
+- `HStack` (similarly in `VStack`):
+  - `.custom(top: bottom:)` - custom top and bottom inset (i.e. `AnchorLayoutBuilderConstraint`)
+  - `.bottom(...)` - set only bottom inset.
+  - `.top(..)` - - set only top inset.
+
+You can continue to use `anchor-chaining` to add additional constraints, but **only before specifying `.space()` and `.alignment()` attributes**!
+
+### 🌈 Declarative View Styling
+You no longer need to create many style-different subclasses of your view and dive into a complex inheritance hierarchy.
+
+DeclarativeLayoutKit offers a simple **closure-based** solution for defining styles **with the ability to combine** them:
+```swift
+UIButton()
+    .title("Tap me")
+    .set(style: .touchHiglighting(color: .blue), .primaryRounded())
+    .onTap({ ... })
+```
+
+Just create new `ViewStyle<Target>` in `ViewStyle` extension like static factory:
+```swift
+extension ViewStyle {
+    /// Generic definition is required to be able to support view subclass types
+    static func primaryRounded<T: UIView>() -> ViewStyle<T> {
+        ViewStyle<T>({ view in
+            view.backgroundColor(.systemBlue)
+                .cornerRadius(8)
+                .borderWidth(4)
+                .shadowColor(.darkGray)
+                .shadowOpacity(1)
+                .shadowRadius(5)
+        })
+    }
+
+    static func touchHiglighting<T: UIButton>(color: UIColor) -> ViewStyle<T> {
+        ViewStyle<T> { button in ... }
+    }
+}
+```
+
+The `ViewStyle` is just a wrapper over closure. There's nothing ingenious about it 🤗
+```swift
+public final class ViewStyle<Target: ViewStyleCompatible> {
+    private let handler: (Target) -> ()
+
+    public init(_ handler: @escaping (Target) -> ()) {
+        self.handler = handler
+    }
+
+    func apply(into target: Target) {
+        handler(target)
+    }
+}
 ```
 
 ### 🔥 All together
-```swift
-```
+And **finally**, a full-fledged example of using the framework for layout of restaurant previews
+
+*Layout:*
+
+<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_view.png" alt="" />
+
+*Source:*
+
+<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_code.png" alt="" />
 
 ## 🧩 How to extend functionality?
 ##### Add property chaining to another type:
 ```swift
 ```
 ## Why should i choose this framework?
-TODO
+**TODO**
 There are already quite a few frameworks for declarative layout like SwiftUI, but DeclarativeLayutKit stands out from them:
 - Small codebase
 - Extandable

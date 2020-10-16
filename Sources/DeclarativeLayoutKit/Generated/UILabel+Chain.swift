@@ -24,12 +24,6 @@ public extension UILabel {
     }
 
     @discardableResult
-    func shadowColor(_ newValue: UIColor?) -> Self {
-        shadowColor = newValue
-        return self
-    }
-
-    @discardableResult
     func shadowOffset(_ newValue: CGSize) -> Self {
         shadowOffset = newValue
         return self

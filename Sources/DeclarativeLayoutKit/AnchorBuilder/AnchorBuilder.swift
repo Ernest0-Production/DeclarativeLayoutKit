@@ -14,6 +14,7 @@ public final class AnchorLayoutBuilder {
     public typealias DeferredConstraintMaker = (ConstraintMaker) -> Void
     public let view: UIView
     private var constraintMakers: [DeferredConstraintMaker]
+    var onComplete: () -> () = {}
 
     init(view: UIView, constraintMakers: [DeferredConstraintMaker] = []) {
         self.view = view
@@ -26,6 +27,7 @@ public final class AnchorLayoutBuilder {
             constraintMakers.forEach({ $0(maker) })
         }
 
+        onComplete()
         return self
     }
 
@@ -42,7 +44,8 @@ extension AnchorLayoutBuilder: AnchorLayoutBuilderConvertible {
 
 extension AnchorLayoutBuilder: ViewContainer, ViewContainerSubview {
     public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
-        view.add(subviews)
+        let views = subviews()
+        onComplete = { [unowned view] in view.add({ views }) }
         return self
     }
 

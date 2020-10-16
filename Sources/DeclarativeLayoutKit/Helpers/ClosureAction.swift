@@ -25,7 +25,7 @@ final class ClosureAction {
 public extension UIControl {
     ///  **⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle**
     @discardableResult
-    func addAction(for controlEvents: UIControl.Event, action: @escaping () -> ()) -> Self {
+    func addAction(for controlEvents: UIControl.Event, _ action: @escaping () -> ()) -> Self {
         let action = ClosureAction(attachTo: self, closure: action)
         addTarget(action, action: ClosureAction.selector, for: controlEvents)
         return self
@@ -36,7 +36,7 @@ public extension UIButton {
     ///  **⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle**
     @discardableResult
     func onTap(_ action: @escaping () -> ()) -> Self {
-        addAction(for: .touchUpInside, action: action)
+        addAction(for: .touchUpInside, action)
         return self
     }
 }
