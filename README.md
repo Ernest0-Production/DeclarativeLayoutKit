@@ -342,11 +342,11 @@ And **finally**, a full-fledged example of using the framework for layout of res
 
 *Layout:*
 
-<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_view.png" alt="" />
+<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_view.png" width = "600"/>
 
 *Source:*
 
-<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_code.png" alt="" />
+<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_code.png" width = "600"/>
 
 ## 🧩 How to extend functionality?
 ##### Add property chaining to another type:
