@@ -69,7 +69,7 @@ let package = Package(
 # Usage
 
 ### 🚀 Property chaining
-Absolutely **all mutable properties** are represented in the function using code generation powered by [Stencil](https://github.com/stencilproject/Stencil).
+Absolutely **all mutable properties** are represented in the function using code generation powered by [Sourcery](https://github.com/krzysztofzablocki/Sourcery).
 
 
 ```swift
@@ -350,8 +350,45 @@ And **finally**, a full-fledged example of using the framework for layout of res
 
 ## 🧩 How to extend functionality?
 ##### Add property chaining to another type:
+- First way - write type extension with function that return self:
 ```swift
+extension MyCustomView {
+    func myProperty(_ value: ValueType) -> Self {
+        self.myProperty = value
+        return self
+    }
+}
 ```
+- Second way - using [Sourcery](https://github.com/krzysztofzablocki/Sourcery) apply [Chanable template](https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Sources/Generator/Chainable.swift) with your custom view
+([see tutorial](https://www.caseyliss.com/2017/3/31/the-magic-of-sourcery)).
+
+##### Extend `AnchorLayoutBuilder`:
+Just add extension to `AnchorLayoutBuilderConvertible` type and using `SnapKit DSL` write your own helper:
+```swift
+extension AnchorLayoutBuilderConvertible {
+    func leftTopAnchor(_ inset: CGFloat) -> AnchorLayoutBuilder {
+        self.layout({  $0.left.top.equalToSuperview().inset(inset) })
+    }
+}
+```
+Or use `.set(constraint: AnchorLayoutBuilderConstraint)` to SnapKit Anchor if you want to use your own DSL:
+```swift
+extension AnchorLayoutBuilderConvertible {
+    func leftTopAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
+        self.layout({  $0.left.top.set(constraint: constraint) })
+    }
+}
+```
+
+##### Extend DSL:
+The `AnchorLayoutBuilderConstraint` is protocol 4 properties:
+- `target`
+- `inset`(optional)
+- `comparisonType` (equal, less, greater)
+- `priority`
+
+You can write some extension to it for adding another syntactic sugar and modify this constraint using `MutableAnchorLayoutBuilderConstraint` implementation.
+
 ## Why should i choose this framework?
 **TODO**
 There are already quite a few frameworks for declarative layout like SwiftUI, but DeclarativeLayutKit stands out from them:

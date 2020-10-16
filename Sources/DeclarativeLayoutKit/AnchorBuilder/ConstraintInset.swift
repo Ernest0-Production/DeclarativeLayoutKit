@@ -26,8 +26,6 @@ extension CGFloat: AnchorLayoutBuilderConstraintInset {
     public var value: CGFloat { CGFloat(self) }
 }
 
-struct SuperviewConstraintTarget: ConstraintRelatableTarget {}
-
 extension AnchorLayoutBuilderConstraintInset {
     public var target: ConstraintRelatableTarget { SuperviewConstraintTarget() }
     public var inset: AnchorLayoutBuilderConstraintInset? { self }
