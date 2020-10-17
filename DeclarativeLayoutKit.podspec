@@ -18,7 +18,17 @@ Pod::Spec.new do |spec|
     :branch => "master",
     :tag => "#{spec.version}"
    }
-  spec.source_files  = "Sources/DeclarativeLayoutKit/**/*.swift"
 
-  spec.dependency "SnapKit", "~> 5.0"
+  spec.subspec 'Chaining' do |subspec|
+    subspec.source_files  = "Sources/DeclarativeLayoutKit/Chaining/**/*.swift"
+  end
+
+  spec.subspec 'Layouting' do |subspec|
+    subspec.dependency "SnapKit", "~> 5.0"
+    subspec.source_files  = "Sources/DeclarativeLayoutKit/Layouting/**/*.swift"
+  end
+
+  spec.subspec 'Styling' do |subspec|
+      subspec.source_files  = "Sources/DeclarativeLayoutKit/Styling/**/*.swift"
+  end
 end

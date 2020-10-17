@@ -28,9 +28,37 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Layouting"
-               BuildableName = "Layouting"
-               BlueprintName = "Layouting"
+               BlueprintIdentifier = "DeclarativeLayoutKit/Chaining"
+               BuildableName = "DeclarativeLayoutKit/Chaining"
+               BlueprintName = "DeclarativeLayoutKit/Chaining"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DeclarativeLayoutKit/Layouting"
+               BuildableName = "DeclarativeLayoutKit/Layouting"
+               BlueprintName = "DeclarativeLayoutKit/Layouting"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DeclarativeLayoutKit/Styling"
+               BuildableName = "DeclarativeLayoutKit/Styling"
+               BlueprintName = "DeclarativeLayoutKit/Styling"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,6 +73,20 @@
                BlueprintIdentifier = "Chaining"
                BuildableName = "Chaining"
                BlueprintName = "Chaining"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Layouting"
+               BuildableName = "Layouting"
+               BlueprintName = "Layouting"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>

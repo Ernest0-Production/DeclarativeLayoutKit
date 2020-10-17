@@ -383,6 +383,15 @@ use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
     pod 'DeclarativeLayoutKit'
+
+    # if you only want property-chaining feature:
+    # pod 'DeclarativeLayoutKit/Chaining'
+
+    # if you only want anchor-layouting feature:
+    # pod 'DeclarativeLayoutKit/Layouting'
+
+    # if you only want view styling feature:
+    # pod 'DeclarativeLayoutKit/Styling'
 end
 ```
 
@@ -402,12 +411,20 @@ Create a `Package.swift` file.
 import PackageDescription
 
 let package = Package(
-  name: "YourProject",
+  name: "YOUR_PROJECT_NAME",
   dependencies: [
-    .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "1.0.0")
+      .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "1.0.0")
   ],
   targets: [
-    .target(name: "MyProject", dependencies: ["DeclarativeLayoutKit"])
+      .target(name: "YOUR_TARGET_NAME", dependencies: ["DeclarativeLayoutKit"])
+      // if you only want property-chaining feature:
+      // dependencies: ["DeclarativeLayoutKit/Chaining"])
+
+      // if you only want anchor-layouting feature:
+      // dependencies: ["DeclarativeLayoutKit/Layouting"])
+
+      // if you only want view styling feature:
+      // dependencies: ["DeclarativeLayoutKit/Styling])
   ]
 )
 ```

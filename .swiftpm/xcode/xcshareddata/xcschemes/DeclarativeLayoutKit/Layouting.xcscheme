@@ -14,51 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DeclarativeLayoutKit"
-               BuildableName = "DeclarativeLayoutKit"
-               BlueprintName = "DeclarativeLayoutKit"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Layouting"
-               BuildableName = "Layouting"
-               BlueprintName = "Layouting"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Chaining"
-               BuildableName = "Chaining"
-               BlueprintName = "Chaining"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Styling"
-               BuildableName = "Styling"
-               BlueprintName = "Styling"
+               BlueprintIdentifier = "DeclarativeLayoutKit/Layouting"
+               BuildableName = "DeclarativeLayoutKit/Layouting"
+               BlueprintName = "DeclarativeLayoutKit/Layouting"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -92,9 +50,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DeclarativeLayoutKit"
-            BuildableName = "DeclarativeLayoutKit"
-            BlueprintName = "DeclarativeLayoutKit"
+            BlueprintIdentifier = "DeclarativeLayoutKit/Layouting"
+            BuildableName = "DeclarativeLayoutKit/Layouting"
+            BlueprintName = "DeclarativeLayoutKit/Layouting"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
