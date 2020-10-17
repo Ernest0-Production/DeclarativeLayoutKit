@@ -7,17 +7,17 @@ A simple and small framework of tools for fast and declarative UI layout.
 |  	  | Advantages 	|
 |---	|---------------------------------------------------------------------------------	|
 | 🚀 	| Fast view configuration using [property chains](#-property-chaining)|
-|  ☺️	| Easily layout using [simplest DSL]((#️️️-declarative-anchor-builder)) based and mixed with [SnapKit DSL](https://github.com/SnapKit/SnapKit)|
-| 🎁 	| Extra feature – [stacking views layout](#-declarative-stack-builder) like UIStackView, but more flexible|
+|  ☺️	| Easily layout using [simplest DSL](#declarative-anchor-builder) based and mixed with [SnapKit DSL](https://github.com/SnapKit/SnapKit)|
+| 🎁 	| Extra feature – [stacking views layout](#-bonus-declarative-stack-builder) like UIStackView, but more flexible|
 | 🌈 	| Reusable and mixable [view styling](#-declarative-view-styling)|
 | 🧩 	| Fully [**SCALABLE**!](#-how-to-extend-functionality)|
 
 ## Overview
 
 - [Requirements](#requirements)
-- [Installation](#installation)
 - [Usage](#usage)
 - [Why should I choose DeclarativeLayoutKit over **alternative**?](#why-should-i-choose-this-framework)
+- [Installation](#installation)
 - [Credits](#credits)
 - [License](#license)
 
@@ -26,45 +26,6 @@ A simple and small framework of tools for fast and declarative UI layout.
 - iOS 10.0+
 - Xcode 10.0+
 - Swift 5.0+
-
-## Installation
-
-#### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
-
-```ruby
-# Podfile
-use_frameworks!
-
-target 'YOUR_TARGET_NAME' do
-    pod 'DeclarativeLayoutKit'
-end
-```
-
-Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
-
-```bash
-$ pod install
-```
-
-#### [Swift Package Manager](https://github.com/apple/swift-package-manager)
-
-Create a `Package.swift` file.
-
-```swift
-// swift-tools-version:5.0
-
-import PackageDescription
-
-let package = Package(
-  name: "YourProject",
-  dependencies: [
-    .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "2.0.5")
-  ],
-  targets: [
-    .target(name: "MyProject", dependencies: ["DeclarativeLayoutKit"])
-  ]
-)
-```
 
 # Usage
 
@@ -364,7 +325,7 @@ extension MyCustomView {
     }
 }
 ```
-- Second way - using [Sourcery](https://github.com/krzysztofzablocki/Sourcery) apply [Chanable template](https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Sources/Generator/Chainable.swift) with your custom view
+- Second way - using [Sourcery](https://github.com/krzysztofzablocki/Sourcery) apply [Chainable template](https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Sources/Generator/Chainable.stencil) with your custom view
 ([see tutorial](https://www.caseyliss.com/2017/3/31/the-magic-of-sourcery)).
 
 ##### Extend `AnchorLayoutBuilder`:
@@ -395,13 +356,61 @@ The `AnchorLayoutBuilderConstraint` is protocol 4 properties:
 You can write some extension to it for adding another syntactic sugar and modify this constraint using `MutableAnchorLayoutBuilderConstraint` implementation.
 
 ## Why should i choose this framework?
-**TODO**
-There are already quite a few frameworks for declarative layout like SwiftUI, but DeclarativeLayutKit stands out from them:
-- Small codebase
-- Extandable
-- Easy to add into a project
-- Modulized
 
+There are already quite a few frameworks for declarative layout like SwiftUI, but DeclarativeLayutKit stands out from them:
+- **Small codebase**\
+There is no huge number of objects, I'm not "*reinventing the wheel*". This is **not a new layout system** - just a set of helpers: `AnchorLayoutBuilder`, `StackingLayoutBuilder`, `ViewStyle`. This `README` deccription is all you need to know, no redundant documentation needed.\
+💉 And you can **easily integrate** the framework into project and **combine it with old/existing layout code**.
+
+- **Extandable**\
+The framework is simple and easy to expand. Just apply `Builder` and `Factory` pattern to add new functionality.
+
+- **Separately**\
+The framework solves 3 tasks:
+  - property-chaining
+  - layouting
+  - styling
+
+  And you **can use a specific, desired set of features**. See more in [**installation** chapter](#installation)
+
+## Installation
+
+#### [CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html)
+
+```ruby
+# Podfile
+use_frameworks!
+
+target 'YOUR_TARGET_NAME' do
+    pod 'DeclarativeLayoutKit'
+end
+```
+
+Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
+
+```bash
+$ pod install
+```
+
+#### [Swift Package Manager](https://github.com/apple/swift-package-manager)
+
+Create a `Package.swift` file.
+
+```swift
+// swift-tools-version:5.0
+
+import PackageDescription
+
+let package = Package(
+  name: "YourProject",
+  dependencies: [
+    .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "1.0.0")
+  ],
+  targets: [
+    .target(name: "MyProject", dependencies: ["DeclarativeLayoutKit"])
+  ]
+)
+```
 
 ### Credits
 
@@ -411,7 +420,7 @@ There are already quite a few frameworks for declarative layout like SwiftUI, bu
 
 ### License
 
-DeclarativeLayoutKit is released under the MIT license. See LICENSE for details.
+DeclarativeLayoutKit is released under the MIT license. See [LICENSE](https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/LICENSE.md) for details.
 
 ---
 TODO:
