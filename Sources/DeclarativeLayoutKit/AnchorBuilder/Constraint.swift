@@ -59,7 +59,7 @@ public struct MutableAnchorLayoutBuilderConstraint: AnchorLayoutBuilderConstrain
 
 public prefix func -(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilderConstraint {
     var mutable = MutableAnchorLayoutBuilderConstraint(constraint)
-    mutable.inset = constraint.inset.flatMap({ -$0.value })
+    mutable.inset = constraint.inset.flatMap({ -$0.value }) ?? constraint.inset
     return mutable
 }
 
@@ -74,7 +74,7 @@ extension ConstraintMakerExtendable {
 
         return snapKitConstraint.priority(constraint.priority)
     }
-    
+
     func equalToFallbackingSuperview(_ anotherAnchor: ConstraintRelatableTarget, option: ConstraintComparisonType = .equal) -> ConstraintMakerEditable {
         let anchor: ConstraintRelatableTarget? = anotherAnchor is SuperviewConstraintTarget ? nil : anotherAnchor
 
