@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "DeclarativeLayoutKit"
-  spec.version      = "2.0.4"
+  spec.version      = "1.0.0"
   spec.summary      = "UIKit declarative layout like SwiftUI."
   spec.homepage     = "https://github.com/Ernest0-Production/DeclarativeLayoutKit"
   spec.license      = { :type => "MIT", :file => "LICENSE.md" }
