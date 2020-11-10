@@ -30,22 +30,16 @@ extension AnchorLayoutBuilderConstraintInset {
     public var target: ConstraintRelatableTarget { SuperviewConstraintTarget() }
     public var inset: AnchorLayoutBuilderConstraintInset? { self }
 
-    public var orLess: AnchorLayoutBuilderConstraint {
-        var mutable = MutableAnchorLayoutBuilderConstraint(self)
-        mutable.comparisonType = .less
-        return mutable
-    }
-
-    public var orGreater: AnchorLayoutBuilderConstraint {
-        var mutable = MutableAnchorLayoutBuilderConstraint(self)
-        mutable.comparisonType = .greater
-        return mutable
-    }
-
     public func from(_ target: ConstraintRelatableTarget) -> AnchorLayoutBuilderConstraint {
         var mutable = MutableAnchorLayoutBuilderConstraint(self)
         mutable.target = target
         mutable.inset = inset.flatMap({ -$0.value }) ?? inset
+        return mutable
+    }
+    
+    public func to(_ target: ConstraintRelatableTarget) -> AnchorLayoutBuilderConstraint {
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.target = target
         return mutable
     }
 }

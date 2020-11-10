@@ -25,6 +25,18 @@ public extension AnchorLayoutBuilderConstraint {
         mutable.priority = priority
         return mutable
     }
+    
+    var orLess: AnchorLayoutBuilderConstraint {
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.comparisonType = .less
+        return mutable
+    }
+
+    var orGreater: AnchorLayoutBuilderConstraint {
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.comparisonType = .greater
+        return mutable
+    }
 }
 
 /// Workaround internal mark to detect superview target
@@ -46,7 +58,6 @@ public struct MutableAnchorLayoutBuilderConstraint: AnchorLayoutBuilderConstrain
 
     public init(target: ConstraintRelatableTarget, inset: AnchorLayoutBuilderConstraintInset? = nil, comparisonType: ConstraintComparisonType, priority: ConstraintPriorityTarget) {
         self.target = target
-
         self.inset = inset
         self.comparisonType = comparisonType
         self.priority = priority
