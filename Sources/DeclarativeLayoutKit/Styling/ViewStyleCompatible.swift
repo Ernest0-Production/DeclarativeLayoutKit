@@ -10,7 +10,7 @@ public protocol ViewStyleCompatible {}
 
 extension ViewStyleCompatible {
     @discardableResult
-    public func set(style styles: ViewStyle<Self>...) -> Self {
+    public func set(viewStyle styles: ViewStyle<Self>...) -> Self {
         styles.merge().apply(into: self)
         return self
     }

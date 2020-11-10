@@ -22,13 +22,13 @@ public final class AnchorLayoutBuilder {
     }
 
     @discardableResult
-    public func build() -> Self {
+    public func build() -> UIView {
         view.snp.makeConstraints { maker in
             constraintMakers.forEach({ $0(maker) })
         }
 
         onComplete()
-        return self
+        return view
     }
 
     @discardableResult
