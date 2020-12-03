@@ -98,6 +98,26 @@ public extension UIView {
         self.layer.shadowColor = shadowColor?.cgColor
         return self
     }
+
+    @discardableResult
+    func shadowOffset(_ newValue: CGSize) -> Self {
+        self.layer.shadowOffset = newValue
+        return self
+    }
+}
+
+public extension UILabel {
+    @discardableResult
+    func textShadowOffset(_ offset: CGSize) -> Self {
+        self.shadowOffset = offset
+        return self
+    }
+
+    @discardableResult
+    func textShadowColor(_ color: UIColor) -> Self {
+        self.shadowColor = color
+        return self
+    }
 }
 
 public extension UIControl {
