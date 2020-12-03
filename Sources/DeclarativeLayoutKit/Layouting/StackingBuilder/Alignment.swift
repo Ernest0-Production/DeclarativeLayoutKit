@@ -18,11 +18,11 @@ public extension StackingLayoutBuilder {
             Alignment(first: sideInset, second: sideInset)
         }
 
-        public static func left(_ inset: AnchorLayoutBuilderConstraint) -> Alignment where Axis == VerticalStackAxis {
+        public static func left(_ inset: AnchorLayoutBuilderConstraint = 0) -> Alignment where Axis == VerticalStackAxis {
             .init(first: inset, second: nil)
         }
 
-        public static func right(_ inset: AnchorLayoutBuilderConstraint) -> Alignment where Axis == VerticalStackAxis {
+        public static func right(_ inset: AnchorLayoutBuilderConstraint = 0) -> Alignment where Axis == VerticalStackAxis {
             .init(first: nil, second: inset)
         }
 
@@ -30,11 +30,11 @@ public extension StackingLayoutBuilder {
             .init(first: left, second: right)
         }
 
-        public static func top(_ inset: AnchorLayoutBuilderConstraint) -> Alignment where Axis == HorizontalStackAxis {
+        public static func top(_ inset: AnchorLayoutBuilderConstraint = 0) -> Alignment where Axis == HorizontalStackAxis {
             .init(first: inset, second: nil)
         }
 
-        public static func bottom(_ inset: AnchorLayoutBuilderConstraint) -> Alignment where Axis == HorizontalStackAxis {
+        public static func bottom(_ inset: AnchorLayoutBuilderConstraint = 0) -> Alignment where Axis == HorizontalStackAxis {
             .init(first: nil, second: inset)
         }
 

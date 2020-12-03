@@ -8,25 +8,51 @@
 import UIKit
 
 
-extension Optional {
-    func ifNotNil(_ execute: (Wrapped) -> Void) {
-        flatMap(execute)
-    }
-}
-
 public extension UIView {
+    // MARK: - Hugging and Compression priority
+
     @discardableResult
-    func hugging(x: UILayoutPriority? = nil, y: UILayoutPriority? = nil) -> Self {
-        x.ifNotNil({ self.setContentHuggingPriority($0, for: .horizontal) })
-        y.ifNotNil({ self.setContentHuggingPriority($0, for: .vertical) })
+    func hugging(x: UILayoutPriority) -> Self {
+        self.setContentHuggingPriority(x, for: .horizontal)
         return self
     }
 
     @discardableResult
-    func compression(x: UILayoutPriority? = nil, y: UILayoutPriority? = nil) -> Self {
-        x.ifNotNil({ self.setContentCompressionResistancePriority($0, for: .horizontal) })
-        y.ifNotNil({ self.setContentCompressionResistancePriority($0, for: .vertical) })
+    func hugging(y: UILayoutPriority) -> Self {
+        self.setContentHuggingPriority(y, for: .vertical)
         return self
+    }
+
+    @discardableResult
+    func hugging(_ both: UILayoutPriority) -> Self {
+        return hugging(x: both, y: both)
+    }
+
+    @discardableResult
+    func hugging(x: UILayoutPriority, y: UILayoutPriority) -> Self {
+        return hugging(x: x).hugging(y: y)
+    }
+
+    @discardableResult
+    func compression(x: UILayoutPriority) -> Self {
+        self.setContentCompressionResistancePriority(x, for: .horizontal)
+        return self
+    }
+
+    @discardableResult
+    func compression(y: UILayoutPriority) -> Self {
+        self.setContentCompressionResistancePriority(y, for: .vertical)
+        return self
+    }
+
+    @discardableResult
+    func compression(_ both: UILayoutPriority) -> Self {
+        return compression(x: both, y: both)
+    }
+
+    @discardableResult
+    func compression(x: UILayoutPriority, y: UILayoutPriority) -> Self {
+        return compression(x: x).hugging(y: y)
     }
 
     // MARK: - Layer
