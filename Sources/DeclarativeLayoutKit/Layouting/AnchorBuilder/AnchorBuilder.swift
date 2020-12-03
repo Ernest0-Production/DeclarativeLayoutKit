@@ -30,7 +30,12 @@ public final class AnchorLayoutBuilder {
             }
         })
 
-        onComplete()
+        afterBuild()
+
+        // For prevent build duplicating
+        constraintMakers.removeAll()
+        afterBuild = {}
+
         return view
     }
 
