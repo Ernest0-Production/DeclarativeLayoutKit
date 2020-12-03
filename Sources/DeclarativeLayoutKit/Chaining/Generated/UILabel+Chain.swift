@@ -24,12 +24,6 @@ public extension UILabel {
     }
 
     @discardableResult
-    func shadowOffset(_ newValue: CGSize) -> Self {
-        shadowOffset = newValue
-        return self
-    }
-
-    @discardableResult
     func textAlignment(_ newValue: NSTextAlignment) -> Self {
         textAlignment = newValue
         return self
