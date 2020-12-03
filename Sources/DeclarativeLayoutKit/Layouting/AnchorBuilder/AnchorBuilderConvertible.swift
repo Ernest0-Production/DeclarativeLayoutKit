@@ -96,6 +96,24 @@ public extension AnchorLayoutBuilderConvertible {
     func verticalAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
         topAnchor(constraint).bottomAnchor(constraint)
     }
+
+    /// MARK: Relative constraints
+
+    func above(of bottomView: UIView, space: CGFloat = .zero) -> AnchorLayoutBuilder {
+        bottomAnchor(space.from(bottomView.snp.top))
+    }
+
+    func below(of topView: UIView, space: CGFloat = .zero) -> AnchorLayoutBuilder {
+        topAnchor(space.from(topView.snp.bottom))
+    }
+
+    func after(of leftView: UIView, space: CGFloat = .zero) -> AnchorLayoutBuilder {
+        leftAnchor(space.from(leftView.snp.right))
+    }
+
+    func before(of rightView: UIView, space: CGFloat = .zero) -> AnchorLayoutBuilder {
+        rightAnchor(space.from(rightView.snp.left))
+    }
 }
 
 // MARK: Helpers
