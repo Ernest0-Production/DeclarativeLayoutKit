@@ -25,8 +25,10 @@ public extension ViewStyle {
 
 public extension Sequence {
     func merge<Target: ViewStyleCompatible>() -> ViewStyle<Target> where Element == ViewStyle<Target>{
-        ViewStyle<Target> { target in
-            self.forEach { $0.apply(into: target) }
-        }
+        ViewStyle<Target>({ target in
+            for style in self {
+                style.apply(into: target)
+            }
+        })
     }
 }

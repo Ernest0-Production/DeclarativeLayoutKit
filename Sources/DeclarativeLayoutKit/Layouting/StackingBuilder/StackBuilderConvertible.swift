@@ -20,11 +20,11 @@ public protocol HorizontalStackingLayoutBuilderConvertible {
 
 extension UIView: StackingLayoutBuilderConvertible {
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder<VerticalStackAxis> {
-        StackingLayoutBuilder(view: self)
+        StackingLayoutBuilder<VerticalStackAxis>(view: self)
     }
 
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder<HorizontalStackAxis> {
-        StackingLayoutBuilder(view: self)
+        StackingLayoutBuilder<HorizontalStackAxis>(view: self)
     }
 }
 

@@ -19,12 +19,12 @@ public final class StackingLayoutBuilder<Axis: StackAxis> {
         let priority: UILayoutPriority
     }
 
-    let view: View
+    let view: View & ViewComposer
     var beforeSpace: Margin
     var afterSpace: Margin
     var alignment: Alignment
 
-    init(view: View,
+    init(view: View & ViewComposer,
          beforeSpace: Margin = .zero,
          afterSpace: Margin = .zero,
          alignment: Alignment = .fill()) {
@@ -43,9 +43,9 @@ extension StackingLayoutBuilder: HorizontalStackingLayoutBuilderConvertible wher
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder<HorizontalStackAxis> { self }
 }
 
-extension StackingLayoutBuilder: ViewContainer, ViewContainerSubview {
-    public func add(_ subviews: () -> [ViewContainerSubview]) -> Self {
-        _ = view.add(subviews)
+extension StackingLayoutBuilder: ViewComposer, View {
+    public func add(_ subviews: () -> [View]) -> Self {
+        view.add(subviews)
         return self
     }
 

@@ -12,9 +12,10 @@ import SnapKit
 
 public final class AnchorLayoutBuilder {
     public typealias DeferredConstraintMaker = (ConstraintMaker) -> Void
-    public let view: UIView
+    private let view: UIView
     private var constraintMakers: [DeferredConstraintMaker]
-    var onComplete: () -> () = {}
+
+    var afterBuild: () -> Void = {}
 
     init(view: UIView, constraintMakers: [DeferredConstraintMaker] = []) {
         self.view = view
@@ -23,9 +24,11 @@ public final class AnchorLayoutBuilder {
 
     @discardableResult
     public func build() -> UIView {
-        view.snp.makeConstraints { maker in
-            constraintMakers.forEach({ $0(maker) })
-        }
+        view.snp.makeConstraints({ (maker: ConstraintMaker) in
+            for deferredMaker in constraintMakers {
+                deferredMaker(maker)
+            }
+        })
 
         onComplete()
         return view
@@ -42,10 +45,10 @@ extension AnchorLayoutBuilder: AnchorLayoutBuilderConvertible {
     public func asAnchorLayoutBuilder() -> AnchorLayoutBuilder { self }
 }
 
-extension AnchorLayoutBuilder: ViewContainer, ViewContainerSubview {
-    public func add(@ViewContainerBuilder _ subviews: () -> [ViewContainerSubview]) -> Self {
+extension AnchorLayoutBuilder: ViewComposer, View {
+    public func add(@SubviewsBuilder _ subviews: () -> [View]) -> Self {
         let views = subviews()
-        onComplete = { [unowned view] in view.add({ views }) }
+        afterBuild = { [unowned view] in view.add({ views }) }
         return self
     }
 
@@ -56,10 +59,10 @@ extension AnchorLayoutBuilder: ViewContainer, ViewContainerSubview {
 
 extension AnchorLayoutBuilder: StackingLayoutBuilderConvertible {
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder<VerticalStackAxis> {
-        StackingLayoutBuilder(view: self)
+        StackingLayoutBuilder<VerticalStackAxis>(view: self)
     }
 
     public func asStackingLayoutBuilder() -> StackingLayoutBuilder<HorizontalStackAxis> {
-        StackingLayoutBuilder(view: self)
+        StackingLayoutBuilder<HorizontalStackAxis>(view: self)
     }
 }

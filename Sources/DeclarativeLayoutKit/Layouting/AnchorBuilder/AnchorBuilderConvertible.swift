@@ -45,7 +45,7 @@ public extension AnchorLayoutBuilderConvertible {
         let builder = self.asAnchorLayoutBuilder()
 
         return builder.layout({ [unowned builder] in
-            $0.height.equalTo(builder.view.snp.width).multipliedBy(1 / multiplier)
+            $0.height.equalTo(builder.ui.snp.width).multipliedBy(1 / multiplier)
         })
     }
 
