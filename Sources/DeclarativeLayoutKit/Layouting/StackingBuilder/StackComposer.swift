@@ -39,25 +39,28 @@ private extension UIView {
         for (index, builder) in builders.enumerated() {
             self.add({ builder.view })
 
-            builder.view.ui.snp.makeConstraints {
+            builder.view.ui.snp.makeConstraints({ (maker: ConstraintMaker) -> Void in
                 if let first = builder.alignment.first {
                     builder.view.ui.asAnchorLayoutBuilder().makeAnchor(firstSide, constraint: first).build()
                 }
+
                 if let second = builder.alignment.second {
                     builder.view.ui.asAnchorLayoutBuilder().makeAnchor(secondSide, constraint: second).build()
                 }
+
                 if [builder.alignment.first, builder.alignment.second].allSatisfy({ $0 == nil }) {
-                    $0[keyPath: acrossAxis].equalToSuperview().priority(999)
+                    maker[keyPath: acrossAxis].equalToSuperview().priority(999)
                 }
 
                 let next: ConstraintMakerEditable
 
-                next = $0[keyPath: beforeAnchor].equalTo((previousBuilder?.view.ui.snp.bottom ?? self))
-                if builders.count - 1 == index {
-                    $0[keyPath: afterAnchor].equalToSuperview().inset(builder.afterSpace.value).priority(builder.afterSpace.priority)
+                next = maker[keyPath: beforeAnchor].equalTo((previousBuilder?.view.ui.snp.bottom ?? self))
+
+                if (builders.count - 1) == index {
+                    maker[keyPath: afterAnchor].equalToSuperview().inset(builder.afterSpace.value).priority(builder.afterSpace.priority)
                 }
 
-                if index == 0 {
+                if index == Int.zero {
                     next.inset(builder.beforeSpace.value).priority(builder.beforeSpace.priority)
                 } else if let previousBuilder = previousBuilder {
                     next.inset(-[previousBuilder.afterSpace.value, builder.beforeSpace.value].reduce(0, +))
@@ -65,7 +68,7 @@ private extension UIView {
                 }
 
                 previousBuilder = builder
-            }
+            })
         }
 
         return self

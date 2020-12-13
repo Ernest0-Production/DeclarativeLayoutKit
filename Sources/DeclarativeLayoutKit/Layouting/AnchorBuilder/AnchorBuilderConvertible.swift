@@ -44,8 +44,8 @@ public extension AnchorLayoutBuilderConvertible {
     func aspectRatioAnchor(_ multiplier: Float) -> AnchorLayoutBuilder {
         let builder = self.asAnchorLayoutBuilder()
 
-        return builder.layout({ [unowned builder] in
-            $0.height.equalTo(builder.ui.snp.width).multipliedBy(1 / multiplier)
+        return builder.layout({ [unowned builder] (maker: ConstraintMaker) in
+            maker.height.equalTo(builder.ui.snp.width).multipliedBy(1 / multiplier)
         })
     }
 
@@ -55,7 +55,9 @@ public extension AnchorLayoutBuilderConvertible {
     func edgesAnchors(_ insets: UIEdgeInsets = .zero,
                       to target: ConstraintRelatableTarget = SuperviewConstraintTarget(),
                       priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
-        layout { $0.edges.equalToFallbackingSuperview(target).inset(insets).priority(priority) }
+        layout({ (maker: ConstraintMaker) -> Void in
+            maker.edges.equalToFallbackingSuperview(target).inset(insets).priority(priority)
+        })
     }
 
     func centerXAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
@@ -123,7 +125,9 @@ typealias AnchorKeyPath = KeyPath<ConstraintMaker, ConstraintMakerExtendable>
 extension AnchorLayoutBuilderConvertible {
     func makeAnchor(_ keyPath: AnchorKeyPath,
                     constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
-        layout { $0[keyPath: keyPath].set(constraint: constraint) }
+        layout({ (maker: ConstraintMaker) -> Void in
+            maker[keyPath: keyPath].set(constraint: constraint)
+        })
     }
 
     func makeSizeAnchor(_ keyPath: KeyPath<ConstraintMaker, ConstraintMakerExtendable>,

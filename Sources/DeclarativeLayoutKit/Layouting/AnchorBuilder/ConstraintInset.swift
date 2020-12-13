@@ -33,7 +33,7 @@ extension AnchorLayoutBuilderConstraintInset {
     public func from(_ target: ConstraintRelatableTarget) -> AnchorLayoutBuilderConstraint {
         var mutable = MutableAnchorLayoutBuilderConstraint(self)
         mutable.target = target
-        mutable.inset = inset.flatMap({ -$0.value }) ?? inset
+        mutable.inset = inset.map({ -$0.value })
         return mutable
     }
     
