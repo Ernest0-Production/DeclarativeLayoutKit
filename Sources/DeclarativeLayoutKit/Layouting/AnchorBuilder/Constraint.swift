@@ -14,18 +14,28 @@ public protocol AnchorLayoutBuilderConstraint {
     var inset: AnchorLayoutBuilderConstraintInset? { get }
     var comparisonType: ConstraintComparisonType { get }
     var priority: ConstraintPriorityTarget { get }
+    var multiplier: ConstraintMultiplierTarget { get }
 }
 
 public extension AnchorLayoutBuilderConstraint {
     var comparisonType: ConstraintComparisonType { .equal }
+
     var priority: ConstraintPriorityTarget { 999 }
+
+    var multiplier: ConstraintMultiplierTarget { 1 }
 
     func priority(_ priority: UILayoutPriority) -> AnchorLayoutBuilderConstraint {
         var mutable = MutableAnchorLayoutBuilderConstraint(self)
         mutable.priority = priority
         return mutable
     }
-    
+
+    func multiplied(by multiplier: ConstraintMultiplierTarget) -> AnchorLayoutBuilderConstraint {
+        var mutable = MutableAnchorLayoutBuilderConstraint(self)
+        mutable.multiplier = multiplier
+        return mutable
+    }
+
     var orLess: AnchorLayoutBuilderConstraint {
         var mutable = MutableAnchorLayoutBuilderConstraint(self)
         mutable.comparisonType = ConstraintComparisonType.less
@@ -55,22 +65,24 @@ public struct MutableAnchorLayoutBuilderConstraint: AnchorLayoutBuilderConstrain
     public var inset: AnchorLayoutBuilderConstraintInset?
     public var comparisonType: ConstraintComparisonType
     public var priority: ConstraintPriorityTarget
+    public var multiplier: ConstraintMultiplierTarget
 
-    public init(target: ConstraintRelatableTarget, inset: AnchorLayoutBuilderConstraintInset? = nil, comparisonType: ConstraintComparisonType, priority: ConstraintPriorityTarget) {
+    public init(target: ConstraintRelatableTarget, inset: AnchorLayoutBuilderConstraintInset? = nil, comparisonType: ConstraintComparisonType, priority: ConstraintPriorityTarget, multiplier: ConstraintMultiplierTarget) {
         self.target = target
         self.inset = inset
         self.comparisonType = comparisonType
         self.priority = priority
+        self.multiplier = multiplier
     }
 
     public init(_ constraint: AnchorLayoutBuilderConstraint) {
-        self.init(target: constraint.target, inset: constraint.inset, comparisonType: constraint.comparisonType, priority: constraint.priority)
+        self.init(target: constraint.target, inset: constraint.inset, comparisonType: constraint.comparisonType, priority: constraint.priority, multiplier: constraint.multiplier)
     }
 }
 
 public prefix func -(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilderConstraint {
     var mutable = MutableAnchorLayoutBuilderConstraint(constraint)
-    mutable.inset = constraint.inset.flatMap({ -$0.value }) ?? constraint.inset
+    mutable.inset = constraint.inset.map({ -$0.value })
     return mutable
 }
 
