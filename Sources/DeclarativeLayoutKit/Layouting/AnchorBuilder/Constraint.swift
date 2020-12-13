@@ -28,13 +28,13 @@ public extension AnchorLayoutBuilderConstraint {
     
     var orLess: AnchorLayoutBuilderConstraint {
         var mutable = MutableAnchorLayoutBuilderConstraint(self)
-        mutable.comparisonType = .less
+        mutable.comparisonType = ConstraintComparisonType.less
         return mutable
     }
 
     var orGreater: AnchorLayoutBuilderConstraint {
         var mutable = MutableAnchorLayoutBuilderConstraint(self)
-        mutable.comparisonType = .greater
+        mutable.comparisonType = ConstraintComparisonType.greater
         return mutable
     }
 }
@@ -90,17 +90,17 @@ extension ConstraintMakerExtendable {
         let anchor: ConstraintRelatableTarget? = anotherAnchor is SuperviewConstraintTarget ? nil : anotherAnchor
 
         switch (anchor, option) {
-        case (nil, .equal):
+        case (nil, ConstraintComparisonType.equal):
             return self.equalToSuperview()
-        case (nil, .less):
+        case (nil, ConstraintComparisonType.less):
             return self.lessThanOrEqualToSuperview()
-        case (nil, .greater):
+        case (nil, ConstraintComparisonType.greater):
             return self.greaterThanOrEqualToSuperview()
-        case (.some(let another), .equal):
+        case (Optional.some(let another), ConstraintComparisonType.equal):
             return self.equalTo(another)
-        case (.some(let another), .less):
+        case (Optional.some(let another), ConstraintComparisonType.less):
             return self.lessThanOrEqualTo(another)
-        case (.some(let another), .greater):
+        case (Optional.some(let another), ConstraintComparisonType.greater):
             return self.greaterThanOrEqualTo(another)
         }
     }

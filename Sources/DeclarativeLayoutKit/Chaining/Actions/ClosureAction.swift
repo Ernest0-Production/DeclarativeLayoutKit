@@ -11,9 +11,9 @@ import Foundation
 final class ClosureAction {
     private let closure: () -> ()
 
-    init(attachTo: AnyObject, closure: @escaping () -> ()) {
+    init(attachTo target: AnyObject, closure: @escaping () -> ()) {
         self.closure = closure
-        objc_setAssociatedObject(attachTo, "[\(arc4random())]", self, .OBJC_ASSOCIATION_RETAIN)
+        objc_setAssociatedObject(target, "[\(arc4random())]", self, .OBJC_ASSOCIATION_RETAIN)
     }
 
     @objc

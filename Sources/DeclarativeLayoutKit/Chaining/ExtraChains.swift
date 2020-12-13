@@ -172,9 +172,9 @@ public extension UIButton {
 }
 
 public func HStackView(_ views: [UIView]) -> UIStackView {
-    UIStackView(arrangedSubviews: views).axis(.horizontal)
+    UIStackView(arrangedSubviews: views).axis(NSLayoutConstraint.Axis.horizontal)
 }
 
 public func VStackView(_ views: [UIView]) -> UIStackView {
-    UIStackView(arrangedSubviews: views).axis(.vertical)
+    UIStackView(arrangedSubviews: views).axis(NSLayoutConstraint.Axis.vertical)
 }
