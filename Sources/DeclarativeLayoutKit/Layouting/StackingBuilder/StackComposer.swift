@@ -28,7 +28,7 @@ public func VStack(@ArrayBuilder<VerticalStackingLayoutBuilderConvertible> build
 }
 
 private extension UIView {
-    func stack<Axis>(builders: [StackingLayoutBuilder<Axis>],
+    func stack<Axis: StackAxis>(builders: [StackingLayoutBuilder<Axis>],
                      acrossAxis: AnchorKeyPath,
                      firstSide: AnchorKeyPath,
                      secondSide: AnchorKeyPath,
@@ -54,14 +54,24 @@ private extension UIView {
 
                 let next: ConstraintMakerEditable
 
-                next = maker[keyPath: beforeAnchor].equalTo((previousBuilder?.view.ui.snp.bottom ?? self))
+                switch (Axis.self, previousBuilder) {
+                case (is HorizontalStackAxis.Type, Optional.some(let previous)):
+                    next = maker[keyPath: beforeAnchor].equalTo((previous.view.ui.snp.right))
+                case (is VerticalStackAxis.Type, Optional.some(let previous)):
+                    next = maker[keyPath: beforeAnchor].equalTo((previous.view.ui.snp.bottom))
+                case (_, Optional.none):
+                    next = maker[keyPath: beforeAnchor].equalToSuperview()
+                default:
+                    preconditionFailure("Unavailable Stack Axis Type - \(Axis.self)")
+                }
 
-                if (builders.count - 1) == index {
+                if index == (builders.count - 1) {
                     maker[keyPath: afterAnchor].equalToSuperview().inset(builder.afterSpace.value).priority(builder.afterSpace.priority)
                 }
 
                 if index == Int.zero {
-                    next.inset(builder.beforeSpace.value).priority(builder.beforeSpace.priority)
+                    next.inset(builder.beforeSpace.value)
+                        .priority(builder.beforeSpace.priority)
                 } else if let previousBuilder = previousBuilder {
                     next.inset(-[previousBuilder.afterSpace.value, builder.beforeSpace.value].reduce(0, +))
                         .priority([previousBuilder.afterSpace.priority, builder.beforeSpace.priority].max()!)

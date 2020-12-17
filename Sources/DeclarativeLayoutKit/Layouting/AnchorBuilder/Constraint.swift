@@ -99,7 +99,7 @@ extension ConstraintMakerExtendable {
     }
 
     func equalToFallbackingSuperview(_ anotherAnchor: ConstraintRelatableTarget, option: ConstraintComparisonType = .equal) -> ConstraintMakerEditable {
-        let anchor: ConstraintRelatableTarget? = anotherAnchor is SuperviewConstraintTarget ? nil : anotherAnchor
+        let anchor: ConstraintRelatableTarget? = (anotherAnchor is SuperviewConstraintTarget) ? nil : anotherAnchor
 
         switch (anchor, option) {
         case (nil, ConstraintComparisonType.equal):
