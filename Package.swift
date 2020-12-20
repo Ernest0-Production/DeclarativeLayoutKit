@@ -19,6 +19,8 @@ let package = Package(
         .target(name: "Layouting", dependencies: ["SnapKit"], path: "Sources/DeclarativeLayoutKit/Layouting"),
         .target(name: "Chaining", path: "Sources/DeclarativeLayoutKit/Chaining"),
         .target(name: "Styling", path: "Sources/DeclarativeLayoutKit/Styling"),
+
+        .testTarget(name: "LayoutingTests", dependencies: ["Layouting"]),
     ],
     swiftLanguageVersions: [.v5]
 )
