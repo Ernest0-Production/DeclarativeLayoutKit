@@ -170,11 +170,3 @@ public extension UIButton {
         return self
     }
 }
-
-public func HStackView(_ views: [UIView]) -> UIStackView {
-    UIStackView(arrangedSubviews: views).axis(NSLayoutConstraint.Axis.horizontal)
-}
-
-public func VStackView(_ views: [UIView]) -> UIStackView {
-    UIStackView(arrangedSubviews: views).axis(NSLayoutConstraint.Axis.vertical)
-}
