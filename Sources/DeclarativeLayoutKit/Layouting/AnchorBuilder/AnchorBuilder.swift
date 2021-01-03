@@ -32,7 +32,7 @@ public final class AnchorLayoutBuilder {
 
         afterBuild()
 
-        // For prevent build duplicating
+        // For prevent previous constraints duplicating
         constraintMakers.removeAll()
         afterBuild = {}
 
@@ -59,15 +59,18 @@ extension AnchorLayoutBuilder: ViewComposer, View {
 
     public var ui: UIView { view }
 
-    public func didMoveToSuperView() { build() }
+    public func didMoveToSuperView() {
+        build()
+        view.didMoveToSuperView()
+    }
 }
 
-extension AnchorLayoutBuilder: StackingLayoutBuilderConvertible {
-    public func asStackingLayoutBuilder() -> StackingLayoutBuilder<VerticalStackAxis> {
-        StackingLayoutBuilder<VerticalStackAxis>(view: self)
+extension AnchorLayoutBuilder: HorizontalStackItemConvertable, VerticalStackItemConvertable {
+    public func asStackItem() -> StackItemView<HorizontalStackAxis> {
+        StackItemView<HorizontalStackAxis>(self)
     }
 
-    public func asStackingLayoutBuilder() -> StackingLayoutBuilder<HorizontalStackAxis> {
-        StackingLayoutBuilder<HorizontalStackAxis>(view: self)
+    public func asStackItem() -> StackItemView<VerticalStackAxis> {
+        StackItemView<VerticalStackAxis>(self)
     }
 }
