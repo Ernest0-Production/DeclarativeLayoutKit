@@ -65,12 +65,12 @@ extension AnchorLayoutBuilder: ViewComposer, View {
     }
 }
 
-extension AnchorLayoutBuilder: HorizontalStackItemConvertable, VerticalStackItemConvertable {
-    public func asStackItem() -> StackItemView<HorizontalStackAxis> {
-        StackItemView<HorizontalStackAxis>(self)
+extension AnchorLayoutBuilder: HorizontalStackBuilderItemConvertable, VerticalStackBuilderItemConvertable {
+    public func asStackBuilderItem() -> StackBuilderItemView<HorizontalStackAxis> {
+        StackBuilderItemView<HorizontalStackAxis>(self)
     }
 
-    public func asStackItem() -> StackItemView<VerticalStackAxis> {
-        StackItemView<VerticalStackAxis>(self)
+    public func asStackBuilderItem() -> StackBuilderItemView<VerticalStackAxis> {
+        StackBuilderItemView<VerticalStackAxis>(self)
     }
 }

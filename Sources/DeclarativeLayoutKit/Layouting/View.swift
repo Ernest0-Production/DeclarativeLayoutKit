@@ -14,8 +14,6 @@ public protocol View {
     func didMoveToSuperView()
 }
 
-typealias SubviewsBuilder = ArrayBuilder<View>
-
 public protocol ViewComposer {
     @discardableResult
     func add(@SubviewsBuilder _ subviews: () -> [View]) -> Self
@@ -40,4 +38,19 @@ extension UIView: ViewComposer, View {
     public var ui: UIView { self }
 
     public func didMoveToSuperView() {}
+}
+
+@_functionBuilder
+public struct SubviewsBuilder {
+    public static func buildBlock( _ subviews: [View]) -> [View] {
+        subviews
+    }
+
+    public static func buildBlock( _ subviews: View...) -> [View] {
+        subviews
+    }
+
+    public static func buildBlock( _ subview: View) -> [View] {
+        [subview]
+    }
 }

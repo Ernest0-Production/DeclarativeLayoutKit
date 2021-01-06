@@ -28,9 +28,10 @@ public extension Chainable {
 
     @inlinable
     @discardableResult
-    func applying(_ transform: (Self) -> Void) -> Self {
-        transform(self)
-        return self
+    func applying(_ transform: (inout Self) -> Void) -> Self {
+        var copy = self
+        transform(&copy)
+        return copy
     }
 
     func assign<T>(to variable: inout T) -> Self {

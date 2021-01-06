@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  UIView_Gesture.swift
 //  
 //
 //  Created by Бабаян Эрнест on 04.12.2020.
@@ -18,7 +18,6 @@ public extension UIView {
 
         let action = ClosureAction(attachTo: self, closure: action)
         addGestureRecognizer(UITapGestureRecognizer(target: action, action: ClosureAction.selector))
-
         return self
     }
 

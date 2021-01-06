@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  UIStackViewBuilder.swift
 //  
 //
 //  Created by Бабаян Эрнест on 03.01.2021.
@@ -9,19 +9,21 @@ import UIKit
 
 
 public func HStackView(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
-    let stack = UIStackView().axis(NSLayoutConstraint.Axis.horizontal)
+    let stack = UIStackView()
+    stack.axis = NSLayoutConstraint.Axis.horizontal
     stack.add(elements: elements)
     return stack
 }
 
-
 public func VStackView(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
-    let stack = UIStackView().axis(NSLayoutConstraint.Axis.vertical)
+    let stack = UIStackView()
+    stack.axis = NSLayoutConstraint.Axis.vertical
     stack.add(elements: elements)
     return stack
 }
 
 public extension UIStackView {
+    /// Rewrite arrangedSubiews
     func set(elements: [UIStackViewElementConvertable]) {
         for subview in arrangedSubviews {
             removeArrangedSubview(subview)
@@ -35,7 +37,7 @@ public extension UIStackView {
         var lastAddedView: UIView?
 
         for element in elements {
-            switch element.asUIStackElement() {
+            switch element.asUIStackViewElement() {
             case UIStackViewElement.space(let space):
                 if #available(iOS 11.0, *), let view = lastAddedView {
                     setCustomSpacing(space, after: view)
@@ -56,24 +58,24 @@ public enum UIStackViewElement {
 }
 
 public protocol UIStackViewElementConvertable {
-    func asUIStackElement() -> UIStackViewElement
+    func asUIStackViewElement() -> UIStackViewElement
 }
 
 extension UIView: UIStackViewElementConvertable {
-    public func asUIStackElement() -> UIStackViewElement {
+    public func asUIStackViewElement() -> UIStackViewElement {
         UIStackViewElement.arranged(self)
     }
 }
 
 @available(iOS 11.0, *)
-public struct UIStackSpace: UIStackViewElementConvertable {
+public struct UIStackViewSpace: UIStackViewElementConvertable {
     let value: CGFloat
 
     public init(_ value: CGFloat) {
         self.value = value
     }
 
-    public func asUIStackElement() -> UIStackViewElement {
+    public func asUIStackViewElement() -> UIStackViewElement {
         UIStackViewElement.space(value)
     }
 }

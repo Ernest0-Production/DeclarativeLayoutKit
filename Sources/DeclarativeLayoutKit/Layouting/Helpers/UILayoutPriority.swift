@@ -8,8 +8,6 @@
 import UIKit
 
 
-extension UILayoutPriority: ExpressibleByIntegerLiteral {
-    public init(integerLiteral value: Int) {
-        self.init(rawValue: Float(value))
-    }
+public extension UILayoutPriority {
+    static var almostRequired: UILayoutPriority { UILayoutPriority(999) }
 }

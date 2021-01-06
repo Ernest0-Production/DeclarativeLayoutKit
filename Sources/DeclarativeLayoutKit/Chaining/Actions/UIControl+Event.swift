@@ -13,7 +13,7 @@ public extension UIControl {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func addAction(for controlEvents: UIControl.Event, overwrite: Bool = false, _ action: @escaping () -> ()) -> Self {
+    func addAction(for controlEvents: UIControl.Event, overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
         if overwrite {
             removeTarget(nil, action: nil, for: controlEvents)
         }
@@ -29,7 +29,7 @@ public extension UIButton {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func onTap(overwrite: Bool = false, _ action: @escaping () -> ()) -> Self {
+    func onTap(overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
         addAction(for: UIControl.Event.touchUpInside, overwrite: overwrite, action)
         return self
     }
@@ -40,7 +40,7 @@ public extension UISwitch {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func onSwitch(overwrite: Bool = false, _ action: @escaping () -> ()) -> Self {
+    func onSwitch(overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
         addAction(for: UIControl.Event.valueChanged, overwrite: overwrite, action)
         return self
     }
@@ -51,7 +51,7 @@ public extension UISlider {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func onChange(overwrite: Bool = false, _ action: @escaping () -> ()) -> Self {
+    func onChange(overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
         addAction(for: UIControl.Event.valueChanged, overwrite: overwrite, action)
         return self
     }
@@ -62,7 +62,7 @@ public extension UITextField {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func onTextChanged(overwrite: Bool = false, _ action: @escaping () -> ()) -> Self {
+    func onTextChanged(overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
         addAction(for: UIControl.Event.editingChanged, overwrite: overwrite, action)
         return self
     }

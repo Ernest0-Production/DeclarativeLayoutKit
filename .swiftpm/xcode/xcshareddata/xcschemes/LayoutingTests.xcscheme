@@ -9,23 +9,9 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DeclarativeLayoutKit/Layouting"
-               BuildableName = "DeclarativeLayoutKit/Layouting"
-               BlueprintName = "DeclarativeLayoutKit/Layouting"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
+            buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "LayoutingTests"
@@ -74,9 +60,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DeclarativeLayoutKit/Layouting"
-            BuildableName = "DeclarativeLayoutKit/Layouting"
-            BlueprintName = "DeclarativeLayoutKit/Layouting"
+            BlueprintIdentifier = "LayoutingTests"
+            BuildableName = "LayoutingTests"
+            BlueprintName = "LayoutingTests"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

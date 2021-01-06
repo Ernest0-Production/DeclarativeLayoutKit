@@ -12,7 +12,7 @@ public final class ViewStyle<Target: ViewStyleCompatible> {
         self.handler = handler
     }
 
-    func apply(into target: Target) {
+    public func apply(into target: Target) {
         handler(target)
     }
 }
@@ -25,7 +25,7 @@ public extension ViewStyle {
 
 public extension Sequence {
     func merge<Target: ViewStyleCompatible>() -> ViewStyle<Target> where Element == ViewStyle<Target>{
-        ViewStyle<Target>({ target in
+        ViewStyle<Target>({ (target: Target) in
             for style in self {
                 style.apply(into: target)
             }

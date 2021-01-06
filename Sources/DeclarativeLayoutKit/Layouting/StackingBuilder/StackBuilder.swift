@@ -10,34 +10,28 @@ import SnapKit
 
 @_functionBuilder
 public struct StackBuilder<Axis: StackAxis> {
-    public typealias Element = StackElement<Axis>
+    public typealias Element = StackBuilderElement<Axis>
 
-    public static func buildBlock( _ elements: [Element]) -> [Element] {
-        elements
+    public static func buildBlock( _ elements: [Element]) -> [Element] { elements }
+
+    public static func buildBlock( _ elements: Element...) -> [Element] { elements }
+
+    public static func buildBlock( _ element: Element) -> [Element] { [element] }
+
+    public static func buildExpression(_ convertible: HorizontalStackBuilderItemConvertable) -> StackBuilderElement<HorizontalStackAxis> {
+        StackBuilderElement<HorizontalStackAxis>.item(convertible.asStackBuilderItem())
     }
 
-    public static func buildBlock( _ elements: Element...) -> [Element] {
-        elements
+    public static func buildExpression(_ convertible: VerticalStackBuilderItemConvertable) -> StackBuilderElement<VerticalStackAxis> {
+        StackBuilderElement<VerticalStackAxis>.item(convertible.asStackBuilderItem())
     }
 
-    public static func buildBlock( _ element: Element) -> [Element] {
-        [element]
-    }
-
-    public static func buildExpression(_ convertible: HorizontalStackItemConvertable) -> StackElement<HorizontalStackAxis> {
-        StackElement<HorizontalStackAxis>.item(convertible.asStackItem())
-    }
-
-    public static func buildExpression(_ convertible: VerticalStackItemConvertable) -> StackElement<VerticalStackAxis> {
-        StackElement<VerticalStackAxis>.item(convertible.asStackItem())
-    }
-
-    public static func buildExpression(_ space: StackSpace) -> StackElement<Axis> {
-        StackElement<Axis>.space(space)
+    public static func buildExpression(_ space: StackSpace) -> StackBuilderElement<Axis> {
+        StackBuilderElement<Axis>.space(space)
     }
 }
 
-public func HStack(@StackBuilder<HorizontalStackAxis> _ builderConvertibles: () -> [StackElement<HorizontalStackAxis>]) -> UIView {
+public func HStack(@StackBuilder<HorizontalStackAxis> _ builderConvertibles: () -> [StackBuilderElement<HorizontalStackAxis>]) -> UIView {
     UIView().stack(builders: builderConvertibles(),
                    acrossAxis: \.centerY,
                    firstSide: \.top,
@@ -46,7 +40,7 @@ public func HStack(@StackBuilder<HorizontalStackAxis> _ builderConvertibles: () 
                    beforeAnchor: \.left)
 }
 
-public func VStack(@StackBuilder<VerticalStackAxis> _ builderConvertibles: () -> [StackElement<VerticalStackAxis>]) -> UIView {
+public func VStack(@StackBuilder<VerticalStackAxis> _ builderConvertibles: () -> [StackBuilderElement<VerticalStackAxis>]) -> UIView {
     UIView().stack(builders: builderConvertibles(),
                    acrossAxis: \.centerX,
                    firstSide: \.left,
@@ -56,18 +50,18 @@ public func VStack(@StackBuilder<VerticalStackAxis> _ builderConvertibles: () ->
 }
 
 private extension UIView {
-    func stack<Axis: StackAxis>(builders: [StackElement<Axis>],
+    func stack<Axis: StackAxis>(builders: [StackBuilderElement<Axis>],
                                 acrossAxis: AnchorKeyPath,
                                 firstSide: AnchorKeyPath,
                                 secondSide: AnchorKeyPath,
                                 afterAnchor: AnchorKeyPath,
                                 beforeAnchor: AnchorKeyPath) -> UIView {
-        var previousItem: StackItemView<Axis>?
+        var previousItem: StackBuilderItemView<Axis>?
         var nextSpace: StackSpace?
         var lastSpace: StackSpace?
 
         mainLoop: for element in builders {
-            var item: StackItemView<Axis>!
+            var item: StackBuilderItemView<Axis>!
 
             switch element {
             case .space(let space):
@@ -91,7 +85,7 @@ private extension UIView {
                 }
 
                 if [item.alignment.first, item.alignment.second].allSatisfy({ $0 == nil }) {
-                    maker[keyPath: acrossAxis].equalToSuperview().priority(999)
+                    maker[keyPath: acrossAxis].equalToSuperview().priority(UILayoutPriority.almostRequired)
                 }
 
                 var next: ConstraintMakerEditable
@@ -111,7 +105,8 @@ private extension UIView {
                     preconditionFailure("Unavailable Stack Axis Type - \(Axis.self)")
                 }
 
-                next.offset(nextSpace?.value ?? CGFloat.zero).priority(nextSpace?.priority ?? 999)
+                next.offset(nextSpace?.value ?? CGFloat.zero)
+                    .priority(nextSpace?.priority ?? UILayoutPriority.almostRequired)
 
                 previousItem = item
                 nextSpace = nil
@@ -120,13 +115,25 @@ private extension UIView {
 
         switch (Axis.self, previousItem) {
         case (is HorizontalStackAxis.Type, Optional.some(let item)):
-            item.view.ui.layout({
-                $0.right.equalToSuperview().inset(lastSpace?.value ?? CGFloat.zero).priority(lastSpace?.priority ?? 999)
-            }).build()
+            item.view.ui
+                .layout({
+                    $0.right
+                        .equalToSuperview()
+                        .inset(lastSpace?.value ?? CGFloat.zero)
+                        .priority(lastSpace?.priority ?? UILayoutPriority.almostRequired)
+                })
+                .build()
+
         case (is VerticalStackAxis.Type, Optional.some(let item)):
-            item.view.ui.layout({
-                $0.bottom.equalToSuperview().inset(lastSpace?.value ?? CGFloat.zero).priority(lastSpace?.priority ?? 999)
-            }).build()
+            item.view.ui
+                .layout({
+                    $0.bottom
+                        .equalToSuperview()
+                        .inset(lastSpace?.value ?? CGFloat.zero)
+                        .priority(lastSpace?.priority ?? UILayoutPriority.almostRequired)
+                })
+                .build()
+
         default:
             break
         }

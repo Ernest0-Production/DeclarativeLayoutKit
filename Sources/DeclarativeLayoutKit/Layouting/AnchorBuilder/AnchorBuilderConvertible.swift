@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  AnchorLayoutBuilderConvertible.swift
 //  
 //
 //  Created by Ernest0N on 15.10.2020.
@@ -36,7 +36,7 @@ public extension AnchorLayoutBuilderConvertible {
     }
 
     /// heightAnchor + widthAnchor
-    func sizeAnchor(_ size: CGSize, priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
+    func sizeAnchor(_ size: CGSize, priority: UILayoutPriority = .almostRequired) -> AnchorLayoutBuilder {
         heightAnchor(size.height).widthAnchor(size.width)
     }
 
@@ -54,7 +54,7 @@ public extension AnchorLayoutBuilderConvertible {
     /// left + right + top _ bottom anchors
     func edgesAnchors(_ insets: UIEdgeInsets = .zero,
                       to target: ConstraintRelatableTarget = SuperviewConstraintTarget(),
-                      priority: UILayoutPriority = 999) -> AnchorLayoutBuilder {
+                      priority: UILayoutPriority = .almostRequired) -> AnchorLayoutBuilder {
         layout({ (maker: ConstraintMaker) -> Void in
             maker.edges.equalToFallbackingSuperview(target).inset(insets).priority(priority)
         })

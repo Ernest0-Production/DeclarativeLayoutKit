@@ -20,7 +20,7 @@ public protocol AnchorLayoutBuilderConstraint {
 public extension AnchorLayoutBuilderConstraint {
     var comparisonType: ConstraintComparisonType { .equal }
 
-    var priority: ConstraintPriorityTarget { 999 }
+    var priority: ConstraintPriorityTarget { UILayoutPriority.almostRequired }
 
     var multiplier: ConstraintMultiplierTarget { 1 }
 

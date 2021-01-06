@@ -1,5 +1,5 @@
 //
-//  StackItemView.swift
+//  StackBuilderItemView.swift
 //  
 //
 //  Created by Ernest0N on 14.10.2020.
@@ -12,7 +12,7 @@ public protocol StackAxis {}
 public enum VerticalStackAxis: StackAxis {}
 public enum HorizontalStackAxis: StackAxis {}
 
-public struct StackItemView<Axis: StackAxis> {
+public struct StackBuilderItemView<Axis: StackAxis> {
     let view: View & ViewComposer
     let alignment: Alignment
 
@@ -22,7 +22,7 @@ public struct StackItemView<Axis: StackAxis> {
     }
 }
 
-public extension StackItemView {
+public extension StackBuilderItemView {
     struct Alignment {
         let first: AnchorLayoutBuilderConstraint?
         let second: AnchorLayoutBuilderConstraint?
@@ -61,21 +61,21 @@ public extension StackItemView {
     }
 }
 
-public extension HorizontalStackItemConvertable {
+public extension HorizontalStackBuilderItemConvertable {
     // Arranged view distribution in transverse axis
-    func verticalAlignment(_ layout: StackItemView<HorizontalStackAxis>.Alignment) -> StackItemView<HorizontalStackAxis> {
-        StackItemView(asStackItem(), alignment: layout)
+    func verticalAlignment(_ layout: StackBuilderItemView<HorizontalStackAxis>.Alignment) -> StackBuilderItemView<HorizontalStackAxis> {
+        StackBuilderItemView(asStackBuilderItem(), alignment: layout)
     }
 }
 
-public extension VerticalStackItemConvertable {
+public extension VerticalStackBuilderItemConvertable {
     // Arranged view distribution in transverse axis
-    func horizontalAlignment(_ layout: StackItemView<VerticalStackAxis>.Alignment) -> StackItemView<VerticalStackAxis> {
-        StackItemView(asStackItem(), alignment: layout)
+    func horizontalAlignment(_ layout: StackBuilderItemView<VerticalStackAxis>.Alignment) -> StackBuilderItemView<VerticalStackAxis> {
+        StackBuilderItemView(asStackBuilderItem(), alignment: layout)
     }
 }
 
-extension StackItemView: ViewComposer, View {
+extension StackBuilderItemView: ViewComposer, View {
     public func add(_ subviews: () -> [View]) -> Self {
         view.add(subviews)
         return self
@@ -89,28 +89,28 @@ extension StackItemView: ViewComposer, View {
 }
 
 
-public protocol HorizontalStackItemConvertable {
-    func asStackItem() -> StackItemView<HorizontalStackAxis>
+public protocol HorizontalStackBuilderItemConvertable {
+    func asStackBuilderItem() -> StackBuilderItemView<HorizontalStackAxis>
 }
 
-public protocol VerticalStackItemConvertable {
-    func asStackItem() -> StackItemView<VerticalStackAxis>
+public protocol VerticalStackBuilderItemConvertable {
+    func asStackBuilderItem() -> StackBuilderItemView<VerticalStackAxis>
 }
 
-extension StackItemView: HorizontalStackItemConvertable where Axis == HorizontalStackAxis {
-    public func asStackItem() -> StackItemView<HorizontalStackAxis> { self }
+extension StackBuilderItemView: HorizontalStackBuilderItemConvertable where Axis == HorizontalStackAxis {
+    public func asStackBuilderItem() -> StackBuilderItemView<HorizontalStackAxis> { self }
 }
 
-extension StackItemView: VerticalStackItemConvertable where Axis == VerticalStackAxis {
-    public func asStackItem() -> StackItemView<VerticalStackAxis> { self }
+extension StackBuilderItemView: VerticalStackBuilderItemConvertable where Axis == VerticalStackAxis {
+    public func asStackBuilderItem() -> StackBuilderItemView<VerticalStackAxis> { self }
 }
 
-extension UIView: HorizontalStackItemConvertable, VerticalStackItemConvertable {
-    public func asStackItem() -> StackItemView<HorizontalStackAxis> {
-        StackItemView<HorizontalStackAxis>(self)
+extension UIView: HorizontalStackBuilderItemConvertable, VerticalStackBuilderItemConvertable {
+    public func asStackBuilderItem() -> StackBuilderItemView<HorizontalStackAxis> {
+        StackBuilderItemView<HorizontalStackAxis>(self)
     }
 
-    public func asStackItem() -> StackItemView<VerticalStackAxis> {
-        StackItemView<VerticalStackAxis>(self)
+    public func asStackBuilderItem() -> StackBuilderItemView<VerticalStackAxis> {
+        StackBuilderItemView<VerticalStackAxis>(self)
     }
 }
