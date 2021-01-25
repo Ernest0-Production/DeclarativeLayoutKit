@@ -30,7 +30,7 @@ public extension UIView {
 
     @discardableResult
     func hugging(x: UILayoutPriority, y: UILayoutPriority) -> Self {
-        return hugging(x: x).hugging(y: y)
+        hugging(x: x).hugging(y: y)
     }
 
     @discardableResult
@@ -47,12 +47,12 @@ public extension UIView {
 
     @discardableResult
     func compression(_ both: UILayoutPriority) -> Self {
-        return compression(x: both, y: both)
+        compression(x: both, y: both)
     }
 
     @discardableResult
     func compression(x: UILayoutPriority, y: UILayoutPriority) -> Self {
-        return compression(x: x).hugging(y: y)
+        compression(x: x).hugging(y: y)
     }
 
     // MARK: - Layer
@@ -102,6 +102,56 @@ public extension UIView {
     @discardableResult
     func shadowOffset(_ newValue: CGSize) -> Self {
         self.layer.shadowOffset = newValue
+        return self
+    }
+
+    // MARK: - Frame
+
+    @discardableResult
+    func frameSize(_ newValue: CGSize) -> Self {
+        self.frame.size = newValue
+        return self
+    }
+
+    @discardableResult
+    func frameWidth(_ newValue: CGFloat) -> Self {
+        self.frame.size.width = newValue
+        return self
+    }
+
+    @discardableResult
+    func frameHeight(_ newValue: CGFloat) -> Self {
+        self.frame.size.height = newValue
+        return self
+    }
+
+    @discardableResult
+    func frameOrigin(_ newValue: CGPoint) -> Self {
+        self.frame.origin = newValue
+        return self
+    }
+
+    @discardableResult
+    func boundsSize(_ newValue: CGSize) -> Self {
+        self.bounds.size = newValue
+        return self
+    }
+
+    @discardableResult
+    func boundsWidth(_ newValue: CGFloat) -> Self {
+        self.bounds.size.width = newValue
+        return self
+    }
+
+    @discardableResult
+    func boundsHeight(_ newValue: CGFloat) -> Self {
+        self.bounds.size.height = newValue
+        return self
+    }
+
+    @discardableResult
+    func boundsOrigin(_ newValue: CGPoint) -> Self {
+        self.bounds.origin = newValue
         return self
     }
 }
