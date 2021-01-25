@@ -12,11 +12,7 @@ import SnapKit
 public struct StackBuilder<Axis: StackAxis> {
     public typealias Element = StackBuilderElement<Axis>
 
-    public static func buildBlock( _ elements: [Element]) -> [Element] { elements }
-
     public static func buildBlock( _ elements: Element...) -> [Element] { elements }
-
-    public static func buildBlock( _ element: Element) -> [Element] { [element] }
 
     public static func buildExpression(_ convertible: HorizontalStackBuilderItemConvertable) -> StackBuilderElement<HorizontalStackAxis> {
         StackBuilderElement<HorizontalStackAxis>.item(convertible.asStackBuilderItem())
