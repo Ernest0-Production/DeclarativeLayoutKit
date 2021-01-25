@@ -19,15 +19,6 @@ public extension Chainable {
 
     @inlinable
     @discardableResult
-    func optionalSetting<Value>(_ keyPath: ReferenceWritableKeyPath<Self, Value>, to value: Value?) -> Self {
-        if let value = value {
-            self[keyPath: keyPath] = value
-        }
-        return self
-    }
-
-    @inlinable
-    @discardableResult
     func applying(_ transform: (inout Self) -> Void) -> Self {
         var copy = self
         transform(&copy)
