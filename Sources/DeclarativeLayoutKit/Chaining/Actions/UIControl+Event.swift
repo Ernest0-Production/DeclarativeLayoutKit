@@ -40,8 +40,12 @@ public extension UISwitch {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func onSwitch(overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
-        addAction(for: UIControl.Event.valueChanged, overwrite: overwrite, action)
+    func onSwitch(overwrite: Bool = false, _ action: @escaping (Bool) -> Void) -> Self {
+        addAction(
+            for: UIControl.Event.valueChanged,
+            overwrite: overwrite,
+            { [unowned self] in action(isOn) }
+        )
         return self
     }
 }
@@ -51,8 +55,12 @@ public extension UISlider {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func onChange(overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
-        addAction(for: UIControl.Event.valueChanged, overwrite: overwrite, action)
+    func onChange(overwrite: Bool = false, _ action: @escaping (Float) -> Void) -> Self {
+        addAction(
+            for: UIControl.Event.valueChanged,
+            overwrite: overwrite,
+            { [unowned self] in action(value) }
+        )
         return self
     }
 }
@@ -62,8 +70,12 @@ public extension UITextField {
     /// - Parameters:
     ///   - overwrite: if true - remove previous targets for current event.
     @discardableResult
-    func onTextChanged(overwrite: Bool = false, _ action: @escaping () -> Void) -> Self {
-        addAction(for: UIControl.Event.editingChanged, overwrite: overwrite, action)
+    func onTextChanged(overwrite: Bool = false, _ action: @escaping (String?) -> Void) -> Self {
+        addAction(
+            for: UIControl.Event.editingChanged,
+            overwrite: overwrite,
+            { [unowned self] in  action(text) }
+        )
         return self
     }
 }
