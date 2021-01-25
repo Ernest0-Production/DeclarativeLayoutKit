@@ -7,6 +7,6 @@
 
 
 public enum StackBuilderElement<Axis: StackAxis> {
-    case space(StackSpace)
+    case space(StackBuilderSpace)
     case item(StackBuilderItemView<Axis>)
 }

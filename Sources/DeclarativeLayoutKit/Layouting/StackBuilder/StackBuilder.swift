@@ -26,12 +26,12 @@ public struct StackBuilder<Axis: StackAxis> {
         StackBuilderElement<VerticalStackAxis>.item(convertible.asStackBuilderItem())
     }
 
-    public static func buildExpression(_ space: StackSpace) -> StackBuilderElement<Axis> {
+    public static func buildExpression(_ space: StackBuilderSpace) -> StackBuilderElement<Axis> {
         StackBuilderElement<Axis>.space(space)
     }
 }
 
-public func HStack(@StackBuilder<HorizontalStackAxis> _ builderConvertibles: () -> [StackBuilderElement<HorizontalStackAxis>]) -> UIView {
+public func HStackBuilder(@StackBuilder<HorizontalStackAxis> _ builderConvertibles: () -> [StackBuilderElement<HorizontalStackAxis>]) -> UIView {
     UIView().stack(builders: builderConvertibles(),
                    acrossAxis: \.centerY,
                    firstSide: \.top,
@@ -40,7 +40,7 @@ public func HStack(@StackBuilder<HorizontalStackAxis> _ builderConvertibles: () 
                    beforeAnchor: \.left)
 }
 
-public func VStack(@StackBuilder<VerticalStackAxis> _ builderConvertibles: () -> [StackBuilderElement<VerticalStackAxis>]) -> UIView {
+public func VStackBuilder(@StackBuilder<VerticalStackAxis> _ builderConvertibles: () -> [StackBuilderElement<VerticalStackAxis>]) -> UIView {
     UIView().stack(builders: builderConvertibles(),
                    acrossAxis: \.centerX,
                    firstSide: \.left,
@@ -57,8 +57,8 @@ private extension UIView {
                                 afterAnchor: AnchorKeyPath,
                                 beforeAnchor: AnchorKeyPath) -> UIView {
         var previousItem: StackBuilderItemView<Axis>?
-        var nextSpace: StackSpace?
-        var lastSpace: StackSpace?
+        var nextSpace: StackBuilderSpace?
+        var lastSpace: StackBuilderSpace?
 
         mainLoop: for element in builders {
             var item: StackBuilderItemView<Axis>!

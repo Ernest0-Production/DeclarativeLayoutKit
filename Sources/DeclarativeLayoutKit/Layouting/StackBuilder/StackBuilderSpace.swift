@@ -1,5 +1,5 @@
 //
-//  StackSpace.swift
+//  StackBuilderSpace.swift
 //  
 //
 //  Created by Бабаян Эрнест on 03.01.2021.
@@ -8,7 +8,7 @@
 import UIKit
 
 
-public struct StackSpace {
+public struct StackBuilderSpace {
     let value: CGFloat
     let priority: UILayoutPriority
 
