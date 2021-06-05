@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "DeclarativeLayoutKit",
-    platforms: [.iOS(.v10)],
+    platforms: [.iOS(.v11)],
     products: [
         .library(name: "DeclarativeLayoutKit", targets: ["Layouting", "Chaining"]),
         .library(name: "DeclarativeLayoutKit/Layouting", targets: ["Layouting"]),
