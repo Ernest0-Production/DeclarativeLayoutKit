@@ -36,5 +36,5 @@ public extension Chainable {
     }
 }
 
-extension UIView: Chainable {}
+extension NSObject: Chainable {}
 extension Optional: Chainable where Wrapped: Chainable {}
