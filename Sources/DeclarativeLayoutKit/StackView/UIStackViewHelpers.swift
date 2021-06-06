@@ -7,6 +7,9 @@
 
 import UIKit
 
+
+public typealias ArrangedViewsBuilder = ArrayBuilder<UIStackViewElementConvertable>
+
 // MARK: - Horizontal
 
 public func HorizontalStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
@@ -20,24 +23,24 @@ public func HorizontalStack(@ArrangedViewsBuilder _ elements: () -> [UIStackView
     HorizontalStack(elements())
 }
 
-public func TopAlignmentStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
-    let stack = VerticalStack(elements)
+public func TopStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
+    let stack = HorizontalStack(elements)
     stack.alignment = .top
     return stack
 }
 
-public func TopAlignmentStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
-    TopAlignmentStack(elements())
+public func TopStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
+    TopStack(elements())
 }
 
-public func BottomAlignmentStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
-    let stack = VerticalStack(elements)
+public func BottomStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
+    let stack = HorizontalStack(elements)
     stack.alignment = .bottom
     return stack
 }
 
-public func BottomAlignmentStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
-    BottomAlignmentStack(elements())
+public func BottomStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
+    BottomStack(elements())
 }
 
 public func HorizontalCenterStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
@@ -63,24 +66,24 @@ public func VerticalStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewEl
     VerticalStack(elements())
 }
 
-public func LeftAlignmentStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
-    let stack = HorizontalStack(elements)
+public func LeftStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
+    let stack = VerticalStack(elements)
     stack.alignment = .leading
     return stack
 }
 
 public func LeftAlignmentStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
-    LeftAlignmentStack(elements())
+    LeftStack(elements())
 }
 
-public func RightAlignmentStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
-    let stack = HorizontalStack(elements)
+public func RightStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {
+    let stack = VerticalStack(elements)
     stack.alignment = .trailing
     return stack
 }
 
-public func RightAlignmentStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
-    RightAlignmentStack(elements())
+public func RightStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
+    RightStack(elements())
 }
 
 public func VerticalCenterStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {

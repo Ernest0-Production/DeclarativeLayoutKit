@@ -9,7 +9,7 @@ import UIKit
 
 
 public enum UIStackViewElement {
-    case arranged(UIView)
+    case arranged(AutoLayoutItemConvertible)
     case space(CGFloat)
 }
 

@@ -1,35 +1,33 @@
 # DeclarativeLayoutKit
 
-A simple and small framework of tools for fast and declarative UI layout.
+Declarative and type-safe framework for fast UI layout
 
-**Note:** it is powered by [SnapKit](https://github.com/SnapKit/SnapKit)!
 
 |  	  | Advantages 	|
 |---	|---------------------------------------------------------------------------------	|
-| 🚀 	| Fast view configuration using [property chains](#-property-chaining)|
-|  ☺️	| Easily layout using [simplest DSL](#declarative-anchor-builder) based and mixed with [SnapKit DSL](https://github.com/SnapKit/SnapKit)|
-| 🎁 	| Extra feature – [stacking views layout](#-bonus-declarative-stack-builder) like UIStackView, but more flexible|
-| 🌈 	| Reusable and mixable [view styling](#-declarative-view-styling)|
-| 🧩 	| Fully [**SCALABLE**!](#-how-to-extend-functionality)|
+| 🚀 	| Fast view configuration using [property chains](#🚀-property-chaining)|
+|  🌈	| Easily layout using [simplest DSL](#🧩-declarative-constraint-builder)| 
+| 🎁 	| ***extra_most_usefull*** helpers for [UIStackView](#👨‍👨‍👦‍👦-UIStackView-extra_most_usefull-helpers)|
+| 🧩 	| [**SCALABLE**!](#how-to-extend-chaining-functionality)|
 
 ## Overview
 
 - [Requirements](#requirements)
 - [Usage](#usage)
-- [Why should I choose DeclarativeLayoutKit over **alternative**?](#why-should-i-choose-this-framework)
+- [How this framework differs from the others?](#how-this-framework-differs-from-the-others?)
 - [Installation](#installation)
 - [Credits](#credits)
 - [License](#license)
 
 ## Requirements
 
-- iOS 10.0+
+- iOS 11.0+
 - Xcode 10.0+
 - Swift 5.0+
 
 # Usage
 
-### 🚀 Property chaining
+## 🚀 Property chaining
 Absolutely **all mutable properties** are represented in the function using code generation powered by [Sourcery](https://github.com/krzysztofzablocki/Sourcery).
 
 
@@ -48,7 +46,7 @@ Currently, property chaining is supported in the following types:
 
 > You can also easily generate functions for other types – [see how](#add-property-chaining-to-another-type)
 
-#### 😋 And some extra syntactic sugar:
+### 😋 And some extra syntactic sugar:
 Assignable to variable:
 ```swift
 class ViewController: UIViewController {
@@ -56,14 +54,16 @@ class ViewController: UIViewController {
 
     override func loadView() {
         ...
+
         view.addSubview(
             UILabel()
                 .numberOfLines(0)
                 .text("Voila")
                 // sets a reference of object that calls function(in this case, created UILabel instance) to passed variable
                 .assign(to: &myLabel)
-                ...
         )
+
+        ...
     }
 }
 ```
@@ -74,7 +74,7 @@ UIControl()
 
 UIButton()
     .title("Tap me")
-    .onTap({ print("didTap") })
+    .onTap({ print("didTap") }) // wrap .addAction(for: .touchUpInside, { .. })
 
 UIView()
     .onTapGesture({ print("Kek") })
@@ -82,74 +82,155 @@ UIView()
 
 // ⚠️ Don't forget about ARC when use some parent view in action closure, to prevent retain cycle
 ```
-Simple UIStackView helpers:
-- `HStackView` - `UIStackView().axis(.horizontal)`
-- `VStackView` - `UIStackView().axis(.vertical)`
+## 👨‍👨‍👦‍👦 UIStackView **extra_most_usefull** helpers
 
-## Declarative anchor builder
-You can set constraints using the same anchor-style. The return type will be `AnchorLayoutBuilder` – a simple container that stores declared anchor's constants. To apply them, just call `build()` function.
+Preconfigured stack initializer:
+
+```swift
+HorizontalStack([...]) // axis = .horizontal
+
+HorizontalCenterStack([...]) // axis = .horizontal; alignment = .center
+
+TopStack([...]) // axis = .horizontal; alignment = .top
+
+BottomStack([...]) // axis = .horizontal; alignment = .bottom
+
+
+VerticalStack([...]) // axis = .vertical
+
+VerticalCenterStack([...]) // axis = .vertical; alignment = .center
+
+LeftStack([...]) // axis = .vertical; alignment = .leading
+
+RightStack([...]) // axis = .vertical; alignment = .trailing
+```
+
+Declarative spacing: 
+
+```swift
+VerticalStack([ 
+    SomeLabel(),
+
+    UIStackViewSpace(12)
+
+    SomeButton()
+
+    UIStackViewSpace(15)
+
+    UIImageView(image: ...)
+
+    SomeView()
+    ...
+])
+```
+
+@ArrangedViewBuilder functionBuilder: 
+```swift
+HorizontalStack {
+    AvatarImageView()    
+
+    UIStackViewSpace(16)
+
+    TopStack { 
+        NameLabel()
+
+        if user.isPremium { 
+            PremiumMarkerView()
+        }
+
+        UIStackViewSpace(8)
+
+        HStackView(tagsViews)
+    }
+
+    HorizontalCenterStack { 
+        ShareButton()
+        DisclosureButton()
+    }.spacing(4).distribution(.fillEquality)
+}
+```
+
+
+## 🧩 Declarative Constraint Builder
+You can set constraints using the same chainable style with anchor constraint. 
+
+The return type of builder will be `AutoLayoutItem` – a simple storage of constants instructions. To build and activate them, just call `activate()` function.
 
 ```swift
 let myLabel = UILabel()
     .numberOfLines(0) // -> UIView
     ...
     .heightAnchor(0) // -> AnchorLayoutBuilder (same below)
-    .topAnchor(16.from(anotherView.snp.bottom))
+    .topAnchor(16.from(anotherView.topAnchor))
     .leftAnchor(24)
     .rightAnchor(24.orLess.pririty(750))
-    .build() // -> UIView (with applyed constraints)
+    .activate() // -> UIView (with applyed constraints)
 ```
 
-The frameworks allows two ways to set constants:
-- [SnapKit DSL](http://snapkit.io/docs)
-```swift
-let myLabel = UILabel()
-    .numberOfLines(0)
-    .layout({
-        $0.height.equalTo(0)
-        $0.top.equalTo(anotherView.snp.bottom).inset(16)
-        $0.left.equalToSuperview().inset(14)
-        $0.right.lessThanOrEqualToSuperview().inset(24)
-    })
-    .build()
+### 🧮 Constraint Builder DSL Specification
+
+#### Attributes
+
+- `constant` - Int/Float/CGFloat/...
+
+- target (only relative constraints): 
+- - from(target: NSLayoutAnchor) - from the outside of the view.\
+    Example: `firstView.rightAnchor(24.from(secondView.leftAnchor))`
+
+- - to(target: NSLayoutAnchor) - from the inside of the view.\
+    Example: `subview.leftAnchor(16.to(superview.leftAnchor))`
+
+- - without this attribute builder will apply instruction to superview.\
+    Example: `subview.leftAnchor(16)` equivalent to the previous example
+
+- relationType
+- - `Equal` (by default)
+- - `orLess`\
+    Example: `15.orLess`; `15.to(secondView.leftAnchor).orLess`
+- - `orGreater`\
+    Example: `15.orGreater`; `15.to(secondView.leftAnchor).orGreater`
+
+- priorioty
+- - `15.priority(.defaultLow)`
+- - or `15.priority(250)`
+- - **⚠️ without this attribute builder will apply instruction with priority 999**
+
+- multiplier (only dimension constraints)\
+  Example: `headerView.heightAnchor(backgroundView.multiplied(0.5).orLess)`
+
+Final Formula:
 ```
-- own DSL powered by `AnchorLayoutBuilderConstraint`
-
-It has the following template:\
-`inset.from(SnapKit.ConstraintPriorityTarget).priority(UILayoutPriority)`
-
-If specify only `inset` it will be applied to the `superview`:
-```swift
-myView.horizontalAnchor(16).topAnchor(0).bottomAnchor(44)
+constant.from|to(_ target: NSLayoutAnchor).priority(NSLayoutPriority).orLess|orGreater
 ```
-If you want to change сomparison type (less/greater or equal) add `.orLess` or `.orGreater` suffix after `inset`
+The order of the attributes is **arbitrary**:
 ```swift
-myView.bottomAnchor(44.orLess).rightAnchor(8.orGreater.from(secondView))
+15.from(secondView.topAnchor).orLess
+20.orLess.to(secondView.bottomAnchor).priority(1000)
+8.priority(.required).orGreater
 ```
 
-> **⚠️ Default priority of `AnchorLayoutBuilderConstraint` is 999!** It was decided to do so to ensure that the constraints in the case when its could not be applyed, in the future, when updating layout, constraints are automatically re-activated
+Extra anchors: 
+- `horizontalAnchor` – leftAnchor + rightAnchor\
+  Example: `subview.horizontalAnchor(16)`
 
-**Full list of anchors functions:**
+- `verticalAnchor` – topAnchor + bottomAnchor\
+  Example: `subview.verticalAnchor(16.orLess)`
 
-`width/height/left/right/top/bottom/centerX/centerYAnchor` - completely equal to `NSLayoutConstraint` anchors
+- `centerAnchor` - centerXAnchor + centerYAnchor\
+  Example: `avatarView.centerAnchor(backgroundView)`
 
-`sizeAnchor(CGSize)` == `widthAcnhor` + `heightAnchor`
+- `sizeAnchor` - widthAnchor + heightAnchor\
+  Example: `avatarView.sizeAnchor(60)`
 
-`aspectRatioAnchor(multiplier:)` == height / width
+- `edgesAnchors(insets: UIEdgeInsets, to target: UIView?, priority: UILayoutPriority)` - combination of the left|top|right|bottom anchors.
 
-`horizontalAnchor` == `leftAnchor` + `rightAnchor`
 
-`verticalAnchor` == `topAnchor` + `bottomAnchor`
-
-`centerAnchor` == `centerXAnchor` + `centerYAnchor`
-
-`edgeAnchors(insets: UIEdgeInsets, to target: SnapKit.ConstraintRelatableTarget?)` - stretches all the edges to `target`. The default `target` is `nil`, which is equivalent to `superview`.
-
-#### View/Builder Composition
-You can also add `views` builders to the `superview` builder like this:
+#### 🧩 View/Builder Composition
 ```swift
-weak var avatarView: UIImageView!
+private(set) weak var avatarView: UIImageView!
+
 ...
+
 let profileView = UIView()
     .backgroundColor(.gray)
     .heightAnchor(100)
@@ -166,13 +247,12 @@ let profileView = UIView()
             .rightAnchor(0)
             .leftAnchor(8.from(avatarView).priority(.required))
     })
-    // current view is build first, and then it's subviews
-    .build()
+    .activate()
 ```
-Or using a convenient initializer
+Or using a convenience initializer
 ```swift
 
-let profileView = UIView({
+let profileView = UIView {
     UIImageView()
         .assign(to: &avatarView)
         .contentMode(.scaleAspectFit)
@@ -184,14 +264,13 @@ let profileView = UIView({
         .numberOfLines(2)
         .rightAnchor(0)
         .leftAnchor(8.from(avatarView).priority(.required))
-})
+}
 .backgroundColor(.gray)
 .heightAnchor(100)
-// current view is build first, and then it's subviews
-.build()
+.activate()
 ```
 
-**Note:** if you add builders to a `UIView` (i.e. don't use `anchor-chaining` before call `add(...)`), building will occur **immediately after adding** in `superview`. In other words, the return type of the `build()` function will be `Self` (i.e. `UIView`)
+**ℹ️ NOTE:**  if you add constraint-builders to a `UIView` (i.e. don't use `anchor-chaining` before call `add(...)`), constraints activations will occur **immediately after adding** in `superview`. In other words, the return type of the `activate()` function will be `Self` (i.e. `UIView`)
 ```swift
 let profileView = UIView()
     .backgroundColor(.gray)
@@ -208,115 +287,12 @@ let profileView = UIView()
             .leftAnchor(8.from(avatarView).priority(.required))
     }) // -> UIView (with already added subviews)
     // and you can continue chainable-configuration (for example by specifying own anchors)
-    .heightAnchor(100) // -> AnchorLayoutBuilder
-    .build() // -> UIView
+    .heightAnchor(100) // -> AutoLayoutItem
+    .activate() // -> UIView
 ```
 
-### 🎁 Bonus! Declarative stack builder
-Sometimes `UIStackView` features are not enough for more flexible stacking of `views` with an **individual distribution**.
-
- The `StackingLayoutBuilder` will help you solve this problem!
-```swift
-let profileView = HStack {
-    UIImageView()
-        .assign(to: &avatarView)
-        .contentMode(.scaleAspectFit)
-        .sizeAnchor(CGSize(width: 40, height: 40))
-        .leftSpace(12) // 👀
-        .verticalAlignment(.center) // 👀
-
-    UILabel()
-        .numberOfLines(2)
-        .leftSpace(8) // 👀
-        .rightSpace(0) // 👀
-}
-.backgroundColor(.gray)
-```
-`HStack` and `VStack` is a function that collects `views` (or `AnchorLayoutBuilder`) and stack them to each other using AutoLayout Constants and return resulting `UIView`.
-
-You can specify:
-
-`left/rightSpace`(in `HStack`), `top/bottomSpace`(in `VStack`) - before and after space of arranged view.
-
-`verticalAlignment`(in `HStack`), `horizontalAlignment`(in `VStack`) - arranged view distribution in **transverse axis**.
-
-`Alignment` type can be:
-- `.center` - centered on transverse axis.
-- `.fill(sideInset: AnchorLayoutBuilderConstraint = 0)` - stretched along transverse axis.
-
-- `HStack` (similarly in `VStack`):
-  - `.custom(top: bottom:)` - custom top and bottom inset (i.e. `AnchorLayoutBuilderConstraint`)
-  - `.bottom(...)` - set only bottom inset.
-  - `.top(..)` - - set only top inset.
-
-You can continue to use `anchor-chaining` to add additional constraints, but **only before specifying `.space()` and `.alignment()` attributes**!
-
-### 🌈 Declarative View Styling
-You no longer need to create many style-different subclasses of your view and dive into a complex inheritance hierarchy.
-
-DeclarativeLayoutKit offers a simple **closure-based** solution for defining styles **with the ability to combine** them:
-```swift
-UIButton()
-    .title("Tap me")
-    .set(style: .touchHiglighting(color: .blue), .primaryRounded())
-    .onTap({ ... })
-```
-
-Just create new `ViewStyle<Target>` in `ViewStyle` extension like static factory:
-```swift
-extension ViewStyle {
-    /// Generic definition is required to be able to support view subclass types
-    static func primaryRounded<T: UIView>() -> ViewStyle<T> {
-        ViewStyle<T>({ view in
-            view.backgroundColor(.systemBlue)
-                .cornerRadius(8)
-                .borderWidth(4)
-                .shadowColor(.darkGray)
-                .shadowOpacity(1)
-                .shadowRadius(5)
-        })
-    }
-
-    static func touchHiglighting<T: UIButton>(color: UIColor) -> ViewStyle<T> {
-        ViewStyle<T> { button in ... }
-    }
-}
-```
-
-<details>
-<summary>About ViewStyle</summary>
-
-The `ViewStyle` is just a wrapper over closure. There's nothing ingenious about it 🤗
-```swift
-public final class ViewStyle<Target: ViewStyleCompatible> {
-    private let handler: (Target) -> ()
-
-    public init(_ handler: @escaping (Target) -> ()) {
-        self.handler = handler
-    }
-
-    func apply(into target: Target) {
-        handler(target)
-    }
-}
-```
-
-</details>
-
-### 🔥 All together
-And **finally**, a full-fledged example of using the framework for layout of restaurant previews
-
-*Layout:*
-
-<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_view.png" width = "600"/>
-
-*Source:*
-
-<img src="https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Assets/example_code.png" width = "600"/>
-
-## 🧩 How to extend functionality?
-##### Add property chaining to another type:
-- First way - write type extension with function that return self:
+## How to extend chaining functionality?
+First way – write type extension with function that return self:
 ```swift
 extension MyCustomView {
     func myProperty(_ value: ValueType) -> Self {
@@ -325,53 +301,19 @@ extension MyCustomView {
     }
 }
 ```
-- Second way - using [Sourcery](https://github.com/krzysztofzablocki/Sourcery) apply [Chainable template](https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Sources/Generator/Chainable.stencil) with your custom view
+Second way – using [Sourcery](https://github.com/krzysztofzablocki/Sourcery) apply [Chainable template](https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/Sources/Generator/Chainable.stencil) with your custom view
 ([see tutorial](https://www.caseyliss.com/2017/3/31/the-magic-of-sourcery)).
 
-##### Extend `AnchorLayoutBuilder`:
-Just add extension to `AnchorLayoutBuilderConvertible` type and using `SnapKit DSL` write your own helper:
-```swift
-extension AnchorLayoutBuilderConvertible {
-    func leftTopAnchor(_ inset: CGFloat) -> AnchorLayoutBuilder {
-        self.layout({  $0.left.top.equalToSuperview().inset(inset) })
-    }
-}
-```
-Or use `.set(constraint: AnchorLayoutBuilderConstraint)` to SnapKit Anchor if you want to use your own DSL:
-```swift
-extension AnchorLayoutBuilderConvertible {
-    func leftTopAnchor(_ constraint: AnchorLayoutBuilderConstraint) -> AnchorLayoutBuilder {
-        self.layout({  $0.left.top.set(constraint: constraint) })
-    }
-}
-```
+## How this framework differs from the others?
 
-##### Extend DSL:
-The `AnchorLayoutBuilderConstraint` is protocol 4 properties:
-- `target`
-- `inset`(optional)
-- `comparisonType` (equal, less, greater)
-- `priority`
+There is **huge** number of layout frameworks...\
+The **main goal** of creating another one framework was not to create another one framework, but to **make tools for rapid writing of layout code*\
+SnapKit, many people know, is one of these solutions, but I decided to make **a more declarative and simple solution**.\
+> P.S. in previous versions the Framework was based on DSL SnapKit, but now has its own, more type-safe.
 
-You can write some extension to it for adding another syntactic sugar and modify this constraint using `MutableAnchorLayoutBuilderConstraint` implementation.
+ This `README` decription is all you need to know, no redundant documentation needed.\
 
-## Why should i choose this framework?
-
-There are already quite a few frameworks for declarative layout like SwiftUI, but DeclarativeLayutKit stands out from them:
-- **Small codebase**\
-There is no huge number of objects, I'm not "*reinventing the wheel*". This is **not a new layout system** - just a set of helpers: `AnchorLayoutBuilder`, `StackingLayoutBuilder`, `ViewStyle`. This `README` deccription is all you need to know, no redundant documentation needed.\
-💉 And you can **easily integrate** the framework into project and **combine it with old/existing layout code**.
-
-- **Extandable**\
-The framework is simple and easy to expand. Just apply `Builder` and `Factory` pattern to add new functionality.
-
-- **Separately**\
-The framework solves 3 tasks:
-  - property-chaining
-  - layouting
-  - styling
-
-  And you **can use a specific, desired set of features**. See more in [**installation** chapter](#installation)
+### 💉 You can **easily integrate** the framework into project and **combine it with old/existing layout code**.
 
 ## Installation
 
@@ -383,15 +325,6 @@ use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
     pod 'DeclarativeLayoutKit'
-
-    # if you only want property-chaining feature:
-    # pod 'DeclarativeLayoutKit/Chaining'
-
-    # if you only want anchor-layouting feature:
-    # pod 'DeclarativeLayoutKit/Layouting'
-
-    # if you only want view styling feature:
-    # pod 'DeclarativeLayoutKit/Styling'
 end
 ```
 
@@ -413,34 +346,19 @@ import PackageDescription
 let package = Package(
   name: "YOUR_PROJECT_NAME",
   dependencies: [
-      .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "1.0.0")
+      .package(url: "https://github.com/Ernest0-Production/DeclarativeLayoutKit.git", from: "3.0.0")
   ],
   targets: [
       .target(name: "YOUR_TARGET_NAME", dependencies: ["DeclarativeLayoutKit"])
-      // if you only want property-chaining feature:
-      // dependencies: ["DeclarativeLayoutKit/Chaining"])
-
-      // if you only want anchor-layouting feature:
-      // dependencies: ["DeclarativeLayoutKit/Layouting"])
-
-      // if you only want view styling feature:
-      // dependencies: ["DeclarativeLayoutKit/Styling])
   ]
 )
 ```
 
 ### Credits
 
-- Telegram: @Ernest0N
-- [Twitter](https://twitter.com/Ernest0N)
+- [Telegram](https://t.me/Ernest0n)
 
 
 ### License
 
 DeclarativeLayoutKit is released under the MIT license. See [LICENSE](https://github.com/Ernest0-Production/DeclarativeLayoutKit/blob/master/LICENSE.md) for details.
-
----
-TODO:
-- replaceable layout system (NSLayutConstraints, SnapKit, FrameBasedLayout)
-- placeholderable?
-- loadable?

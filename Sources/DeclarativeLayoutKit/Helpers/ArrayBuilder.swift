@@ -1,48 +1,15 @@
 //
-//  UIStackViewBuilder.swift
+//  File.swift
 //  
 //
-//  Created by Бабаян Эрнест on 03.01.2021.
+//  Created by Ernest Babayan on 06.06.2021.
 //
-
-import UIKit
-
-
-public extension UIStackView {
-    /// Reset arrangedSubiews
-    func set(elements: [UIStackViewElementConvertable]) {
-        for subview in arrangedSubviews {
-            removeArrangedSubview(subview)
-            subview.removeFromSuperview()
-        }
-        
-        append(elements: elements)
-    }
-
-    func append(elements: [UIStackViewElementConvertable]) {
-        var lastAppendedView: UIView?
-
-        for element in elements {
-            switch element.asUIStackViewElement() {
-            case UIStackViewElement.space(let space):
-                if let view = lastAppendedView {
-                    setCustomSpacing(space, after: view)
-                }
-                lastAppendedView = nil
-                
-            case UIStackViewElement.arranged(let view):
-                addArrangedSubview(view)
-                lastAppendedView = view
-            }
-        }
-    }
-}
 
 
 @resultBuilder
-public enum ArrangedViewsBuilder {
-    public typealias Expression = UIStackViewElementConvertable
-    public typealias FinalResult = [Expression]
+public enum ArrayBuilder<E> {
+    public typealias Expression = E
+    public typealias FinalResult = [E]
     
     public indirect enum Component {
         case expression(Expression)

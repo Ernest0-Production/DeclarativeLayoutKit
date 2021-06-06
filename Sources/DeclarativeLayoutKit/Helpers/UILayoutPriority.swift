@@ -8,6 +8,6 @@
 import UIKit
 
 
-public extension UILayoutPriority {
+extension UILayoutPriority {
     static var almostRequired: UILayoutPriority { UILayoutPriority(999) }
 }

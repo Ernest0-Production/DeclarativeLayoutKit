@@ -7,18 +7,12 @@ let package = Package(
     name: "DeclarativeLayoutKit",
     platforms: [.iOS(.v11)],
     products: [
-        .library(name: "DeclarativeLayoutKit", targets: ["Layouting", "Chaining"]),
-        .library(name: "DeclarativeLayoutKit/Layouting", targets: ["Layouting"]),
-        .library(name: "DeclarativeLayoutKit/Chaining", targets: ["Chaining"]),
+        .library(name: "DeclarativeLayoutKit", targets: ["DeclarativeLayoutKit"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.0.0"),
-    ],
+    
     targets: [
-        .target(name: "Layouting", dependencies: ["SnapKit"], path: "Sources/DeclarativeLayoutKit/Layouting"),
-        .target(name: "Chaining", path: "Sources/DeclarativeLayoutKit/Chaining"),
-
-        .testTarget(name: "LayoutingTests", dependencies: ["Layouting"]),
+        .target(name: "DeclarativeLayoutKit", path: "Sources/DeclarativeLayoutKit"),
+//        .testTarget(name: "LayoutingTests", dependencies: ["DeclarativeLayoutKit"]),
     ],
     swiftLanguageVersions: [.v5]
 )
