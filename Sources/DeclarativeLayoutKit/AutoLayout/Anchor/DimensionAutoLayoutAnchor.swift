@@ -27,15 +27,6 @@ public struct DimensionAutoLayoutAnchor {
     var constant: CGFloat
 }
 
-public func superviewAnchor() -> DimensionAutoLayoutAnchor {
-    DimensionAutoLayoutAnchor(
-        relationType: .equal,
-        priority: .almostRequired,
-        target: .superview,
-        constant: .zero
-    )
-}
-
 public protocol DimensionAutoLayoutAnchorConvertible {
     func asDimensionAutoLayoutAnchor() -> DimensionAutoLayoutAnchor
 }

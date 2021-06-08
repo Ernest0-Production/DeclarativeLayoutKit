@@ -160,10 +160,11 @@ The return type of builder will be `AutoLayoutItem` – a simple storage of cons
 let myLabel = UILabel()
     .numberOfLines(0) // -> UIView
     ...
-    .heightAnchor(0) // -> AnchorLayoutBuilder (same below)
+    .heightAnchor(0) // -> AutoLayoutItem (same below)
     .topAnchor(16.from(anotherView.topAnchor))
     .leftAnchor(24)
     .rightAnchor(24.orLess.pririty(750))
+    .verticalAnchor(backgroundView)
     .activate() // -> UIView (with applyed constraints)
 ```
 
@@ -223,6 +224,9 @@ Extra anchors:
   Example: `avatarView.sizeAnchor(60)`
 
 - `edgesAnchors(insets: UIEdgeInsets, to target: UIView?, priority: UILayoutPriority)` - combination of the left|top|right|bottom anchors.
+
+- `layout(_ builder: (UIView) -> AutoLayoutItem)` - self-related anchor\
+    Example: `myView.layout({ $0.heightAnchor($0.widthAnchor) })`
 
 
 #### 🧩 View/Builder Composition

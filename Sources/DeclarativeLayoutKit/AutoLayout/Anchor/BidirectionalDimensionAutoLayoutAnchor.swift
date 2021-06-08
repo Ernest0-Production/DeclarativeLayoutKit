@@ -27,15 +27,6 @@ public struct BidirectionalDimensionAutoLayoutAnchor {
     var constant: CGFloat
 }
 
-public func superviewAnchor() -> BidirectionalDimensionAutoLayoutAnchor {
-    BidirectionalDimensionAutoLayoutAnchor(
-        relationType: .equal,
-        priority: .almostRequired,
-        target: .superview,
-        constant: .zero
-    )
-}
-
 public protocol BidirectionalDimensionAutoLayoutAnchorConvertible {
     func asBidirectionalDimensionAutoLayoutAnchor() -> BidirectionalDimensionAutoLayoutAnchor
 }

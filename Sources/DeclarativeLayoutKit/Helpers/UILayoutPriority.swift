@@ -9,5 +9,7 @@ import UIKit
 
 
 extension UILayoutPriority {
-    static var almostRequired: UILayoutPriority { UILayoutPriority(999) }
+    static var almostRequired: UILayoutPriority { DeclarativeLayoutKitDefaultPriority }
+    
+    public static let DeclarativeLayoutKitDefaultPriority = UILayoutPriority(999)
 }

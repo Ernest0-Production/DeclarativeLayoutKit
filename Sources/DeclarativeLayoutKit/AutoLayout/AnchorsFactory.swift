@@ -9,6 +9,12 @@ import UIKit
 
 
 public extension AutoLayoutItemConvertible {
+    func layout(@ArrayBuilder<AutoLayoutItem> _ builder: @escaping (UIView) -> [AutoLayoutItem]) -> AutoLayoutItem {
+        asAutoLayoutItem().layout({ view in
+            for item in builder(view) { item.activate() }
+        })
+    }
+    
     func topAnchor(_ anchor: VerticalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ view in
             makeRelativeConstraint(
@@ -43,10 +49,8 @@ public extension AutoLayoutItemConvertible {
     }
     
     func verticalAnchor(_ anchor: BidirectionRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
-        let bidirectionalAnchor = anchor.asBidirectionalRelativeAutoLayoutAnchor()
-        
-        return topAnchor(bidirectionalAnchor.toAxisAnchor(anchorPath: { $0.topAnchor }))
-            .bottomAnchor(bidirectionalAnchor.toAxisAnchor(anchorPath: { $0.bottomAnchor }))
+        topAnchor(anchor.toAxisAnchor(anchorPath: { $0.topAnchor }))
+            .bottomAnchor(anchor.toAxisAnchor(anchorPath: { $0.bottomAnchor }))
     }
     
     func leftAnchor(_ anchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
@@ -83,10 +87,13 @@ public extension AutoLayoutItemConvertible {
     }
     
     func horizontalAnchor(_ anchor: BidirectionRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
-        let bidirectionalAnchor = anchor.asBidirectionalRelativeAutoLayoutAnchor()
-        
-        return leftAnchor(bidirectionalAnchor.toAxisAnchor(anchorPath: { $0.leftAnchor }))
-            .rightAnchor(bidirectionalAnchor.toAxisAnchor(anchorPath: { $0.rightAnchor }))
+        leftAnchor(anchor.toAxisAnchor(anchorPath: { $0.leftAnchor }))
+            .rightAnchor(anchor.toAxisAnchor(anchorPath: { $0.rightAnchor }))
+    }
+    
+    func centerAnchor(_ anchor: BidirectionRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
+        centerYAnchor(anchor.toAxisAnchor(anchorPath: { $0.centerYAnchor }))
+            .centerXAnchor(anchor.toAxisAnchor(anchorPath: { $0.centerXAnchor }))
     }
 
     func edgesAnchors(
@@ -134,10 +141,8 @@ public extension AutoLayoutItemConvertible {
     }
     
     func sizeAnchor(_ anchor: BidirectionalDimensionAutoLayoutAnchorConvertible) -> AutoLayoutItem {
-        let bidirectionalAnchor = anchor.asBidirectionalDimensionAutoLayoutAnchor()
-        
-        return heightAnchor(bidirectionalAnchor.toDimensionAnchor(anchorPath: { $0.heightAnchor }))
-            .widthAnchor(bidirectionalAnchor.toDimensionAnchor(anchorPath: { $0.widthAnchor }))
+        heightAnchor(anchor.toDimensionAnchor(anchorPath: { $0.heightAnchor }))
+            .widthAnchor(anchor.toDimensionAnchor(anchorPath: { $0.widthAnchor }))
     }
 }
 
@@ -231,33 +236,32 @@ private func makeRelativeConstraint<AnchorType>(
     constraint.isActive = true
 }
 
-/*
- TODO:
- width to superview
- */
-
-private extension BidirectionRelativeAutoLayoutAnchor {
+private extension BidirectionRelativeAutoLayoutAnchorConvertible {
     func toAxisAnchor<Axis>(
         anchorPath: (AutoLauoutGuide) -> NSLayoutAnchor<Axis>
     ) -> RelativeAutoLayoutAnchor<Axis> {
-        RelativeAutoLayoutAnchor(
-            relationType: relationType,
-            priority: priority,
-            target: target.map(anchorPath),
-            constant: constant
+        let anhor = asBidirectionalRelativeAutoLayoutAnchor()
+        
+        return RelativeAutoLayoutAnchor(
+            relationType: anhor.relationType,
+            priority: anhor.priority,
+            target: anhor.target.map(anchorPath),
+            constant: anhor.constant
         )
     }
 }
 
-private extension BidirectionalDimensionAutoLayoutAnchor {
+private extension BidirectionalDimensionAutoLayoutAnchorConvertible {
     func toDimensionAnchor(
         anchorPath: (AutoLauoutGuide) -> NSLayoutDimension
     ) -> DimensionAutoLayoutAnchor {
-        DimensionAutoLayoutAnchor(
-            relationType: relationType,
-            priority: priority,
-            target: target.map({ DimensionAutoLayoutAnchor.Target(anchor: $0.layoutGuide.map(anchorPath), multiplier: $0.multiplier) }),
-            constant: constant
+        let anchor = asBidirectionalDimensionAutoLayoutAnchor()
+        
+        return DimensionAutoLayoutAnchor(
+            relationType: anchor.relationType,
+            priority: anchor.priority,
+            target: anchor.target.map({ DimensionAutoLayoutAnchor.Target(anchor: $0.layoutGuide.map(anchorPath), multiplier: $0.multiplier) }),
+            constant: anchor.constant
         )
     }
 }
