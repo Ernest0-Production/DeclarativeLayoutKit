@@ -72,7 +72,7 @@ public func LeftStack(_ elements: [UIStackViewElementConvertable]) -> UIStackVie
     return stack
 }
 
-public func LeftAlignmentStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
+public func LeftStack(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> UIStackView {
     LeftStack(elements())
 }
 

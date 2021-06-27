@@ -21,9 +21,9 @@ Declarative and type-safe framework for fast UI layout
 
 ## Requirements
 
-- iOS 11.0+
-- Xcode 10.0+
-- Swift 5.0+
+- iOS 11.0
+- Xcode 12.5
+- Swift 5.4
 
 # Usage
 
