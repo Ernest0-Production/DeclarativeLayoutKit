@@ -8,13 +8,16 @@
 import UIKit
 
 
-public protocol AutoLayoutItemConvertible: UIStackViewElementConvertable {
+public protocol AutoLayoutItemConvertible: UIStackViewConfiguration {
     func asAutoLayoutItem() -> AutoLayoutItem
 }
 
 extension AutoLayoutItemConvertible {
-    public func asUIStackViewElement() -> UIStackViewElement {
-        UIStackViewElement.arranged(self)
+    public func configure(stackView: UIStackView) {
+        let item = self.asAutoLayoutItem()
+        stackView.addArrangedSubview(item.view)
+        item.move(to: stackView)
+        item.activate()
     }
 }
 
