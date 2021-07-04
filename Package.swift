@@ -12,7 +12,7 @@ let package = Package(
     
     targets: [
         .target(name: "DeclarativeLayoutKit", path: "Sources/DeclarativeLayoutKit"),
-//        .testTarget(name: "LayoutingTests", dependencies: ["DeclarativeLayoutKit"]),
+        .testTarget(name: "DeclarativeLayoutKitTests", dependencies: ["DeclarativeLayoutKit"]),
     ],
     swiftLanguageVersions: [.v5]
 )

@@ -10,6 +10,21 @@ import UIKit
 
 public typealias ArrangedViewsBuilder = ArrayBuilder<UIStackViewElementConvertable>
 
+
+public extension UIStackView {
+    @discardableResult
+    func set(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> Self {
+        set(elements: elements())
+        return self
+    }
+    
+    @discardableResult
+    func append(@ArrangedViewsBuilder _ elements: () -> [UIStackViewElementConvertable]) -> Self {
+        append(elements: elements())
+        return self
+    }
+}
+
 // MARK: - Horizontal
 
 public func HorizontalStack(_ elements: [UIStackViewElementConvertable]) -> UIStackView {

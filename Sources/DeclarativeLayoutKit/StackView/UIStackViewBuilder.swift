@@ -20,21 +20,29 @@ public extension UIStackView {
     }
 
     func append(elements: [UIStackViewElementConvertable]) {
-        var lastAppendedItem: AutoLayoutItem?
-
         for element in elements {
             switch element.asUIStackViewElement() {
             case UIStackViewElement.space(let space):
-                if let view = lastAppendedItem?.view {
-                    setCustomSpacing(space, after: view)
+                guard let view = arrangedSubviews.last else {
+                    assertionFailure("You cannot add a space before the first arranged view")
+                    continue
                 }
-                lastAppendedItem = nil
+                
+                var finalSpace = space
+                
+                let currentSpaces = customSpacing(after: view)
+                let systemSpaces = [UIStackView.spacingUseDefault, UIStackView.spacingUseSystem]
+                if !systemSpaces.contains(currentSpaces) {
+                    finalSpace += currentSpaces
+                }
+                
+                setCustomSpacing(finalSpace, after: view)
                 
             case UIStackViewElement.arranged(let itemBox):
-                lastAppendedItem = itemBox.asAutoLayoutItem()
-                addArrangedSubview(lastAppendedItem!.view)
-                lastAppendedItem?.move(to: self)
-                lastAppendedItem?.activate()
+                let item = itemBox.asAutoLayoutItem()
+                addArrangedSubview(item.view)
+                item.move(to: self)
+                item.activate()
             }
         }
     }
