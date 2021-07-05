@@ -9,7 +9,17 @@ import UIKit
 
 
 public extension HorizontalRelativeAutoLayoutAnchorConvertible {
+    @available(*, deprecated, renamed: "inset")
     func to(_ insetAnchor: NSLayoutXAxisAnchor) -> HorizontalRelativeAutoLayoutAnchor {
+        inset(insetAnchor)
+    }
+    
+    @available(*, deprecated, renamed: "offset")
+    func from(_ offsetAnchor: NSLayoutXAxisAnchor) -> HorizontalRelativeAutoLayoutAnchor {
+        offset(offsetAnchor)
+    }
+    
+    func inset(_ insetAnchor: NSLayoutXAxisAnchor) -> HorizontalRelativeAutoLayoutAnchor {
         var copy = asHorizontalRelativeAutoLayoutAnchor()
         
         copy.constant = RelativeAutoLayoutConstant(
@@ -22,7 +32,7 @@ public extension HorizontalRelativeAutoLayoutAnchorConvertible {
         return copy
     }
     
-    func from(_ offsetAnchor: NSLayoutXAxisAnchor) -> HorizontalRelativeAutoLayoutAnchor {
+    func offset(_ offsetAnchor: NSLayoutXAxisAnchor) -> HorizontalRelativeAutoLayoutAnchor {
         var copy = asHorizontalRelativeAutoLayoutAnchor()
         
         copy.constant = RelativeAutoLayoutConstant(
@@ -37,7 +47,17 @@ public extension HorizontalRelativeAutoLayoutAnchorConvertible {
 }
 
 public extension VerticalRelativeAutoLayoutAnchorConvertible {
-    func to(_ anchor: NSLayoutYAxisAnchor) -> VerticalRelativeAutoLayoutAnchor {
+    @available(*, deprecated, renamed: "inset")
+    func to(_ insetAnchor: NSLayoutYAxisAnchor) -> VerticalRelativeAutoLayoutAnchor {
+        inset(insetAnchor)
+    }
+    
+    @available(*, deprecated, renamed: "offset")
+    func from(_ offsetAnchor: NSLayoutYAxisAnchor) -> VerticalRelativeAutoLayoutAnchor {
+        offset(offsetAnchor)
+    }
+    
+    func inset(_ anchor: NSLayoutYAxisAnchor) -> VerticalRelativeAutoLayoutAnchor {
         var copy = asVerticalRelativeAutoLayoutAnchor()
         
         copy.constant = RelativeAutoLayoutConstant(
@@ -50,7 +70,7 @@ public extension VerticalRelativeAutoLayoutAnchorConvertible {
         return copy
     }
     
-    func from(_ anchor: NSLayoutYAxisAnchor) -> VerticalRelativeAutoLayoutAnchor {
+    func offset(_ anchor: NSLayoutYAxisAnchor) -> VerticalRelativeAutoLayoutAnchor {
         var copy = asVerticalRelativeAutoLayoutAnchor()
         
         copy.constant = RelativeAutoLayoutConstant(
@@ -65,7 +85,17 @@ public extension VerticalRelativeAutoLayoutAnchorConvertible {
 }
 
 public extension BidirectionRelativeAutoLayoutAnchorConvertible {
-    func to(_ target: AutoLauoutGuide) -> BidirectionRelativeAutoLayoutAnchor {
+    @available(*, deprecated, renamed: "inset")
+    func to(_ insetAnchor: AutoLauoutGuide) -> BidirectionRelativeAutoLayoutAnchorConvertible {
+        inset(insetAnchor)
+    }
+    
+    @available(*, deprecated, renamed: "offset")
+    func from(_ offsetAnchor: AutoLauoutGuide) -> BidirectionRelativeAutoLayoutAnchorConvertible {
+        offset(offsetAnchor)
+    }
+    
+    func inset(_ target: AutoLauoutGuide) -> BidirectionRelativeAutoLayoutAnchor {
         var copy = asBidirectionalRelativeAutoLayoutAnchor()
         
         copy.constant = RelativeAutoLayoutConstant(
@@ -78,7 +108,7 @@ public extension BidirectionRelativeAutoLayoutAnchorConvertible {
         return copy
     }
     
-    func from(_ target: AutoLauoutGuide) -> BidirectionRelativeAutoLayoutAnchor {
+    func offset(_ target: AutoLauoutGuide) -> BidirectionRelativeAutoLayoutAnchor {
         var copy = asBidirectionalRelativeAutoLayoutAnchor()
         
         copy.constant = RelativeAutoLayoutConstant(
