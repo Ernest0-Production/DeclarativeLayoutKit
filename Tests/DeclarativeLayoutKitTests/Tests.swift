@@ -37,11 +37,58 @@ final class Tests: XCTestCase {
             UIStackViewSpace(10)
             
             UIStackViewSpace(1, withSummation: true)
+            
+            
         }
         
         XCTAssertEqual(
             stackView.customSpacing(after: afterSpacedView),
             11
         )
+    }
+    
+    func test_stackview_dynamic_spacing() {
+        let spaceProvider = UIStackViewDynamicSpaceProvider(1)
+        let afterSpacedView = UIView()
+        
+        let stackView = HorizontalStack {
+            afterSpacedView
+            
+            UIStackViewSpace(spaceProvider)
+        }
+        
+        
+        var currentSpace: CGFloat {
+            stackView.customSpacing(after: afterSpacedView)
+        }
+        
+        XCTAssertEqual(currentSpace, 1)
+        XCTAssertEqual(currentSpace, stackView.customSpacing(after: afterSpacedView))
+        
+        spaceProvider.update(with: 5)
+        XCTAssertEqual(currentSpace, 5)
+        XCTAssertEqual(currentSpace, stackView.customSpacing(after: afterSpacedView))
+    }
+    
+    func test_stackview_dynamic_spacing_fromViewVisibility() {
+        let afterSpacedView = UIView()
+        
+        let stackView = HorizontalStack {
+            afterSpacedView
+            
+            UIStackViewSpace(.binding(space: 10, toVisibility: afterSpacedView))
+        }
+        
+        var currentSpace: CGFloat {
+            stackView.customSpacing(after: afterSpacedView)
+        }
+        
+        XCTAssertEqual(currentSpace, 10)
+        
+        afterSpacedView.isHidden = true
+        XCTAssertEqual(currentSpace, UIStackView.spacingUseDefault)
+
+        afterSpacedView.isHidden = false
+        XCTAssertEqual(currentSpace, 10)
     }
 }

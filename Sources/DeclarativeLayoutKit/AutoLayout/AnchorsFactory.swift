@@ -92,7 +92,7 @@ public extension AutoLayoutItemConvertible {
                 view: view,
                 anchorProvider: { $0.trailingAnchor },
                 second: anchor.asHorizontalRelativeAutoLayoutAnchor(),
-                invertConstant: false
+                invertConstant: true
             )
         })
     }
