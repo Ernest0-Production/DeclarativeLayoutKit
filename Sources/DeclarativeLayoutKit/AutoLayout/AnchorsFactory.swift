@@ -64,6 +64,17 @@ public extension AutoLayoutItemConvertible {
         })
     }
     
+    func leadingAnchor(_ anchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
+        asAutoLayoutItem().layout({ view in
+            makeRelativeConstraint(
+                view: view,
+                anchorProvider: { $0.leadingAnchor },
+                second: anchor.asHorizontalRelativeAutoLayoutAnchor(),
+                invertConstant: false
+            )
+        })
+    }
+    
     func rightAnchor(_ anchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ view in
             makeRelativeConstraint(
@@ -71,6 +82,17 @@ public extension AutoLayoutItemConvertible {
                 anchorProvider: { $0.rightAnchor },
                 second: anchor.asHorizontalRelativeAutoLayoutAnchor(),
                 invertConstant: true
+            )
+        })
+    }
+    
+    func trailingAnchor(_ anchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
+        asAutoLayoutItem().layout({ view in
+            makeRelativeConstraint(
+                view: view,
+                anchorProvider: { $0.trailingAnchor },
+                second: anchor.asHorizontalRelativeAutoLayoutAnchor(),
+                invertConstant: false
             )
         })
     }
