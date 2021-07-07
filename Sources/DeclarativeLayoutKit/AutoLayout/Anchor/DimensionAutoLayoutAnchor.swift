@@ -56,4 +56,12 @@ public extension DimensionAutoLayoutAnchorConvertible {
         
         return copy
     }
+    
+    func minus(_ constant: CGFloat) -> DimensionAutoLayoutAnchor {
+        var copy = asDimensionAutoLayoutAnchor()
+        
+        copy.constant = -constant
+        
+        return copy
+    }
 }

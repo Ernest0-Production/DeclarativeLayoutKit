@@ -56,4 +56,12 @@ public extension BidirectionalDimensionAutoLayoutAnchorConvertible {
         
         return copy
     }
+    
+    func minus(_ constant: CGFloat) -> BidirectionalDimensionAutoLayoutAnchor {
+        var copy = asBidirectionalDimensionAutoLayoutAnchor()
+        
+        copy.constant = -constant
+        
+        return copy
+    }
 }
