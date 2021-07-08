@@ -113,6 +113,11 @@ public extension AutoLayoutItemConvertible {
             .rightAnchor(anchor.toAxisAnchor(anchorPath: { $0.rightAnchor }))
     }
     
+    func directionalHorizontalAnchor(_ anchor: BidirectionRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
+        leadingAnchor(anchor.toAxisAnchor(anchorPath: { $0.leadingAnchor }))
+            .trailingAnchor(anchor.toAxisAnchor(anchorPath: { $0.trailingAnchor }))
+    }
+    
     func centerAnchor(_ anchor: BidirectionRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         centerYAnchor(anchor.toAxisAnchor(anchorPath: { $0.centerYAnchor }))
             .centerXAnchor(anchor.toAxisAnchor(anchorPath: { $0.centerXAnchor }))
