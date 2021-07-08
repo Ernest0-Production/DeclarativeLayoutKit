@@ -220,3 +220,11 @@ public extension UIButton {
         return self
     }
 }
+
+public extension UIStackView {
+    func arrangedLayoutMargin(_ insets: UIEdgeInsets) -> Self {
+        isLayoutMarginsRelativeArrangement = true
+        layoutMargins = insets
+        return self
+    }
+}
