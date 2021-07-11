@@ -12,15 +12,13 @@ public typealias HorizontalRelativeAutoLayoutAnchor = RelativeAutoLayoutAnchor<N
 public typealias VerticalRelativeAutoLayoutAnchor = RelativeAutoLayoutAnchor<NSLayoutYAxisAnchor>
 
 public struct RelativeAutoLayoutAnchor<Axis: AnyObject> {
-    var relationType: RelationType
+    var relationType: RelationType = .equal
     
-    var priority: UILayoutPriority
-    
-    var target: NSLayoutAnchor<Axis>?
+    let target: NSLayoutAnchor<Axis>
     
     typealias Constant = RelativeAutoLayoutConstant
     
-    var constant: Constant
+    var constant: Constant = .zero
 }
 
 public protocol HorizontalRelativeAutoLayoutAnchorConvertible {

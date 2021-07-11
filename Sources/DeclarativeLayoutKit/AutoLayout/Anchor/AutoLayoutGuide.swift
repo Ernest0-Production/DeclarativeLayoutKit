@@ -8,7 +8,7 @@
 import UIKit
 
 
-public protocol AutoLauoutGuide {
+public protocol AutoLayoutGuide: AnyObject {
     var leadingAnchor: NSLayoutXAxisAnchor { get }
 
     var trailingAnchor: NSLayoutXAxisAnchor { get }
@@ -30,6 +30,6 @@ public protocol AutoLauoutGuide {
     var centerYAnchor: NSLayoutYAxisAnchor { get }
 }
 
-extension UIView: AutoLauoutGuide {}
+extension UIView: AutoLayoutGuide {}
 
-extension UILayoutGuide: AutoLauoutGuide {}
+extension UILayoutGuide: AutoLayoutGuide {}
