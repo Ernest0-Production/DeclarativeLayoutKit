@@ -35,7 +35,15 @@ public extension UIView {
         return self
     }
     
-    func addGesture<Gesture: UIGestureRecognizer>(overwrite: Bool = false, gesture: Gesture) -> Self {
+    /// - Parameters:
+    ///   - overwrite: if true - remove previous targets for current event.
+    @discardableResult
+    func addGesture<Gesture: UIGestureRecognizer>(overwrite: Bool = false, _ gesture: Gesture) -> Self {
+        isUserInteractionEnabled = true
+        if overwrite {
+            gestureRecognizers?.removeAll(where: { (gesture: UIGestureRecognizer) in gesture is Gesture })
+        }
+        
         addGestureRecognizer(gesture)
         return self
     }

@@ -8,15 +8,15 @@
 import UIKit
 
 
-/// Add action to a UIGestureRecognizer.
+/// **⚠️ Don't forget about ARC when use self or some parent view in action closure, to prevent retain cycle**
 ///
 /// Using:
 ///
 /// UIView()
-///     .addGesture(gesture: UITapGestureRecognizer()
-///             .addAction {
-///                 // ...
-///             })
+///     .addGesture(UITapGestureRecognizer()
+///                     .addAction {
+///                         // ...
+///                     })
 extension UIGestureRecognizer {
     func addAction(_ action: @escaping () -> Void) -> Self {
         let action = ClosureAction(attachTo: self, closure: action)
