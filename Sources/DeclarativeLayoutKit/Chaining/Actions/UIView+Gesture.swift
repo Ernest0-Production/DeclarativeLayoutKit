@@ -12,6 +12,7 @@ public extension UIView {
     ///  **⚠️ Don't forget about ARC when use self or some parent view in action closure, to prevent retain cycle**
     @discardableResult
     func onTapGesture(overwrite: Bool = false, _ action: @escaping () -> ()) -> Self {
+        isUserInteractionEnabled = true
         if overwrite {
             gestureRecognizers?.removeAll(where: { (gesture: UIGestureRecognizer) in gesture is UITapGestureRecognizer })
         }
@@ -24,6 +25,7 @@ public extension UIView {
     ///  **⚠️ Don't forget about ARC when use self or some parent view in action closure, to prevent retain cycle**
     @discardableResult
     func onLongTapGesture(overwrite: Bool = false, _ action: @escaping () -> ()) -> Self {
+        isUserInteractionEnabled = true
         if overwrite {
             gestureRecognizers?.removeAll(where: { (gesture: UIGestureRecognizer) in gesture is UILongPressGestureRecognizer })
         }
