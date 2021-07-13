@@ -34,4 +34,9 @@ public extension UIView {
         addGestureRecognizer(UILongPressGestureRecognizer(target: action, action: ClosureAction.selector))
         return self
     }
+    
+    func addGesture<Gesture: UIGestureRecognizer>(overwrite: Bool = false, gesture: Gesture) -> Self {
+        addGestureRecognizer(gesture)
+        return self
+    }
 }
