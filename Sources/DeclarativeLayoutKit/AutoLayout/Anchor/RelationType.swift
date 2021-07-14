@@ -5,6 +5,6 @@
 //  Created by Ernest Babayan on 05.06.2021.
 //
 
-enum RelationType {
+public enum RelationType {
     case less, equal, greater
 }

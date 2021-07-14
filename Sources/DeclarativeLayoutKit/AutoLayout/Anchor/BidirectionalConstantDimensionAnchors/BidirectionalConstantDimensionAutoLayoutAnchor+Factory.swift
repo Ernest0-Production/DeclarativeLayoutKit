@@ -8,11 +8,11 @@
 import UIKit
 
 
-public extension BidirectionalConstantDimensionNSLayoutConstraintModificatorConvertible {
-    func priority(_ priority: UILayoutPriority) -> BidirectionalConstantDimensionNSLayoutConstraintModificator {
-        asBidirectionalConstantDimensionNSLayoutConstraintModificator().then({
-            $0.width.priority = priority
-            $0.height.priority = priority
-        })
-    }
-}
+//public extension BidirectionalConstantDimensionNSLayoutConstraintModificatorConvertible {
+//    func priority(_ priority: UILayoutPriority) -> BidirectionalConstantDimensionNSLayoutConstraintModificator {
+//        asBidirectionalConstantDimensionNSLayoutConstraintModificator().then({
+//            $0.width.priority = priority
+//            $0.height.priority = priority
+//        })
+//    }
+//}

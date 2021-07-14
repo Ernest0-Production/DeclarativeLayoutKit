@@ -8,16 +8,16 @@
 import UIKit
 
 
-extension ConstantDimensionAutoLayoutAnchor: BidirectionalConstantDimensionNSLayoutConstraintModificatorConvertible {
-    public func asBidirectionalConstantDimensionNSLayoutConstraintModificator() -> BidirectionalConstantDimensionNSLayoutConstraintModificator {
-        BidirectionalConstantDimensionNSLayoutConstraintModificator(model: self)
-    }
-}
-
-extension AutoLayoutConstant {
-    public func asBidirectionalConstantDimensionNSLayoutConstraintModificator() -> BidirectionalConstantDimensionNSLayoutConstraintModificator {
-        BidirectionalConstantDimensionNSLayoutConstraintModificator(
-            model: ConstantDimensionAutoLayoutAnchor(constant: self.value)
-        )
-    }
-}
+//extension ConstantDimensionAutoLayoutAnchor: BidirectionalConstantDimensionNSLayoutConstraintModificatorConvertible {
+//    public func asBidirectionalConstantDimensionNSLayoutConstraintModificator() -> BidirectionalConstantDimensionNSLayoutConstraintModificator {
+//        BidirectionalConstantDimensionNSLayoutConstraintModificator(model: self)
+//    }
+//}
+//
+//extension AutoLayoutConstant {
+//    public func asBidirectionalConstantDimensionNSLayoutConstraintModificator() -> BidirectionalConstantDimensionNSLayoutConstraintModificator {
+//        BidirectionalConstantDimensionNSLayoutConstraintModificator(
+//            model: ConstantDimensionAutoLayoutAnchor(constant: self.value)
+//        )
+//    }
+//}

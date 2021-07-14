@@ -8,8 +8,8 @@
 import UIKit
 
 
-extension AutoLayoutConstant {
-    public func asConstantDimensionAutoLayoutAnchor() -> ConstantDimensionAutoLayoutAnchor {
-        ConstantDimensionAutoLayoutAnchor(constant: self.value)
-    }
-}
+//extension AutoLayoutConstant {
+//    public func asConstantDimensionAutoLayoutAnchor() -> ConstantDimensionAutoLayoutAnchor {
+//        ConstantDimensionAutoLayoutAnchor(constant: self.value)
+//    }
+//}

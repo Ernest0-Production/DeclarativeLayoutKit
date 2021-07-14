@@ -9,6 +9,7 @@ import UIKit
 
 
 public extension AutoLayoutItemConvertible {
+    /// firstView.leftAnchor(secondView.rightAnchor.orLess)
     func leftAnchor(_ secondAnchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ (view: UIView) in
             makeRelativeConstraint(
@@ -18,6 +19,7 @@ public extension AutoLayoutItemConvertible {
         })
     }
     
+    /// firstView.leadingAnchor(secondView.leadingAnchor.orLess)
     func leadingAnchor(_ secondAnchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ (view: UIView) in
             makeRelativeConstraint(
@@ -27,6 +29,7 @@ public extension AutoLayoutItemConvertible {
         })
     }
     
+    /// firstView.rightAnchor(secondView.rightAnchor.orLess)
     func rightAnchor(_ secondAnchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ (view: UIView) in
             makeRelativeConstraint(
@@ -36,6 +39,7 @@ public extension AutoLayoutItemConvertible {
         })
     }
     
+    /// firstView.trailingAnchor(secondView.trailingAnchor.orLess)
     func trailingAnchor(_ secondAnchor: HorizontalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ (view: UIView) in
             makeRelativeConstraint(
@@ -45,6 +49,7 @@ public extension AutoLayoutItemConvertible {
         })
     }
   
+    /// firstView.topAnchor(secondView.topAnchor.orLess)
     func topAnchor(_ secondAnchor: VerticalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ (view: UIView) in
             makeRelativeConstraint(
@@ -54,6 +59,7 @@ public extension AutoLayoutItemConvertible {
         })
     }
    
+    /// firstView.bottomAnchor(secondView.bottomAnchor.orLess)
     func bottomAnchor(_ secondAnchor: VerticalRelativeAutoLayoutAnchorConvertible) -> AutoLayoutItem {
         asAutoLayoutItem().layout({ (view: UIView) in
             makeRelativeConstraint(
@@ -61,47 +67,5 @@ public extension AutoLayoutItemConvertible {
                 with: secondAnchor.asVerticalRelativeAutoLayoutAnchor()
             )
         })
-    }
-}
-
-@discardableResult
-func makeRelativeConstraint<Axis>(
-    to firstAnchor: NSLayoutAnchor<Axis>,
-    with model: RelativeAutoLayoutAnchor<Axis>
-) -> NSLayoutConstraint {
-    let constraint: NSLayoutConstraint
-    
-    switch model.relationType {
-    case .equal:
-        constraint = firstAnchor.constraint(equalTo: model.target)
-    case .greater:
-        constraint = firstAnchor.constraint(greaterThanOrEqualTo: model.target)
-    case .less:
-        constraint = firstAnchor.constraint(lessThanOrEqualTo: model.target)
-    }
-    
-    constraint.constant = {
-        var value = model.constant.value
-        
-        if model.constant.kind == .offset { value = -value }
-        
-        if constraint.secondAttribute.isOpposite { value = -value }
-        
-        return value
-    }()
-    
-    constraint.isActive = true
-    
-    return constraint
-}
-
-private extension NSLayoutConstraint.Attribute {
-    var isOpposite: Bool {
-        switch self {
-        case .bottom, .bottomMargin, .right, .rightMargin, .trailing, .trailingMargin, .lastBaseline:
-            return true
-        default:
-            return false
-        }
     }
 }

@@ -8,16 +8,16 @@
 import UIKit
 
 
-public extension ConstantDimensionAutoLayoutAnchorConvertible {
-    var orGreater: ConstantDimensionAutoLayoutAnchor {
-        var copy = self.asConstantDimensionAutoLayoutAnchor()
-        copy.relationType = .greater
-        return copy
-    }
-    
-    var orLess: ConstantDimensionAutoLayoutAnchor {
-        var copy = self.asConstantDimensionAutoLayoutAnchor()
-        copy.relationType = .less
-        return copy
-    }
-}
+//public extension ConstantDimensionAutoLayoutAnchorConvertible {
+//    var orGreater: ConstantDimensionAutoLayoutAnchor {
+//        var copy = self.asConstantDimensionAutoLayoutAnchor()
+//        copy.relationType = .greater
+//        return copy
+//    }
+//    
+//    var orLess: ConstantDimensionAutoLayoutAnchor {
+//        var copy = self.asConstantDimensionAutoLayoutAnchor()
+//        copy.relationType = .less
+//        return copy
+//    }
+//}

@@ -11,6 +11,9 @@ import UIKit
 public final class SelfRelatedAutoLayoutAnchor<TargetType, AnchorType> {
     public typealias TargetPath = (UIView) -> TargetType
     
+    let targetPath: TargetPath
+    private var setupConfiguration: (inout AnchorType) -> Void = { _ in }
+    
     private init(_ targetPath: @escaping TargetPath) {
         self.targetPath = targetPath
     }
@@ -18,9 +21,6 @@ public final class SelfRelatedAutoLayoutAnchor<TargetType, AnchorType> {
     public static func to(_ targetPath: @escaping TargetPath) -> Self {
         Self(targetPath)
     }
-    
-    let targetPath: TargetPath
-    private var setupConfiguration: (inout AnchorType) -> Void = { _ in }
     
     @discardableResult
     func addSetup(_ configuration: @escaping (inout AnchorType) -> Void) -> Self {
