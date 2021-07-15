@@ -8,19 +8,19 @@
 import UIKit
 
 
-public protocol AutoLayoutConstant:
-    AfterRelationConstantBuildNSLayoutConstraintModificatorConvertible
+public protocol AutoLayoutConstant
+//    AfterRelationConstantBuildNSLayoutConstraintModificatorConvertible
 //    ConstantDimensionAutoLayoutAnchorConvertible,
 //    BidirectionalConstantDimensionNSLayoutConstraintModificatorConvertible
 {
     var value: CGFloat { get }
 }
 
-extension AutoLayoutConstant {
-    public func asAfterRelationConstantBuildNSLayoutConstraintModificator() -> AfterBuildModificator<(CGFloat, RelationType), NSLayoutConstraint> {
-        AfterBuildModificator<(CGFloat, RelationType), NSLayoutConstraint>(model: (value, RelationType.equal))
-    }
-}
+//extension AutoLayoutConstant {
+//    public func asAfterRelationConstantBuildNSLayoutConstraintModificator() -> AfterBuildModificator<(CGFloat, RelationType), NSLayoutConstraint> {
+//        AfterBuildModificator<(CGFloat, RelationType), NSLayoutConstraint>(model: (value, RelationType.equal))
+//    }
+//}
 
 extension Int: AutoLayoutConstant {
     public var value: CGFloat { CGFloat(self) }

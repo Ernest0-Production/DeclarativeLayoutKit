@@ -8,22 +8,22 @@
 import UIKit
 
 
-public extension SelfRelatedAutoLayoutAnchor where AnchorType == DimensionAutoLayoutAnchor {
-    func multiplied(by multiplier: CGFloat) -> Self {
-        addSetup({ (anchor: inout DimensionAutoLayoutAnchor) in
-            anchor = anchor.multiplied(by: multiplier)
-        })
-    }
-    
-    var orLess: Self {
-        addSetup({ (anchor: inout DimensionAutoLayoutAnchor) in
-            anchor = anchor.orLess
-        })
-    }
-    
-    var orGreater: Self {
-        addSetup({ (anchor: inout DimensionAutoLayoutAnchor) in
-            anchor = anchor.orGreater
-        })
-    }
-}
+//public extension SelfRelatedAutoLayoutAnchor where AnchorType == DimensionAutoLayoutAnchor {
+//    func multiplied(by multiplier: CGFloat) -> Self {
+//        addSetup({ (anchor: inout DimensionAutoLayoutAnchor) in
+//            anchor = anchor.multiplied(by: multiplier)
+//        })
+//    }
+//    
+//    var orLess: Self {
+//        addSetup({ (anchor: inout DimensionAutoLayoutAnchor) in
+//            anchor = anchor.orLess
+//        })
+//    }
+//    
+//    var orGreater: Self {
+//        addSetup({ (anchor: inout DimensionAutoLayoutAnchor) in
+//            anchor = anchor.orGreater
+//        })
+//    }
+//}

@@ -24,6 +24,13 @@ public final class AfterBuildModificator<Model, Result> {
         return self
     }
     
+    func map<T>(_ transform: (Model) -> T) -> AfterBuildModificator<T, Result> {
+        AfterBuildModificator<T, Result>(
+            model: transform(model),
+            modificator: Modificator.merge([modificator, finalModificator])
+        )
+    }
+    
     func build(_ builder: (Model) -> Result) {
         let result = builder(model)
         modificator.apply(into: result)
@@ -34,6 +41,14 @@ public final class AfterBuildModificator<Model, Result> {
 public final class Modificator<Object> {
     init(_ modification: @escaping (Object) -> Void) {
         self.modification = modification
+    }
+    
+    static func merge(_ modificators: [Modificator<Object>]) -> Modificator<Object> {
+        Modificator({ (object: Object) in
+            for modificator in modificators {
+                modificator.apply(into: object)
+            }
+        })
     }
     
     static var empty: Modificator<Object> { .init({ _ in } )}
@@ -55,45 +70,114 @@ public final class Modificator<Object> {
     }
 }
 
-public protocol AfterRelationConstantBuildNSLayoutConstraintModificatorConvertible: AfterBuildNSLayoutConstraintModificatorConvertible {
-    func asAfterRelationConstantBuildNSLayoutConstraintModificator() -> AfterBuildModificator<(CGFloat, RelationType), NSLayoutConstraint>
-}
-
-extension AfterRelationConstantBuildNSLayoutConstraintModificatorConvertible {
-    public func asAfterBuildNSLayoutConstraintModificator() -> AfterBuildModificator<(CGFloat, RelationType), NSLayoutConstraint> {
-        self.asAfterRelationConstantBuildNSLayoutConstraintModificator()
-    }
-}
-
-public protocol AfterBuildNSLayoutConstraintModificatorConvertible {
-    associatedtype Model
-    
-    func asAfterBuildNSLayoutConstraintModificator() -> AfterBuildModificator<Model, NSLayoutConstraint>
-}
-
-
 public extension AfterBuildModificator {
-    func completion(_ handler: @escaping (Result) -> Void) -> AfterBuildModificator {
+    func completion(_ handler: @escaping (Result) -> Void) -> Self {
         finalModificator.append(handler)
         return self
     }
 }
 
-extension AfterBuildModificator: AfterBuildNSLayoutConstraintModificatorConvertible where Result == NSLayoutConstraint {
-    public func asAfterBuildNSLayoutConstraintModificator() -> AfterBuildModificator<Model, NSLayoutConstraint> { self }
+public extension AfterBuildModificator where Result == NSLayoutConstraint {
+    func identifier(_ identifier: String) -> Self {
+        append({ $0.identifier = identifier })
+    }
+    
+    func priority(_ priority: UILayoutPriority) -> Self {
+        append({ $0.priority = priority })
+    }
+    
+    func deactivateAfterCreation() -> Self {
+        append({ $0.isActive = false })
+    }
 }
 
-public extension AfterBuildNSLayoutConstraintModificatorConvertible {
-    func identifier(_ identifier: String) -> AfterBuildModificator<Model, NSLayoutConstraint> {
-        asAfterBuildNSLayoutConstraintModificator().append({ $0.identifier = identifier })
-        
+
+public extension AutoLayoutConstant {
+    func completion<Result>(_ handler: @escaping (Result) -> Void) -> AfterBuildModificator<Self, Result> {
+        AfterBuildModificator(model: self).completion(handler)
     }
     
-    func priority(_ priority: UILayoutPriority) -> AfterBuildModificator<Model, NSLayoutConstraint> {
-        asAfterBuildNSLayoutConstraintModificator().append({ $0.priority = priority })
+    func identifier(_ identifier: String) -> AfterBuildModificator<Self, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).identifier(identifier)
     }
     
-    func deactivateAfterCreation() -> AfterBuildModificator<Model, NSLayoutConstraint> {
-        asAfterBuildNSLayoutConstraintModificator().append({ $0.isActive = false })
+    func priority(_ priority: UILayoutPriority) -> AfterBuildModificator<Self, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).priority(priority)
+    }
+    
+    func deactivateAfterCreation() -> AfterBuildModificator<Self, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).deactivateAfterCreation()
+    }
+}
+
+public extension NSLayoutXAxisAnchor {
+    func completion<Result>(_ handler: @escaping (Result) -> Void) -> AfterBuildModificator<NSLayoutXAxisAnchor, Result> {
+        AfterBuildModificator(model: self).completion(handler)
+    }
+    
+    func identifier(_ identifier: String) -> AfterBuildModificator<NSLayoutXAxisAnchor, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).identifier(identifier)
+    }
+
+    func priority(_ priority: UILayoutPriority) -> AfterBuildModificator<NSLayoutXAxisAnchor, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).priority(priority)
+    }
+
+    func deactivateAfterCreation() -> AfterBuildModificator<NSLayoutXAxisAnchor, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).deactivateAfterCreation()
+    }
+}
+
+public extension NSLayoutYAxisAnchor {
+    func completion<Result>(_ handler: @escaping (Result) -> Void) -> AfterBuildModificator<NSLayoutYAxisAnchor, Result> {
+        AfterBuildModificator(model: self).completion(handler)
+    }
+    
+    func identifier(_ identifier: String) -> AfterBuildModificator<NSLayoutYAxisAnchor, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).identifier(identifier)
+    }
+
+    func priority(_ priority: UILayoutPriority) -> AfterBuildModificator<NSLayoutYAxisAnchor, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).priority(priority)
+    }
+
+    func deactivateAfterCreation() -> AfterBuildModificator<NSLayoutYAxisAnchor, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).deactivateAfterCreation()
+    }
+}
+
+public extension NSLayoutDimension {
+    func completion<Result>(_ handler: @escaping (Result) -> Void) -> AfterBuildModificator<NSLayoutDimension, Result> {
+        AfterBuildModificator(model: self).completion(handler)
+    }
+    
+    func identifier(_ identifier: String) -> AfterBuildModificator<NSLayoutDimension, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).identifier(identifier)
+    }
+
+    func priority(_ priority: UILayoutPriority) -> AfterBuildModificator<NSLayoutDimension, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).priority(priority)
+    }
+
+    func deactivateAfterCreation() -> AfterBuildModificator<NSLayoutDimension, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).deactivateAfterCreation()
+    }
+}
+
+public extension WithCustomRelationType {
+    func completion<Result>(_ handler: @escaping (Result) -> Void) -> AfterBuildModificator<WithCustomRelationType<Object>, Result> {
+        AfterBuildModificator(model: self).completion(handler)
+    }
+    
+    func identifier(_ identifier: String) -> AfterBuildModificator<WithCustomRelationType<Object>, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).identifier(identifier)
+    }
+
+    func priority(_ priority: UILayoutPriority) -> AfterBuildModificator<WithCustomRelationType<Object>, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).priority(priority)
+    }
+
+    func deactivateAfterCreation() -> AfterBuildModificator<WithCustomRelationType<Object>, NSLayoutConstraint> {
+        AfterBuildModificator(model: self).deactivateAfterCreation()
     }
 }
